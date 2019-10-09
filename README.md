@@ -1,5 +1,5 @@
 # Group 16 ECSE 321 Project
-## Team Memebers
+## Team Members
 - Talha Riaz
 - Zheng Cui
 - Erdong Luo
