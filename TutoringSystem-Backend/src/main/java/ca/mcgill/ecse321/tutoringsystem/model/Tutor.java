@@ -7,12 +7,12 @@ import javax.persistence.ManyToMany;
 
 @Entity
 public class Tutor extends User{
-   private Real hourlyRate;
+   private Double hourlyRate;
 
-public void setHourlyRate(Real value) {
+public void setHourlyRate(Double value) {
     this.hourlyRate = value;
 }
-public Real getHourlyRate() {
+public Double getHourlyRate() {
     return this.hourlyRate;
 }
    private Set<StudentReview> studentReview;
