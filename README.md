@@ -21,5 +21,5 @@ This project is for developing a system for a tutoring company for high school, 
 | Erdong Luo         | Domain Modelling     | N |
 | Mustafain Khan     | Documentaton, Issue Tracking, Persistence Testing    | N    |
 | Paul Hooley        | Persistence Layer & Database       | N      |
-| Talha Riaz         | Documentaton, Issue Tracking, Persistence Testing       | 7      |
+| Talha Riaz         | Documentaton, Issue Tracking, Persistence Testing       | N      |
 | Zheng Cui          | Documentation, Issue Tracking, Persistence Layer & Database       | N      |
