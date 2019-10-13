@@ -4,24 +4,26 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class TutorReview extends Review{
-   private Integer rating;
+public class TutorReview extends Review {
+	private Integer rating;
 
-public void setRating(Integer value) {
-    this.rating = value;
+	public void setRating(Integer value) {
+		this.rating = value;
+	}
+
+	public Integer getRating() {
+		return this.rating;
+	}
+
+	private Student author;
+
+	@ManyToOne(optional = false)
+	public Student getAuthor() {
+		return this.author;
+	}
+
+	public void setAuthor(Student author) {
+		this.author = author;
+	}
+
 }
-public Integer getRating() {
-    return this.rating;
-}
-   private Student tutor;
-   
-   @ManyToOne(optional=false)
-   public Student getTutor() {
-      return this.tutor;
-   }
-   
-   public void setTutor(Student tutor) {
-      this.tutor = tutor;
-   }
-   
-   }
