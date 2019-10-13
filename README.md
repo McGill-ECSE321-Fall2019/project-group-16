@@ -21,5 +21,5 @@
 | Erdong Luo         | git status     | git status |
 | Mustafain Khan     | git status     | git status    |
 | Paul Hooley        | git diff       | git diff      |
-| Talha Riaz         | git diff       | git diff      |
+| Talha Riaz         | Documentaton, Issue Tracking, Persistence Testing       | 7      |
 | Zheng Cui          | git diff       | git diff      |
