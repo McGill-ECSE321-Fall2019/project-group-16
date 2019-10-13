@@ -18,8 +18,8 @@
  
 | Name | Roles/Tasks | Time Spent (Hours) | 
 | :---         |     :---:      |          ---: |
-| Erdong Luo         | git status     | git status |
-| Mustafain Khan     | git status     | git status    |
-| Paul Hooley        | git diff       | git diff      |
+| Erdong Luo         | Domain Modelling     | N |
+| Mustafain Khan     | Documentaton, Issue Tracking, Persistence Testing    | N    |
+| Paul Hooley        | Persistence Layer & Database       | N      |
 | Talha Riaz         | Documentaton, Issue Tracking, Persistence Testing       | 7      |
-| Zheng Cui          | git diff       | git diff      |
+| Zheng Cui          | Documentation, Issue Tracking, Persistence Layer & Database       | N      |
