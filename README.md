@@ -18,7 +18,7 @@
  
 | Name | Roles/Tasks | Time Spent (Hours) |
 | Erdong Luo         |     :---:      |          ---: |
-| Mustafain Khan   | git status     | git status    |
-| Paul Hooley     | git diff       | git diff      |
-| Talha Riaz | dit diff | git diff |
-| Zheng Cui | git diff | fsdfsdv |
+| Mustafain Khan     | git status     | git status    |
+| Paul Hooley        | git diff       | git diff      |
+| Talha Riaz         | git diff       | git diff      |
+| Zheng Cui          | git diff       | git diff      |
