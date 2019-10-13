@@ -14,7 +14,7 @@ This project is for developing a system for a tutoring company for high school, 
  
  ## Team Task Distribution and Time Spent
  
- ### Deliverable 1:
+ ### *Deliverable 1:*
  
 | Name | Roles/Tasks | Time Spent (Hours) | 
 | :---         |     :---:      |          ---: |
