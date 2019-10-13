@@ -10,7 +10,7 @@
 ### [Project Wiki](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki)
  
  ## Scope of the Project:
- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum interdum nec dui a consectetur. Donec posuere interdum diam. Ut ultrices risus nec lectus porta, eget cursus felis egestas. Cras volutpat eros sed nulla dictum, a mollis magna egestas. Etiam gravida, risus at accumsan vulputate, ante nisi mattis nunc, nec accumsan arcu mauris vitae lorem. Phasellus convallis consectetur tellus sit amet tincidunt. Suspendisse nibh sapien, faucibus et eros sed, fermentum gravida enim.
+This project is for developing a system for a tutoring company for high school, CEGEP, and university students. They can approach the company for any subjects to find the appropriate tutor. The system needs to satisfy all requirements and be developed via a release pipeline to automate the software delivery process. Viewpoints developed by multiple teams will be integrated via service calls.
  
  ## Team Task Distribution and Duration
  
