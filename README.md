@@ -16,8 +16,9 @@
  
  ### Deliverable 1:
  
-| Name | Roles/Tasks | Time Spent (Hours) |
-| Erdong Luo         |     :---:      |          ---: |
+| Name | Roles/Tasks | Time Spent (Hours) | 
+| :---         |     :---:      |          ---: |
+| Erdong Luo         | git status     | git status |
 | Mustafain Khan     | git status     | git status    |
 | Paul Hooley        | git diff       | git diff      |
 | Talha Riaz         | git diff       | git diff      |
