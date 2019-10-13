@@ -7,7 +7,7 @@
 4. Talha Riaz
 5. Zheng Cui
 
-### Access [Project Wiki](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki)
+### -> Access [Project Wiki](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki)
  
  ## Scope of the Project:
 This project is for developing a system for a tutoring company for high school, CEGEP, and university students. They can approach the company for any subjects to find the appropriate tutor. The system needs to satisfy all requirements and be developed via a release pipeline to automate the software delivery process. Viewpoints developed by multiple teams will be integrated via service calls.
