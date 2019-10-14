@@ -14,11 +14,12 @@ This project is for developing a system for a tutoring company for high school, 
 
 Group 16 is working on the student viewpoint of the application. The viewpoint must satisfy all the [requirements](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki/System-Requirements) and enable a student to set up a tutoring session with a tutor. 
  
- ## Task Distribution & Time Spent
+ ## Sprint 1 (Due Sunday, Oct 13)
  
- ### *Sprint 1:*
+ #### *Sprint 1 is complete. Project Report is now available!*
+ #### -> Access [Sprint 1 Project Report](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki/Project-Report-(Sprint-1))
  
- ### -> Access [Sprint 1 Project Report](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki/Project-Report-(Sprint-1))
+ ### Member Roles & Time Spent
  
 | Name | Roles/Tasks | Time Spent (Hours) | 
 | :---         |     :---:      |          ---: |
