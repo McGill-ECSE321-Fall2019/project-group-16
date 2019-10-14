@@ -23,8 +23,8 @@ Group 16 is working on the student viewpoint of the application. The viewpoint m
  
 | Name | Roles/Tasks | Time Spent (Hours) | 
 | :---         |     :---:      |          ---: |
-| Erdong Luo         | Domain Modelling     | N |
+| Erdong Luo         | Domain Modelling     | 10 |
 | Mustafain Ali Khan     | Documentaton, Issue Tracking, Persistence Testing    | 13    |
 | Paul Hooley        | Persistence Layer & Database       | 7      |
 | Talha Riaz         | Documentaton, Issue Tracking, Persistence Testing       | 12      |
-| Zheng Cui          | Documentation, Issue Tracking, Persistence Layer & Database       | N      |
+| Zheng Cui          | Documentation, Issue Tracking, Persistence Layer & Database       | 15      |
