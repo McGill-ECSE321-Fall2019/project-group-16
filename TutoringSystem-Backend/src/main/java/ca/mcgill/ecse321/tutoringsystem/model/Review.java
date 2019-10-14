@@ -27,17 +27,6 @@ public class Review {
 		return this.id;
 	}
 
-	private User reviewee;
-
-	@ManyToOne(optional = false)
-	public User getReviewee() {
-		return this.reviewee;
-	}
-
-	public void setReviewee(User reviewee) {
-		this.reviewee = reviewee;
-	}
-
 	private TutoringSystem tutoringSystem;
 
 	@ManyToOne(optional = false)
@@ -47,6 +36,28 @@ public class Review {
 
 	public void setTutoringSystem(TutoringSystem tutoringSystem) {
 		this.tutoringSystem = tutoringSystem;
+	}
+
+	private Student studentReviewee;
+
+	@ManyToOne(optional = false)
+	public Student getStudentReviewee() {
+		return this.studentReviewee;
+	}
+
+	public void setStudentReviewee(Student studentReviewee) {
+		this.studentReviewee = studentReviewee;
+	}
+
+	private Tutor tutorReviewee;
+
+	@ManyToOne(optional = false)
+	public Tutor getTutorReviewee() {
+		return this.tutorReviewee;
+	}
+
+	public void setTutorReviewee(Tutor tutorReviewee) {
+		this.tutorReviewee = tutorReviewee;
 	}
 
 }

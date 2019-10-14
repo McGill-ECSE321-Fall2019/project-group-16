@@ -36,9 +36,9 @@ public class TutoringSystemService {
 	@Autowired
 	UniversityRepository universityRepository;
 	
-	@Autowired
-	UserRepository userRepository;
-	
+	/*
+	 * //@Autowired //UserRepository userRepository;
+	 */	
 	@Autowired
 	StudentRepository studentRepository;
 	
@@ -107,7 +107,7 @@ public class TutoringSystemService {
 		StudentReview sr = new StudentReview();
 		sr.setId(id);
 		sr.setReview(comments);
-		sr.setReviewee(reviewee);
+		sr.setStudentReviewee(reviewee);
 		reviewRepository.save(sr);
 		return sr;
 	}
@@ -124,13 +124,13 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException("Please insert a comment.");
 		}
 		
-		Review review = reviewRepository.findReviewByReviewID(oldID);
+		Review review = reviewRepository.findById(oldID).get();
 		if(review == null)
 			throw new IllegalArgumentException("Please enter a valid Review to update.");
 		
 		review.setId(id);
 		review.setReview(comments);
-		review.setReviewee(reviewee);
+		review.setStudentReviewee(reviewee);
 		
 		reviewRepository.save(review);
 		return review;
@@ -151,7 +151,7 @@ public class TutoringSystemService {
 		TutorReview tr = new TutorReview();
 		tr.setId(id);
 		tr.setReview(comments);
-		tr.setReviewee(reviewee);
+		tr.setTutorReviewee(reviewee);
 		tr.setRating(rating);
 		reviewRepository.save(tr);
 		return tr;
@@ -213,7 +213,7 @@ public class TutoringSystemService {
 		if(isLarge==null) {
 			throw new IllegalArgumentException("Room Type (isLarge = true || false) cannot be null");
 		}
-		Room room = roomRepository.findRoomByRoomNumber(oldRoomNumber);
+		Room room = roomRepository.findById(oldRoomNumber).get();
 		room.setRoomNr(roomNumber);
 		room.setIsLargeRoom(isLarge);
 		roomRepository.save(room);
@@ -280,7 +280,7 @@ public class TutoringSystemService {
 		}
 		
 		
-		RoomBooking roomBooking = roomBookingRepository.findRoomBookingById(id);
+		RoomBooking roomBooking = roomBookingRepository.findById(id).get();
 		roomBooking.setStartTime(startTime);
 		roomBooking.setEndTime(endTime);
 		roomBooking.setDate(date);
@@ -369,7 +369,7 @@ public class TutoringSystemService {
 		s.setPassword(password);
 		s.setName(name);
 		s.setSchoolName(schoolName);
-		userRepository.save(s);
+		studentRepository.save(s);
 		return s;
 	}
 	
@@ -432,63 +432,47 @@ public class TutoringSystemService {
 		t.setPassword(password);
 		t.setName(name);
 		t.setHourlyRate(hourlyRate);
-		userRepository.save(t);
+		tutorRepository.save(t);
 		return t;
 	}
-	@Transactional
-	public User createUser(String name, String username, String password) {
-		
-		if(name == null || name.equals("")){
-			throw new IllegalArgumentException("Invalid name.");
-		}
-		if(username == null || username.equals("")){
-			throw new IllegalArgumentException("Invalid username.");
-		}
-		if(password == null || password.equals("")){
-			throw new IllegalArgumentException("Invalid password.");
-		}
-		
+	/*
+	 * @Transactional public User createUser(String name, String username, String
+	 * password) {
+	 * 
+	 * if(name == null || name.equals("")){ throw new
+	 * IllegalArgumentException("Invalid name."); } if(username == null ||
+	 * username.equals("")){ throw new
+	 * IllegalArgumentException("Invalid username."); } if(password == null ||
+	 * password.equals("")){ throw new
+	 * IllegalArgumentException("Invalid password."); }
+	 * 
+	 * 
+	 * User user = new User(); user.setName(name); user.setUsername(username);
+	 * user.setPassword(password); userRepository.save(user); return user; }
+	 */
 
-		User user = new User();
-		user.setName(name);
-		user.setUsername(username);
-		user.setPassword(password);
-		userRepository.save(user);
-		return user;
-	}
-
-	@Transactional
-	public User updateUser(String name, String oldUsername,String newUsername, String password) {
-		if(name == null || name.equals("")){
-			throw new IllegalArgumentException("Invalid name.");
-		}
-		if(oldUsername == null || oldUsername.equals("")){
-			throw new IllegalArgumentException("Invalid username.");
-		}
-		if(newUsername == null || newUsername.equals("")){
-			throw new IllegalArgumentException("Invalid username.");
-		}
-		if(password == null || password.equals("")){
-			throw new IllegalArgumentException("Invalid password.");
-		}
-		User user = userRepository.findById(oldUsername).get();
-		user.setName(name);
-		user.setUsername(newUsername);
-		user.setPassword(password);
-		userRepository.save(user);
-		return user;
-	}
+	/*
+		 * @Transactional public User updateUser(String name, String oldUsername,String
+		 * newUsername, String password) { if(name == null || name.equals("")){ throw
+		 * new IllegalArgumentException("Invalid name."); } if(oldUsername == null ||
+		 * oldUsername.equals("")){ throw new
+		 * IllegalArgumentException("Invalid username."); } if(newUsername == null ||
+		 * newUsername.equals("")){ throw new
+		 * IllegalArgumentException("Invalid username."); } if(password == null ||
+		 * password.equals("")){ throw new
+		 * IllegalArgumentException("Invalid password."); } User user =
+		 * userRepository.findById(oldUsername).get(); user.setName(name);
+		 * user.setUsername(newUsername); user.setPassword(password);
+		 * userRepository.save(user); return user; }
+		 * 
+		 * @Transactional public User getUser(String username) { User u =
+		 * userRepository.findUserByUserName(username); return u; }
+		 */
 	
-	@Transactional
-	public User getUser(String username) {
-		User u = userRepository.findUserByUserName(username);
-		return u;
-	}
-	
-	@Transactional
+	/*@Transactional
 	public List<User> getAllUsers() {
 		return toList(userRepository.findAll());
-	}
+	}*/
 	
 	private <T> List<T> toList(Iterable<T> iterable){
 		List<T> resultList = new ArrayList<T>();
@@ -498,16 +482,11 @@ public class TutoringSystemService {
 		return resultList;
 	}
     
-	@Transactional
-	public boolean deleteUser(String username) {
-		boolean done = false;
-		User u = getUser(username);
-		if (u != null) {
-			userRepository.delete(u);
-			done = true;
-		}
-		return done;
-	}
+	/*
+	 * @Transactional public boolean deleteUser(String username) { boolean done =
+	 * false; User u = getUser(username); if (u != null) { userRepository.delete(u);
+	 * done = true; } return done; }
+	 */
 	
 	
 	public Tutor createTutor(String name, String username, String password, double hourlyRate) {
@@ -622,7 +601,7 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException("Please enter a valid university name.");
 		}
 		
-		University university = universityRepository.findUniversityByUniversityName(name);
+		University university = universityRepository.findById(name).get();
 		university.setName(newName);
 		universityRepository.save(university);
 		return university;

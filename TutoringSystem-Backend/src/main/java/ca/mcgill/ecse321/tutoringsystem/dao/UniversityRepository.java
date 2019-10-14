@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import ca.mcgill.ecse321.tutoringsystem.model.University;
 
 public interface UniversityRepository extends CrudRepository<University, String> {
-	University findUniversityByUniversityName(String name);
+	//University findUniversityByUniversityName(String name);
 }

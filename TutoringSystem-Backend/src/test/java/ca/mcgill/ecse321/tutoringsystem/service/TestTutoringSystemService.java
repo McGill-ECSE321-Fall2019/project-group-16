@@ -22,7 +22,7 @@ import ca.mcgill.ecse321.tutoringsystem.dao.SessionRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.StudentRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.TutorRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.UniversityRepository;
-import ca.mcgill.ecse321.tutoringsystem.dao.UserRepository;
+//import ca.mcgill.ecse321.tutoringsystem.dao.UserRepository;
 import ca.mcgill.ecse321.tutoringsystem.model.Course;
 import ca.mcgill.ecse321.tutoringsystem.model.Review;
 import ca.mcgill.ecse321.tutoringsystem.model.Room;
@@ -31,7 +31,7 @@ import ca.mcgill.ecse321.tutoringsystem.model.Session;
 import ca.mcgill.ecse321.tutoringsystem.model.Student;
 import ca.mcgill.ecse321.tutoringsystem.model.Tutor;
 import ca.mcgill.ecse321.tutoringsystem.model.University;
-import ca.mcgill.ecse321.tutoringsystem.model.User;
+//import ca.mcgill.ecse321.tutoringsystem.model.User;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -58,8 +58,9 @@ public class TestTutoringSystemService {
 	@Autowired
 	private UniversityRepository universityRepository;
 	
-	@Autowired
-	private UserRepository userRepository;
+	/*
+	 * @Autowired private UserRepository userRepository;
+	 */
 	
 	@Autowired
 	private StudentRepository studentRepository;
@@ -77,165 +78,129 @@ public class TestTutoringSystemService {
 		universityRepository.deleteAll();
 		studentRepository.deleteAll();
 		tutorRepository.deleteAll();
-		userRepository.deleteAll();
+		//userRepository.deleteAll();
 		
 	}
-	//User Tests
-	@Test
-	public void tesCreateUser() {
-		assertEquals(0,service.getAllUsers().size());
-		
-		String name = "User";
-		String username = "user123";
-		String password = "Userpassword1";
-		
-		try {
-			service.createUser(name, username, password);
-		} catch (IllegalArgumentException e) {
-			
-			fail();
-		}
-
-		List<User> allUsers = service.getAllUsers();
-
-		assertEquals(1, allUsers.size());
-		assertEquals(name, allUsers.get(0).getName());
-		assertEquals(username, allUsers.get(0).getUsername());
-		assertEquals(password,allUsers.get(0).getPassword());
-	}
+	/*
+	 * //User Tests
+	 * 
+	 * @Test public void testCreateUser() {
+	 * assertEquals(0,service.getAllStudents().size());
+	 * assertEquals(0,service.getAllStudents().size());
+	 * 
+	 * String name = "User"; String username = "user123"; String password =
+	 * "Userpassword1";
+	 * 
+	 * try { service.createUser(name, username, password);
+	 * System.out.println("THE CREATE USER"); } catch (IllegalArgumentException e) {
+	 * 
+	 * fail(); }
+	 * 
+	 * List<User> allUsers = service.getAllUsers();
+	 * 
+	 * assertEquals(1, allUsers.size()); assertEquals(name,
+	 * allUsers.get(0).getName()); assertEquals(username,
+	 * allUsers.get(0).getUsername());
+	 * assertEquals(password,allUsers.get(0).getPassword()); }
+	 * 
+	 * @Test public void testUpdateUser() {
+	 * 
+	 * String name = "User"; String username = "user123"; String password =
+	 * "Userpassword1";
+	 * 
+	 * 
+	 * try { service.createUser(name, username, password); } catch
+	 * (IllegalArgumentException e) {
+	 * 
+	 * fail(); }
+	 * 
+	 * List<User> allUsers = service.getAllUsers();
+	 * 
+	 * assertEquals(1, allUsers.size());
+	 * 
+	 * name = "User"; password = "newPassword1"; String newUsername= "newuser123";
+	 * 
+	 * try { service.updateUser(name, username, newUsername, password); } catch
+	 * (IllegalArgumentException e) {
+	 * 
+	 * fail(); }
+	 * 
+	 * assertEquals(1, allUsers.size()); assertEquals(name,
+	 * allUsers.get(0).getName()); assertEquals(newUsername,
+	 * allUsers.get(0).getUsername());
+	 * assertEquals(password,allUsers.get(0).getPassword()); }
+	 * 
+	 * @Test public void deleteUser() {
+	 * 
+	 * String name = "User"; String username = "user123"; String password =
+	 * "Userpassword1";
+	 * 
+	 * try { service.createUser(name, username, password); } catch
+	 * (IllegalArgumentException e) {
+	 * 
+	 * fail(); }
+	 * 
+	 * List<User> allUsers = service.getAllUsers();
+	 * 
+	 * assertEquals(1, allUsers.size());
+	 * 
+	 * try { service.deleteUser(username); } catch (IllegalArgumentException e) {
+	 * 
+	 * fail(); } allUsers = service.getAllUsers();
+	 * 
+	 * assertEquals(0, allUsers.size()); }
+	 */
 	
-	@Test
-	public void testUpdateUser() {
-
-		String name = "User";
-		String username = "user123";
-		String password = "Userpassword1";
-		
-
-		try {
-			service.createUser(name, username, password);
-		} catch (IllegalArgumentException e) {
-			
-			fail();
-		}
-
-		List<User> allUsers = service.getAllUsers();
-
-		assertEquals(1, allUsers.size());
-		
-		name = "User";
-		password = "newPassword1";
-		String newUsername= "newuser123";
-        		
-		try {
-			service.updateUser(name, username, newUsername, password);
-		} catch (IllegalArgumentException e) {
-			
-			fail();
-		}
-		
-		assertEquals(1, allUsers.size());
-		assertEquals(name, allUsers.get(0).getName());
-		assertEquals(newUsername, allUsers.get(0).getUsername());
-		assertEquals(password,allUsers.get(0).getPassword());
-	}
-	
-	@Test
-	public void deleteUser() {
-		
-		String name = "User";
-		String username = "user123";
-		String password = "Userpassword1";
-
-		try {
-			service.createUser(name, username, password);
-		} catch (IllegalArgumentException e) {
-			
-			fail();
-		}
-
-		List<User> allUsers = service.getAllUsers();
-
-		assertEquals(1, allUsers.size());
-		
-		try {
-			service.deleteUser(username);
-		} catch (IllegalArgumentException e) {
-			
-			fail();
-		}
-		allUsers = service.getAllUsers();
-
-		assertEquals(0, allUsers.size());
-	}
-	
-	@Test
-	public void testCreateUserNullName() {
-
-		String name = null;
-		String username = "user123";
-		String password = "Userpassword1";
-	
-
-		String error = null;
-		try {
-			service.createUser(name, username, password);
-		} catch (IllegalArgumentException e) {
-			
-			error = e.getMessage();
-		}
-
-		assertEquals("Invalid name.", error);
-		List<User> allUsers = service.getAllUsers();
-		assertEquals(0, allUsers.size());
-		
-		}
-	
-	@Test
-	public void testCreateUserNullEmail() {
-
-		String name = "User";
-		String username = null;
-		String password = "Userpassword1";
-	
-		
-
-		String error = null;
-		try {
-			service.createUser(name, username, password);
-		} catch (IllegalArgumentException e) {
-			
-			error = e.getMessage();
-		}
-
-		assertEquals("Invalid username.", error);
-		List<User> allUsers = service.getAllUsers();
-		assertEquals(0, allUsers.size());
-		
-		}
-	
-	@Test
-	public void testCreateUserNullPassword() {
-
-		String name = "User";
-		String username = "user123";
-		String password = null;
-	
-		
-
-		String error = null;
-		try {
-			service.createUser(name, username, password);
-		} catch (IllegalArgumentException e) {
-			
-			error = e.getMessage();
-		}
-
-		assertEquals("Invalid password.", error);
-		List<User> allUsers = service.getAllUsers();
-		assertEquals(0, allUsers.size());
-		
-		}
+	/*
+	 * @Test public void testCreateUserNullName() {
+	 * 
+	 * String name = null; String username = "user123"; String password =
+	 * "Userpassword1";
+	 * 
+	 * 
+	 * String error = null; try { service.createUser(name, username, password); }
+	 * catch (IllegalArgumentException e) {
+	 * 
+	 * error = e.getMessage(); }
+	 * 
+	 * assertEquals("Invalid name.", error); List<User> allUsers =
+	 * service.getAllUsers(); assertEquals(0, allUsers.size());
+	 * 
+	 * }
+	 * 
+	 * @Test public void testCreateUserNullEmail() {
+	 * 
+	 * String name = "User"; String username = null; String password =
+	 * "Userpassword1";
+	 * 
+	 * 
+	 * 
+	 * String error = null; try { service.createUser(name, username, password); }
+	 * catch (IllegalArgumentException e) {
+	 * 
+	 * error = e.getMessage(); }
+	 * 
+	 * assertEquals("Invalid username.", error); List<User> allUsers =
+	 * service.getAllUsers(); assertEquals(0, allUsers.size());
+	 * 
+	 * }
+	 * 
+	 * @Test public void testCreateUserNullPassword() {
+	 * 
+	 * String name = "User"; String username = "user123"; String password = null;
+	 * 
+	 * 
+	 * 
+	 * String error = null; try { service.createUser(name, username, password); }
+	 * catch (IllegalArgumentException e) {
+	 * 
+	 * error = e.getMessage(); }
+	 * 
+	 * assertEquals("Invalid password.", error); List<User> allUsers =
+	 * service.getAllUsers(); assertEquals(0, allUsers.size());
+	 * 
+	 * }
+	 */
 	
 	//Student Tests
 	
@@ -674,7 +639,7 @@ public class TestTutoringSystemService {
 		assertEquals(1, allReviews.size());
 		assertEquals(id, allReviews.get(0).getId(), 0);
 		assertEquals(comments, allReviews.get(0).getReview());
-		assertEquals(username, allReviews.get(0).getReviewee().getUsername());
+		assertEquals(username, allReviews.get(0).getStudentReviewee().getUsername());
 	}
 	
 	@Test
@@ -814,7 +779,7 @@ public class TestTutoringSystemService {
 		assertEquals(1, allReviews.size());
 		assertEquals(id, allReviews.get(0).getId(), 0);
 		assertEquals(comments, allReviews.get(0).getReview());
-		assertEquals(username, allReviews.get(0).getReviewee().getUsername());
+		assertEquals(username, allReviews.get(0).getTutorReviewee().getUsername());
 	}
 	@Test
 	public void testCreateTutorReviewNullReviewee() {
