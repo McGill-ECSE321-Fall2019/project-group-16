@@ -26,6 +26,7 @@ import ca.mcgill.ecse321.tutoringsystem.dao.UserRepository;
 import ca.mcgill.ecse321.tutoringsystem.model.Course;
 import ca.mcgill.ecse321.tutoringsystem.model.Review;
 import ca.mcgill.ecse321.tutoringsystem.model.Room;
+import ca.mcgill.ecse321.tutoringsystem.model.RoomBooking;
 import ca.mcgill.ecse321.tutoringsystem.model.Session;
 import ca.mcgill.ecse321.tutoringsystem.model.Student;
 import ca.mcgill.ecse321.tutoringsystem.model.Tutor;
@@ -1071,6 +1072,7 @@ public class TestTutoringSystemService {
 		
 	}
 	
+	@Test
 	public void testCreateSessionNullDate() {
 		assertEquals(0, service.getAllSessions().size());
 		
@@ -1116,7 +1118,7 @@ public class TestTutoringSystemService {
 		
 	}
 	
-	
+	@Test
 	public void testCreateSessionNullCourse() {
 		assertEquals(0, service.getAllSessions().size());
 		
@@ -1162,6 +1164,7 @@ public class TestTutoringSystemService {
 		
 	}
 	
+	@Test
 	public void testCreateSessionNullRoom() {
 		assertEquals(0, service.getAllSessions().size());
 		
@@ -1207,6 +1210,7 @@ public class TestTutoringSystemService {
 		
 	}
 	
+	@Test
 	public void testCreateSessionNullStudent() {
 		assertEquals(0, service.getAllSessions().size());
 		
@@ -1247,6 +1251,7 @@ public class TestTutoringSystemService {
 		
 	}
 	
+	@Test
 	public void testCreateSessionNullTutor() {
 		assertEquals(0, service.getAllSessions().size());
 		
@@ -1289,5 +1294,529 @@ public class TestTutoringSystemService {
 		
 	}
 	
+	
+	//---------- Room Class Tests --------------	
+	
+		@Test
+		public void testCreateRoom() {
+			assertEquals(0, service.getAllRooms().size());
+			
+			int roomNumber = 1;
+			Boolean isLargeRoom = true;
+			
+			try {
+				service.createRoom(roomNumber, isLargeRoom);
+			} catch (IllegalArgumentException e) {
+				fail();
+			}
+			
+			List<Room> allRooms = service.getAllRooms();
+			
+			assertEquals(1, allRooms.size());
+			assertEquals(roomNumber, (int) allRooms.get(0).getRoomNr());
+			assertEquals(isLargeRoom, allRooms.get(0).getIsLargeRoom());
+			
+				
+		}
 		
+		@Test
+		public void testDeleteRoom() {
+			assertEquals(0, service.getAllRooms().size());
+			
+			int roomNr = 1;
+			Boolean isLargeRoom = true;
+			
+			try {
+				service.createRoom(roomNr, isLargeRoom);
+			}
+			catch(IllegalArgumentException e) {
+				fail();
+			}
+			
+			try {
+				service.deleteRoom(roomNr);
+			}
+			catch(IllegalArgumentException e) {
+				fail();
+			}
+			
+			List<Room> allRooms = service.getAllRooms();
+			assertEquals(0, allRooms.size());
+			
+		}
+		
+		@Test
+		public void testUpdateRoom() {
+			assertEquals(0, service.getAllRooms().size());
+			
+			int roomNumber = 1;
+			Boolean isLargeRoom  = true;
+			
+
+			try {
+				service.createRoom(roomNumber, isLargeRoom);
+			} catch (IllegalArgumentException e) {
+				
+				fail();
+			}
+
+			List<Room> allRooms = service.getAllRooms();
+
+			assertEquals(1, allRooms.size());
+			assertEquals(roomNumber, (int) allRooms.get(0).getRoomNr());
+			assertEquals(isLargeRoom, allRooms.get(0).getIsLargeRoom());
+			
+			int newRoomNumber  = 2;
+			Boolean newIsLargeRoom = false; //MAY CAUSE ISSUES
+			
+			try {
+				service.updateRoom(roomNumber, newRoomNumber, newIsLargeRoom);
+			} catch (IllegalArgumentException e) {
+				fail();
+			}
+
+			allRooms = service.getAllRooms();
+			assertEquals(1, allRooms.size());
+			assertEquals(newRoomNumber, (int) allRooms.get(0).getRoomNr());
+			assertEquals(newIsLargeRoom, allRooms.get(0).getIsLargeRoom());
+			
+		}
+		
+		@Test
+		public void testCreateRoomInvalidID() {
+
+			int roomNumber = -1;
+			Boolean isLargeRoom = true;
+		
+			String error = null;
+
+			try {
+				service.createRoom(roomNumber, isLargeRoom);
+			} catch (IllegalArgumentException e) {
+				
+				error = e.getMessage();
+			}
+
+			assertEquals("Room number cannot be negative", error);
+			List<Room> allRooms = service.getAllRooms();
+
+			assertEquals(0, allRooms.size());
+
+		}
+		
+		@Test
+		public void testCreateRoomNullIsLarge() {
+
+			int roomNumber = 1;
+			Boolean isLargeRoom = null;
+		
+			String error = null;
+
+			try {
+				service.createRoom(roomNumber, isLargeRoom);
+			} catch (IllegalArgumentException e) {
+				
+				error = e.getMessage();
+			}
+
+			assertEquals("Room Type (isLarge true or false) cannot be null", error);
+			List<Room> allRooms = service.getAllRooms();
+
+			assertEquals(0, allRooms.size());
+
+		}
+		
+
+		// -----------------Course Class Tests------------------
+			
+			@Test
+			public void testCreateCourse() {
+				
+				//CHECK IF THIS WORKS??? IF THIS METHOD CREATES ISSUES
+				
+				
+				String courseCode = "ECSE321";
+				String subject = "SoftwareEng";
+				University university =  service.createUniversity("McGill");
+				
+				try {
+					service.createCourse(courseCode, subject, university);
+				}
+				catch (IllegalArgumentException e) {
+					fail();
+				}
+				
+				List<Course> allCourses = service.getAllCourses();
+				
+				assertEquals(1, allCourses.size());
+				assertEquals(courseCode, allCourses.get(0).getCourseCode());
+				assertEquals(subject, allCourses.get(0).getSubject());
+				assertEquals(university, allCourses.get(0).getUniversity());
+					
+			}
+			
+			@Test
+			public void testUpdateCourse() {
+				
+				String courseCode = "ECSE321";
+				String subject = "SoftwareEng";
+				University university =  service.createUniversity("McGill");
+				
+				try {
+					service.createCourse(courseCode, subject, university);
+				}
+				catch (IllegalArgumentException e) {
+					fail();
+				}
+				
+				List<Course> allCourses = service.getAllCourses();
+				
+				assertEquals(1, allCourses.size());
+				assertEquals(courseCode, allCourses.get(0).getCourseCode());
+				assertEquals(subject, allCourses.get(0).getSubject());
+				assertEquals(university, allCourses.get(0).getUniversity());
+				
+				String newCourseCode = "MATH140";
+				String newSubject = "Science";
+				University newUniversity = service.createUniversity("Concordia");
+				
+				try {
+					service.updateCourse(courseCode, newSubject, newCourseCode, newUniversity);
+				} catch (IllegalArgumentException e) {
+					fail();
+				}
+
+				assertEquals(1, allCourses.size());
+				assertEquals(newCourseCode, allCourses.get(0).getCourseCode());	
+				assertEquals(newSubject, allCourses.get(0).getSubject());
+				assertEquals(newUniversity, allCourses.get(0).getUniversity());
+				
+			}
+			
+			//DELETE COURSE METHOD NEEDS TO BE IMPLEMENTED
+			
+			@Test
+			public void testCreateCourseNullCourseCode() {
+				
+				String courseCode = null;
+				String subject = "Science";
+				University university = service.createUniversity("McGill");
+				
+				String error = null;
+				
+				try {
+					service.createCourse(courseCode, subject, university);
+				}
+				catch (IllegalArgumentException e) {
+					error = e.getMessage();
+				}
+				
+				assertEquals("Please provide a courseCode", error);
+				List<Course> allCourses = service.getAllCourses();
+				assertEquals(0, allCourses.size());
+				
+				
+			}
+			
+			@Test
+			public void testCreateCourseNullSubject() {
+				
+				String courseCode = "ECSE321";
+				String subject = null;
+				University university = service.createUniversity("McGill");
+				
+				String error = null;
+				
+				try {
+					service.createCourse(courseCode, subject, university);
+				}
+				catch (IllegalArgumentException e) {
+					error = e.getMessage();
+				}
+				
+				assertEquals("Please provide a subject", error);
+				List<Course> allCourses = service.getAllCourses();
+				assertEquals(0, allCourses.size());
+				
+				
+			}
+			
+			@Test
+			public void testCreateCourseNullUniversity() {
+				
+				String courseCode = "ECSE321";
+				String subject = "Science";
+				University university = null;
+				
+				String error = null;
+				
+				try {
+					service.createCourse(courseCode, subject, university);
+				}
+				catch (IllegalArgumentException e) {
+					error = e.getMessage();
+				}
+				
+				assertEquals("University cannot be null", error);
+				List<Course> allCourses = service.getAllCourses();
+				assertEquals(0, allCourses.size());
+				
+				
+			}
+			
+
+		// -----------------Room Booking Class Tests------------------
+			
+			@Test
+			public void testCreateRoomBooking() {
+				assertEquals(0, service.getAllRoomBookings().size());
+				
+				//long millis=System.currentTimeMillis();
+				Integer id = 1;
+				Time startTime = Time.valueOf("16:00:00");
+				Time endTime = Time.valueOf("17:00:00");
+				Date date = Date.valueOf("2019-10-10");
+				
+				try {
+					service.createRoomBooking(id, startTime, endTime, date);
+				}
+				catch(IllegalArgumentException e){
+					fail();
+				}
+				
+				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
+				
+				assertEquals(1, allRoomBookings.size());
+				assertEquals(id, allRoomBookings.get(0).getId());
+				assertEquals(startTime, allRoomBookings.get(0).getStartTime());
+				assertEquals(endTime, allRoomBookings.get(0).getEndTime());
+				assertEquals(date, allRoomBookings.get(0).getDate());
+				
+			}
+			
+			//DELETE ROOM BOOKING METHOD NEEDS TO BE IMPLEMENTED
+			
+			@Test
+			public void testUpdateRoomBooking() {
+				
+				Integer id = 1;
+				Time startTime = Time.valueOf("16:00:00");
+				Time endTime = Time.valueOf("17:00:00");
+				Date date = Date.valueOf("2019-10-10");
+				
+				try {
+					service.createRoomBooking(id, startTime, endTime, date);
+				}
+				catch(IllegalArgumentException e){
+					fail();
+				}
+				
+				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
+				
+				assertEquals(1, allRoomBookings.size());
+				assertEquals(id, allRoomBookings.get(0).getId());
+				assertEquals(startTime, allRoomBookings.get(0).getStartTime());
+				assertEquals(endTime, allRoomBookings.get(0).getEndTime());
+				assertEquals(date, allRoomBookings.get(0).getDate());
+				
+				id = 2;
+				startTime = Time.valueOf("15:00:00");
+				endTime = Time.valueOf("16:00:00");
+				date = Date.valueOf("2019-10-20");
+				
+				try {
+					service.updateRoomBooking(id, startTime, endTime, date);
+				}
+				catch(IllegalArgumentException e) {
+					fail();	
+				}
+				
+				assertEquals(1, allRoomBookings.size());
+				assertEquals(id, allRoomBookings.get(0).getId());
+				assertEquals(startTime, allRoomBookings.get(0).getStartTime());
+				assertEquals(endTime, allRoomBookings.get(0).getEndTime());
+				assertEquals(date, allRoomBookings.get(0).getDate());
+				
+			}
+			
+			@Test
+			public void testCreateRoomBookingInvalidID() {
+				
+				Integer id = -1;
+				Time startTime = Time.valueOf("16:00:00");
+				Time endTime = Time.valueOf("17:00:00");
+				Date date = Date.valueOf("2019-10-10");
+				
+				String error = null;
+				
+				try {
+					service.createRoomBooking(id, startTime, endTime, date);
+				}
+				catch (IllegalArgumentException e) {
+					error = e.getMessage();
+				}
+				
+				assertEquals("Incorrect value for ID. Note: ID must be positive.", error);
+				
+				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
+				
+				assertEquals(0, allRoomBookings.size());
+				
+				
+			}
+			
+			@Test
+			public void testCreateRoomBookingNullStartTime() {
+				
+				Integer id = 1;
+				Time startTime = null;
+				Time endTime = Time.valueOf("17:00:00");
+				Date date = Date.valueOf("2019-10-10");
+				
+				String error = null;
+				
+				try {
+					service.createRoomBooking(id, startTime, endTime, date);
+				}
+				catch (IllegalArgumentException e) {
+					error = e.getMessage();
+				}
+				
+				assertEquals("Your startTime cannot be null. Incorrect Start Time", error);
+				
+				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
+				
+				assertEquals(0, allRoomBookings.size());
+				
+			}
+			
+			@Test
+			public void testCreateRoomBookingNullEndTime() {
+				
+				Integer id = 1;
+				Time startTime = Time.valueOf("16:00:00");
+				Time endTime = null;
+				Date date = Date.valueOf("2019-10-10");
+				
+				String error = null;
+				
+				try {
+					service.createRoomBooking(id, startTime, endTime, date);
+				}
+				catch (IllegalArgumentException e) {
+					error = e.getMessage();
+				}
+				
+				assertEquals("Your endTime cannot be null. Incorrect End Time", error);
+				
+				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
+				
+				assertEquals(0, allRoomBookings.size());
+				
+				
+			}
+			
+			@Test
+			public void testCreateRoomBookingNullDate() {
+				
+				Integer id = 1;
+				Time startTime = Time.valueOf("16:00:00");
+				Time endTime = Time.valueOf("17:00:00");
+				Date date = null;
+				
+				String error = null;
+				
+				try {
+					service.createRoomBooking(id, startTime, endTime, date);
+				}
+				catch (IllegalArgumentException e) {
+					error = e.getMessage();
+				}
+				
+				assertEquals("Your date cannot be null. Incorrect date", error);
+				
+				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
+				
+				assertEquals(0, allRoomBookings.size());
+				
+			}
+			
+			@Test
+			public void testCreateRoomBookingInvalidStartTime() {
+				
+				Integer id = 1;
+				Time startTime = Time.valueOf("23:00:00");
+				Time endTime = Time.valueOf("17:00:00");
+				Date date = Date.valueOf("2019-10-10");
+				
+				String error = null;
+				
+				try {
+					service.createRoomBooking(id, startTime, endTime, date);
+				}
+				catch (IllegalArgumentException e) {
+					error = e.getMessage();
+				}
+				
+				assertEquals("Start time must be between 09:00 and 21:00", error);
+				
+				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
+				
+				assertEquals(0, allRoomBookings.size());
+				
+				
+			}
+			
+			@Test
+			public void testCreateRoomBookingInvalidEndTime() {
+				
+				Integer id = 1;
+				Time startTime = Time.valueOf("16:00:00");
+				Time endTime = Time.valueOf("23:00:00");
+				Date date = Date.valueOf("2019-10-10");
+				
+				String error = null;
+				
+				try {
+					service.createRoomBooking(id, startTime, endTime, date);
+				}
+				catch (IllegalArgumentException e) {
+					error = e.getMessage();
+				}
+				
+				assertEquals("End time must be between 09:00 and 21:00", error);
+				
+				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
+				
+				assertEquals(0, allRoomBookings.size());
+				
+				
+			}
+			
+			@Test
+			public void testCreateRoomEndTimeBeforeStartTime() {
+				
+				Integer id = 1;
+				Time startTime = Time.valueOf("16:00:00");
+				Time endTime = Time.valueOf("15:00:00");
+				Date date = Date.valueOf("2019-10-10");
+				
+				String error = null;
+				
+				try {
+					service.createRoomBooking(id, startTime, endTime, date);
+				}
+				catch (IllegalArgumentException e) {
+					error = e.getMessage();
+				}
+				
+				assertEquals("Start time must be before End time", error);
+				
+				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
+				
+				assertEquals(0, allRoomBookings.size());
+				
+				
+			}
+
 }

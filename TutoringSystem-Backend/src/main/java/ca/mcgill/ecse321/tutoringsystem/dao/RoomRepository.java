@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import ca.mcgill.ecse321.tutoringsystem.model.Room;
 
 public interface RoomRepository extends CrudRepository<Room, Integer> {
-	
+	Room findRoomByRoomNumber(Integer roomNum);
 }

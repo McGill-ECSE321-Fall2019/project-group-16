@@ -47,6 +47,15 @@ public class TutoringSystemService {
 	
 	@Transactional
 	public Course createCourse(String courseCode, String subject, University university) {
+		if (courseCode == null || courseCode.equals("")) {
+			throw new IllegalArgumentException("Please provide a courseCode");
+		}
+		if (subject == null || subject.equals("")) {
+			throw new IllegalArgumentException("Please provide a subject");
+		}
+		if (university == null) {
+			throw new IllegalArgumentException("University cannot be null");
+		}
 		Course c = new Course();
 		c.setCourseCode(courseCode);
 		c.setSubject(subject);
@@ -56,9 +65,32 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
+	public Course updateCourse(String oldCourseCode, String subject, String courseCode, University university) {
+		
+		if(oldCourseCode == null || oldCourseCode.equals("") || subject == null || subject.equals("") || courseCode == null || courseCode.equals("") || university == null){
+			throw new IllegalArgumentException("Argument field cannot be empty");
+		}
+	
+		Course course = courseRepository.findByCourseCode(oldCourseCode);
+		if( course == null)
+			throw new IllegalArgumentException("The course does not exist. Please specify a valid Course Code");
+		course.setSubject(subject);
+		course.setCourseCode(courseCode);
+		course.setUniversity(university);
+		course.setUniversity(university);
+		courseRepository.save(course);
+		return course;
+	}
+	
+	@Transactional
 	public Course getCourse(String courseCode) {
 		Course c = courseRepository.findByCourseCode(courseCode);
 		return c;
+	}
+	
+	@Transactional
+	public List<Course> getAllCourses() {
+		return toList(courseRepository.findAll());
 	}
 	
 	@Transactional
@@ -138,6 +170,12 @@ public class TutoringSystemService {
 	
 	@Transactional
 	public Room createRoom(Integer roomNr, Boolean isLargeRoom) {
+		if(roomNr<0) {
+			throw new IllegalArgumentException("Room number must be positive");
+		}
+		if(isLargeRoom==null) {
+			throw new IllegalArgumentException("Room Type (isLarge = true || false) cannot be null");
+		}
 		Room r = new Room();
 		r.setRoomNr(roomNr);
 		r.setIsLargeRoom(isLargeRoom);
@@ -152,7 +190,61 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
+	public List<Room> getAllRooms() {
+		return toList(roomRepository.findAll());
+	}
+	
+	@Transactional
+	public boolean deleteRoom(int roomNr) {
+		boolean done = false;
+		Room a = getRoom(roomNr);
+		if (a != null) {
+			roomRepository.delete(a);
+			done = true;
+		}
+		return done;
+	}
+	
+	@Transactional
+	public Room updateRoom(int oldRoomNumber, int roomNumber, Boolean isLarge) {
+		if(roomNumber < 0){
+			throw new IllegalArgumentException("Room number cannot be negative");
+		}
+		if(isLarge==null) {
+			throw new IllegalArgumentException("Room Type (isLarge = true || false) cannot be null");
+		}
+		Room room = roomRepository.findRoomByRoomNumber(oldRoomNumber);
+		room.setRoomNr(roomNumber);
+		room.setIsLargeRoom(isLarge);
+		roomRepository.save(room);
+		return room;
+	}
+	
+	@Transactional
 	public RoomBooking createRoomBooking(Integer id, Time startTime, Time endTime, Date date) {
+		if(id<0) {
+			throw new IllegalArgumentException("Incorrect value for ID. Note: ID must be positive.");
+		}
+		if(startTime==null) {
+			throw new IllegalArgumentException("Your startTime cannot be null. Incorrect Start Time");
+		}
+		if(endTime==null) {
+			throw new IllegalArgumentException("Your endTime cannot be null. Incorrect End Time");
+		}
+		if(startTime.before(Time.valueOf("09:00:00")) || startTime.after(Time.valueOf("21:00:00"))) {
+			throw new IllegalArgumentException("Start time must be between 09:00 and 21:00");
+		}
+		if(endTime.before(Time.valueOf("09:00:00")) || endTime.after(Time.valueOf("21:00:00"))) {
+			throw new IllegalArgumentException("End time must be between 09:00 and 21:00");
+		}
+		if(endTime.before(startTime)) {
+			throw new IllegalArgumentException("Start time must be before End time");
+		}
+		if(date==null) {
+			throw new IllegalArgumentException("Your date cannot be null. Incorrect date");
+		}
+		
+		
 		RoomBooking rb = new RoomBooking();
 		rb.setId(id);
 		rb.setStartTime(startTime);
@@ -163,9 +255,50 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
+	public RoomBooking updateRoomBooking (Integer id, Time startTime, Time endTime, Date date) {
+		
+		if(id<0) {
+			throw new IllegalArgumentException("Incorrect value for ID. Note: ID must be positive.");
+		}
+		if(startTime==null) {
+			throw new IllegalArgumentException("Your startTime cannot be null. Incorrect Start Time");
+		}
+		if(endTime==null) {
+			throw new IllegalArgumentException("Your endTime cannot be null. Incorrect End Time");
+		}
+		if(startTime.before(Time.valueOf("09:00:00")) || startTime.after(Time.valueOf("21:00:00"))) {
+			throw new IllegalArgumentException("Start time must be between 09:00 and 21:00");
+		}
+		if(endTime.before(Time.valueOf("09:00:00")) || endTime.after(Time.valueOf("21:00:00"))) {
+			throw new IllegalArgumentException("End time must be between 09:00 and 21:00");
+		}
+		if(endTime.before(startTime)) {
+			throw new IllegalArgumentException("Start time must be before End time");
+		}
+		if(date==null) {
+			throw new IllegalArgumentException("Your date cannot be null. Incorrect date");
+		}
+		
+		
+		RoomBooking roomBooking = roomBookingRepository.findRoomBookingById(id);
+		roomBooking.setStartTime(startTime);
+		roomBooking.setEndTime(endTime);
+		roomBooking.setDate(date);
+		roomBookingRepository.save(roomBooking);
+		
+		return roomBooking;
+
+	}
+	
+	@Transactional
 	public RoomBooking getRoomBooking(Integer id) {
 		RoomBooking rb = roomBookingRepository.findById(id).get();
 		return rb;
+	}
+	
+	@Transactional
+	public List<RoomBooking> getAllRoomBookings(){
+		return toList(roomBookingRepository.findAll());
 	}
 	
 	@Transactional
