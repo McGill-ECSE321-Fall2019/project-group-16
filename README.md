@@ -11,6 +11,8 @@
  
  ## Scope of the Project:
 This project is for developing a system for a tutoring company for high school, CEGEP, and university students. They can approach the company for any subjects to find the appropriate tutor. The system needs to satisfy all requirements and be developed via a release pipeline to automate the software delivery process. Viewpoints developed by multiple teams will be integrated via service calls.
+
+Group 16 is working on the student viewpoint of the application. The viewpoint must satisfy all the [requirements](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki/System-Requirements) and enable a student to set up a tutoring session with a tutor. 
  
  ## Task Distribution & Time Spent
  
