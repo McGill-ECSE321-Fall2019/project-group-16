@@ -16,7 +16,9 @@ Group 16 is working on the student viewpoint of the application. The viewpoint m
  
  ## Task Distribution & Time Spent
  
- ### *Deliverable 1:*
+ ### *Sprint 1:*
+ 
+ ### -> Access [Sprint 1 Project Report](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki/Project-Report-(Sprint-1))
  
 | Name | Roles/Tasks | Time Spent (Hours) | 
 | :---         |     :---:      |          ---: |
