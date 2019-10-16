@@ -246,7 +246,7 @@ public class TestTutoringSystemService {
 
 		assertEquals(1, allStudents.size());
 		
-		String newusername = "newStudent1";
+		String newusername = "student1";
 		password = "newStudentPassword";
 		schoolName = "Concordia";
 		try {
@@ -255,6 +255,7 @@ public class TestTutoringSystemService {
 			
 			fail();
 		}
+		allStudents = service.getAllStudents();
 		
 		assertEquals(username, allStudents.get(0).getUsername());
 		assertEquals(password, allStudents.get(0).getPassword());
@@ -302,7 +303,7 @@ public class TestTutoringSystemService {
 
 		try {
 			service.createStudent(username, password, name, schoolName);
-		} catch (IllegalArgumentException e) {
+		} catch (NullPointerException e) {
 			
 			error = e.getMessage();
 		}
@@ -405,7 +406,7 @@ public class TestTutoringSystemService {
 
 		assertEquals(1, allTutors.size());
 		
-		String newUsername = "tutor2";
+		String newUsername = "tutor1";
 		name = "Michael";
 		password = "newTutorpass";
 		rate  = 14;
@@ -416,6 +417,7 @@ public class TestTutoringSystemService {
 			
 			fail();
 		}
+		allTutors = service.getAllTutors();
 		
 		assertEquals(newUsername, allTutors.get(0).getUsername());
 		assertEquals(name, allTutors.get(0).getName());
@@ -544,9 +546,6 @@ public class TestTutoringSystemService {
 		assertEquals(0, allTutors.size());
 	}
 	
-	
-	
-	
 	//University tests
 	
 	@Test
@@ -576,7 +575,6 @@ public class TestTutoringSystemService {
 		try {
 			service.createUniversity(name);
 		} catch (IllegalArgumentException e) {
-			
 			fail();
 		}
 

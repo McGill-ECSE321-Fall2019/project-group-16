@@ -570,7 +570,7 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
-	public University createUniversity(String name) {
+	public University (String name) {
 		if(name == null || name.equals("")){
 			throw new IllegalArgumentException("Invalid name.");
 		}
