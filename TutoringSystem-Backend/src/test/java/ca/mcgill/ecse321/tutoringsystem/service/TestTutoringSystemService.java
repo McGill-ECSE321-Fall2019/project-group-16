@@ -163,7 +163,7 @@ public class TestTutoringSystemService {
 	 * 
 	 * error = e.getMessage(); }
 	 * 
-	 * assertEquals("Invalid name.", error); List<User> allUsers =
+	 * assertEquals("Invalid name.", error.trim()); List<User> allUsers =
 	 * service.getAllUsers(); assertEquals(0, allUsers.size());
 	 * 
 	 * }
@@ -180,7 +180,7 @@ public class TestTutoringSystemService {
 	 * 
 	 * error = e.getMessage(); }
 	 * 
-	 * assertEquals("Invalid username.", error); List<User> allUsers =
+	 * assertEquals("Invalid username.", error.trim()); List<User> allUsers =
 	 * service.getAllUsers(); assertEquals(0, allUsers.size());
 	 * 
 	 * }
@@ -196,7 +196,7 @@ public class TestTutoringSystemService {
 	 * 
 	 * error = e.getMessage(); }
 	 * 
-	 * assertEquals("Invalid password.", error); List<User> allUsers =
+	 * assertEquals("Invalid password.", error.trim()); List<User> allUsers =
 	 * service.getAllUsers(); assertEquals(0, allUsers.size());
 	 * 
 	 * }
@@ -308,7 +308,7 @@ public class TestTutoringSystemService {
 			error = e.getMessage();
 		}
 
-		assertEquals("Username can't be empty. ", error);
+		assertEquals("Username can't be empty.", error.trim());
 		List<Student> allStudents = service.getAllStudents();
 
 		assertEquals(0, allStudents.size());
@@ -331,7 +331,7 @@ public class TestTutoringSystemService {
 			error = e.getMessage();
 		}
 
-		assertEquals("Password can't be empty. ", error);
+		assertEquals("Password can't be empty.", error.trim());
 		List<Student> allStudents = service.getAllStudents();
 
 		assertEquals(0, allStudents.size());
@@ -354,7 +354,7 @@ public class TestTutoringSystemService {
 			error = e.getMessage();
 		}
 
-		assertEquals("School name can't be empty. ", error);
+		assertEquals("School name can't be empty.", error.trim());
 		List<Student> allStudents = service.getAllStudents();
 
 		assertEquals(0, allStudents.size());
@@ -470,7 +470,7 @@ public class TestTutoringSystemService {
 			error = e.getMessage();
 		}
 
-		assertEquals("Name can't be empty. ", error);
+		assertEquals("Name can't be empty.", error.trim());
 		List<Tutor> allTutors = service.getAllTutors();
 
 		assertEquals(0, allTutors.size());
@@ -493,7 +493,7 @@ public class TestTutoringSystemService {
 			error = e.getMessage();
 		}
 
-		assertEquals("Username can't be empty. ", error);
+		assertEquals("Username can't be empty.", error.trim());
 		List<Tutor> allTutors = service.getAllTutors();
 
 		assertEquals(0, allTutors.size());
@@ -516,7 +516,7 @@ public class TestTutoringSystemService {
 			error = e.getMessage();
 		}
 
-		assertEquals("Password can't be empty. ", error);
+		assertEquals("Password can't be empty.", error.trim());
 		List<Tutor> allTutors = service.getAllTutors();
 
 		assertEquals(0, allTutors.size());
@@ -540,7 +540,7 @@ public class TestTutoringSystemService {
 			error = e.getMessage();
 		}
 
-		assertEquals("Hourly rate is invalid", error);
+		assertEquals("Hourly rate is invalid", error.trim());
 		List<Tutor> allTutors = service.getAllTutors();
 
 		assertEquals(0, allTutors.size());
@@ -552,9 +552,10 @@ public class TestTutoringSystemService {
 	public void testCreateUniversity() {
 
 		String name= "McGill University";
+		int id = 1;
 
 		try {
-			service.createUniversity(name);
+			service.createUniversity(id, name);
 		} catch (IllegalArgumentException e) {
 			
 			fail();
@@ -571,25 +572,30 @@ public class TestTutoringSystemService {
 	public void testUpdateUniversity() {
 
 		String name = "McGill University";
+		int id = 1;
 		
 		try {
-			service.createUniversity(name);
+			service.createUniversity(id,name);
 		} catch (IllegalArgumentException e) {
 			fail();
 		}
 
 		List<University> allUniversities = service.getAllUniversities();
+		for (University u : allUniversities) {
+			System.out.println(u.getId());
+		}
 
 		assertEquals(1, allUniversities.size());
 		
 		String newName = "Concordia University";
 	
 		try {
-			service.updateUniversity(name, newName);
+			service.updateUniversity(id, newName);
 		} catch (IllegalArgumentException e) {
 			
 			fail();
 		}
+		allUniversities = service.getAllUniversities();
 		
 		assertEquals(1, allUniversities.size());
 		assertEquals(newName, allUniversities.get(0).getName());
@@ -599,14 +605,15 @@ public class TestTutoringSystemService {
 	@Test
 	public void testCreateUniversityNullName() {
 		String name= null;
+		int id = 1;
 		String error = null;
 		try {
-			service.createUniversity(name);
+			service.createUniversity(id,name);
 		} catch (IllegalArgumentException e) { 
 			error = e.getMessage();
 		}
 
-		assertEquals("Name can't be empty. ", error);
+		assertEquals("Name can't be empty.", error.trim());
 		List<University> allUniversities = service.getAllUniversities();
 		assertEquals(0, allUniversities.size());
 		
@@ -690,7 +697,7 @@ public class TestTutoringSystemService {
 			error = e.getMessage();
 		}
 		// check error
-		assertEquals("Reviewee is null. ", error);
+		assertEquals("Reviewee is null.", error.trim());
 
 		List<Review> allReviews = service.getAllReviews();
 
@@ -718,7 +725,7 @@ public class TestTutoringSystemService {
 			error = e.getMessage();
 		}
 		// check error
-		assertEquals("Comments can't be empty. ", error);
+		assertEquals("Comments can't be empty.", error.trim());
 
 		List<Review> allReviews = service.getAllReviews();
 
@@ -746,7 +753,7 @@ public class TestTutoringSystemService {
 			error = e.getMessage();
 		}
 		// check error
-		assertEquals("ID is invalid. ", error);
+		assertEquals("ID is invalid.", error.trim());
 
 		List<Review> allReviews = service.getAllReviews();
 
@@ -796,7 +803,7 @@ public class TestTutoringSystemService {
 		
 		List<Review> allReviews = service.getAllReviews();
         
-		assertEquals("Reviewee is null. ", error);
+		assertEquals("Reviewee is null.", error.trim());
 
 
 		assertEquals(0, allReviews.size());
@@ -826,7 +833,7 @@ public class TestTutoringSystemService {
 		
 		List<Review> allReviews = service.getAllReviews();
         
-		assertEquals("Comments can't be empty. ", error);
+		assertEquals("Comments can't be empty.", error.trim());
 
 
 		assertEquals(0, allReviews.size());
@@ -856,7 +863,7 @@ public class TestTutoringSystemService {
 		
 		List<Review> allReviews = service.getAllReviews();
         
-		assertEquals("ID is invalid. ", error);
+		assertEquals("ID is invalid.", error.trim());
 
 
 		assertEquals(0, allReviews.size());
@@ -884,7 +891,7 @@ public class TestTutoringSystemService {
 		
 		List<Review> allReviews = service.getAllReviews();
         
-		assertEquals("Rating is invalid. ", error);
+		assertEquals("Rating is invalid.", error.trim());
 
 
 		assertEquals(0, allReviews.size());
@@ -918,7 +925,7 @@ public class TestTutoringSystemService {
 		Boolean isConfirmed = false;
         Boolean isGroupSession = false;
         
-        University university = service.createUniversity("McGill University");
+        University university = service.createUniversity(1, "McGill University");
         Room room = service.createRoom(1, false);
 		Course course = service.createCourse("Math141", "Math", university);
         
@@ -970,7 +977,7 @@ public class TestTutoringSystemService {
 		Boolean isConfirmed = false;
         Boolean isGroupSession = false;
         
-        University university = service.createUniversity("McGill University");
+        University university = service.createUniversity(1,"McGill University");
         Room room = service.createRoom(1, false);
 		Course course = service.createCourse("Math141", "Math", university);
         
@@ -983,7 +990,7 @@ public class TestTutoringSystemService {
 
 		List<Session> allSessions = service.getAllSessions();
 		
-		assertEquals("Invalid date or time parameters.",error);
+		assertEquals("Invalid date or time parameters.", error.trim());
 
 
 		assertEquals(0, allSessions.size());
@@ -1015,7 +1022,7 @@ public class TestTutoringSystemService {
 		Boolean isConfirmed = false;
         Boolean isGroupSession = false;
         
-        University university = service.createUniversity("McGill University");
+        University university = service.createUniversity(1, "McGill University");
         Room room = service.createRoom(1, false);
 		Course course = service.createCourse("Math141", "Math", university);
         
@@ -1029,7 +1036,7 @@ public class TestTutoringSystemService {
 
 		List<Session> allSessions = service.getAllSessions();
 		
-		assertEquals("Invalid date or time parameters.",error);
+		assertEquals("End time is invalid.", error.trim());
 
 		assertEquals(0, allSessions.size());
 		
@@ -1061,7 +1068,7 @@ public class TestTutoringSystemService {
 		Boolean isConfirmed = false;
         Boolean isGroupSession = false;
         
-        University university = service.createUniversity("McGill University");
+        University university = service.createUniversity(1, "McGill University");
         Room room = service.createRoom(1, false);
 		Course course = service.createCourse("Math141", "Math", university);
         
@@ -1074,8 +1081,8 @@ public class TestTutoringSystemService {
 		
 
 		List<Session> allSessions = service.getAllSessions();
-		
-		assertEquals("Invalid date or time parameters.",error);
+			
+		assertEquals("Date is null.", error.trim());
 
 		assertEquals(0, allSessions.size());
 		
@@ -1121,7 +1128,7 @@ public class TestTutoringSystemService {
 
 		List<Session> allSessions = service.getAllSessions();
 		
-		assertEquals("course can't be null.",error);
+		assertEquals("Course is null.", error.trim());
 
 		assertEquals(0, allSessions.size());
 		
@@ -1153,7 +1160,7 @@ public class TestTutoringSystemService {
 		Boolean isConfirmed = false;
         Boolean isGroupSession = false;
         
-        University university = service.createUniversity("McGill University");
+        University university = service.createUniversity(1,"McGill University");
         Room room = null;
 		Course course = service.createCourse("Math141", "Math", university);
         
@@ -1167,7 +1174,7 @@ public class TestTutoringSystemService {
 
 		List<Session> allSessions = service.getAllSessions();
 		
-		assertEquals("room can't be null.",error);
+		assertEquals("Room number is invalid. Room is null.", error.trim());
 
 		assertEquals(0, allSessions.size());
 		
@@ -1194,7 +1201,7 @@ public class TestTutoringSystemService {
 		Boolean isConfirmed = false;
         Boolean isGroupSession = false;
         
-        University university = service.createUniversity("McGill University");
+        University university = service.createUniversity(1,"McGill University");
         Room room = service.createRoom(1, false);
 		Course course = service.createCourse("Math141", "Math", university);
         
@@ -1208,7 +1215,7 @@ public class TestTutoringSystemService {
 
 		List<Session> allSessions = service.getAllSessions();
 		
-		assertEquals("Please enter valid tutor and student.",error);
+		assertEquals("Tutee is null.", error.trim());
 
 		assertEquals(0, allSessions.size());
 		
@@ -1236,7 +1243,7 @@ public class TestTutoringSystemService {
 		Boolean isConfirmed = false;
         Boolean isGroupSession = false;
         
-        University university = service.createUniversity("McGill University");
+        University university = service.createUniversity(1,"McGill University");
         Room room = service.createRoom(1, false);
 		Course course = service.createCourse("Math141", "Math", university);
         
@@ -1250,7 +1257,7 @@ public class TestTutoringSystemService {
 
 		List<Session> allSessions = service.getAllSessions();
 		
-		assertEquals("Please enter valid tutor and student.",error);
+		assertEquals("Tutor is null.", error.trim());
 
 		assertEquals(0, allSessions.size());
 		
@@ -1360,7 +1367,7 @@ public class TestTutoringSystemService {
 				error = e.getMessage();
 			}
 
-			assertEquals("Room number is invalid. ", error);
+			assertEquals("Room number is invalid.", error.trim());
 			List<Room> allRooms = service.getAllRooms();
 
 			assertEquals(0, allRooms.size());
@@ -1382,7 +1389,7 @@ public class TestTutoringSystemService {
 				error = e.getMessage();
 			}
 
-			assertEquals("Room Type (isLarge = true || false) cannot be null. ", error);
+			assertEquals("Room Type (isLarge = true || false) cannot be null.", error.trim());
 			List<Room> allRooms = service.getAllRooms();
 
 			assertEquals(0, allRooms.size());
@@ -1400,7 +1407,7 @@ public class TestTutoringSystemService {
 				
 				String courseCode = "ECSE321";
 				String subject = "SoftwareEng";
-				University university =  service.createUniversity("McGill");
+				University university =  service.createUniversity(1,"McGill");
 				
 				try {
 					service.createCourse(courseCode, subject, university);
@@ -1423,7 +1430,7 @@ public class TestTutoringSystemService {
 				
 				String courseCode = "ECSE321";
 				String subject = "SoftwareEng";
-				University university =  service.createUniversity("McGill");
+				University university =  service.createUniversity(1,"McGill");
 				
 				try {
 					service.createCourse(courseCode, subject, university);
@@ -1441,7 +1448,7 @@ public class TestTutoringSystemService {
 				
 				String newCourseCode = "MATH140";
 				String newSubject = "Science";
-				University newUniversity = service.createUniversity("Concordia");
+				University newUniversity = service.createUniversity(1,"Concordia");
 				
 				try {
 					service.updateCourse(courseCode, newSubject, newCourseCode, newUniversity);
@@ -1463,7 +1470,7 @@ public class TestTutoringSystemService {
 				
 				String courseCode = null;
 				String subject = "Science";
-				University university = service.createUniversity("McGill");
+				University university = service.createUniversity(1,"McGill");
 				
 				String error = null;
 				
@@ -1474,7 +1481,7 @@ public class TestTutoringSystemService {
 					error = e.getMessage();
 				}
 				
-				assertEquals("Please provide a courseCode", error);
+				assertEquals("Please provide a courseCode.", error.trim());
 				List<Course> allCourses = service.getAllCourses();
 				assertEquals(0, allCourses.size());
 				
@@ -1486,7 +1493,7 @@ public class TestTutoringSystemService {
 				
 				String courseCode = "ECSE321";
 				String subject = null;
-				University university = service.createUniversity("McGill");
+				University university = service.createUniversity(1,"McGill");
 				
 				String error = null;
 				
@@ -1497,7 +1504,7 @@ public class TestTutoringSystemService {
 					error = e.getMessage();
 				}
 				
-				assertEquals("Please provide a subject", error);
+				assertEquals("Please provide a subject.", error.trim());
 				List<Course> allCourses = service.getAllCourses();
 				assertEquals(0, allCourses.size());
 				
@@ -1520,7 +1527,7 @@ public class TestTutoringSystemService {
 					error = e.getMessage();
 				}
 				
-				assertEquals("University cannot be null. ", error);
+				assertEquals("University cannot be null.", error.trim());
 				List<Course> allCourses = service.getAllCourses();
 				assertEquals(0, allCourses.size());
 				
@@ -1619,7 +1626,7 @@ public class TestTutoringSystemService {
 					error = e.getMessage();
 				}
 				
-				assertEquals("ID is invalid. ", error);
+				assertEquals("ID is invalid.", error.trim());
 				
 				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
 				
@@ -1645,7 +1652,7 @@ public class TestTutoringSystemService {
 					error = e.getMessage();
 				}
 				
-				assertEquals("Start time is null. ", error);
+				assertEquals("Start time is null.", error.trim());
 				
 				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
 				
@@ -1670,7 +1677,7 @@ public class TestTutoringSystemService {
 					error = e.getMessage();
 				}
 				
-				assertEquals("End time is null. ", error);
+				assertEquals("End time is null.", error.trim());
 				
 				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
 				
@@ -1696,7 +1703,7 @@ public class TestTutoringSystemService {
 					error = e.getMessage();
 				}
 				
-				assertEquals("Date is null. ", error);
+				assertEquals("Date is null.", error.trim());
 				
 				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
 				
@@ -1721,7 +1728,7 @@ public class TestTutoringSystemService {
 					error = e.getMessage();
 				}
 				
-				assertEquals("Start time must be between 09:00 and 21:00. Start time must be before End time. ", error);
+				assertEquals("Start time must be between 09:00 and 21:00. Start time must be before End time.", error.trim());
 				
 				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
 				
@@ -1747,7 +1754,7 @@ public class TestTutoringSystemService {
 					error = e.getMessage();
 				}
 				
-				assertEquals("End time must be between 09:00 and 21:00. ", error);
+				assertEquals("End time must be between 09:00 and 21:00.", error.trim());
 				
 				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
 				
@@ -1773,7 +1780,7 @@ public class TestTutoringSystemService {
 					error = e.getMessage();
 				}
 				
-				assertEquals("Start time must be before End time. ", error);
+				assertEquals("Start time must be before End time.", error.trim());
 				
 				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
 				

@@ -40,16 +40,5 @@ public void setDate(Date value) {
 }
 public Date getDate() {
     return this.date;
-}
-   private TutoringSystem tutoringSystem;
-   
-   @ManyToOne(optional=false)
-   public TutoringSystem getTutoringSystem() {
-      return this.tutoringSystem;
-   }
-   
-   public void setTutoringSystem(TutoringSystem tutoringSystem) {
-      this.tutoringSystem = tutoringSystem;
-   }
-   
+}   
    }

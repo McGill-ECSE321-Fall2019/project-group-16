@@ -47,15 +47,4 @@ public Boolean getIsLargeRoom() {
       this.session = sessions;
    }
    
-   private TutoringSystem tutoringSystem;
-   
-   @ManyToOne(optional=false)
-   public TutoringSystem getTutoringSystem() {
-      return this.tutoringSystem;
-   }
-   
-   public void setTutoringSystem(TutoringSystem tutoringSystem) {
-      this.tutoringSystem = tutoringSystem;
-   }
-   
-   }
+}

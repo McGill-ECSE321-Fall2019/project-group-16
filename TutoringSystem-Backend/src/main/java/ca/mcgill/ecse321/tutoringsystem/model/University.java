@@ -5,18 +5,27 @@ import javax.persistence.Id;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.OneToMany;
+
+
 import javax.persistence.ManyToOne;
 
 @Entity
 public class University{
    private String name;
+   private int id;
 
 public void setName(String value) {
     this.name = value;
 }
-@Id
 public String getName() {
     return this.name;
+}
+@Id
+public int getId() {
+   return this.id;
+}
+public void setId(int id){
+   this.id = id;
 }
    private Set<Course> course;
    
@@ -29,15 +38,4 @@ public String getName() {
       this.course = courses;
    }
    
-   private TutoringSystem tutoringSystem;
-   
-   @ManyToOne(optional=false)
-   public TutoringSystem getTutoringSystem() {
-      return this.tutoringSystem;
-   }
-   
-   public void setTutoringSystem(TutoringSystem tutoringSystem) {
-      this.tutoringSystem = tutoringSystem;
-   }
-   
-   }
+}

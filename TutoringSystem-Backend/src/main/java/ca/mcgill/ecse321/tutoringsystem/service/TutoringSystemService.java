@@ -698,12 +698,13 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
-	public University createUniversity (String name) {
+	public University createUniversity (int id, String name) {
 		if(name == null || name.trim().length() == 0){
 			throw new IllegalArgumentException("Name can't be empty. ");
 		}
 		University u = new University();
 		u.setName(name);
+		u.setId(id);
 		universityRepository.save(u);
 		return u;
 	}
@@ -713,7 +714,7 @@ public class TutoringSystemService {
 		if(name == null || name.trim().length() == 0){
 			throw new IllegalArgumentException("Name can't be empty. ");
 		}
-		University u = universityRepository.findById(name).get();
+		University u = universityRepository.findUniversityByName(name);
 		return u;
 	}
 	
@@ -724,20 +725,17 @@ public class TutoringSystemService {
 	
 	
 	@Transactional
-	public University updateUniversity(String name, String newName) {
+	public University updateUniversity(Integer id, String name) {
 		String error = "";
 		if(name == null || name.trim().length() == 0){
 			error += "Name can't be empty. ";
 		}		
-		if(newName == null || newName.trim().length() == 0){
-			throw new IllegalArgumentException("New name can't be empty. ");
-		}
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
 		}
 		
-		University university = universityRepository.findById(name).get();
-		university.setName(newName);
+		University university = universityRepository.findById(id).get();
+		university.setName(name);
 		universityRepository.save(university);
 		return university;
 	}
