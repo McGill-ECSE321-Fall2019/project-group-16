@@ -368,7 +368,7 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
-	public Session createSession(Integer id, Boolean isConfirmed, Time startTime, Time endTime, Date date, Boolean isGroupSession, Student tutee, Tutor tutor, Room room, Course course) {
+	public Session createSession(Integer id, Boolean isConfirmed, Time startTime, Time endTime, Date date, Boolean isGroupSession, Set <Student> tutee, Tutor tutor, Room room, Course course) {
 	
 		String error = "";
 		if(id == null || id < 0) {
@@ -392,8 +392,13 @@ public class TutoringSystemService {
 		if(isGroupSession == null){
 			error +="Is group session is null. ";
 		}
-		if(tutee == null){
-			error +="Tutee is null. ";
+		for(Student s: tutee) {
+			if(s == null) {
+				error +="Tutee is null. ";
+			}
+		}
+		if(tutee.size() == 0) {
+			error += "Tutee is null. ";
 		}
 		if(tutor == null){
 			error +="Tutor is null. ";
@@ -407,6 +412,7 @@ public class TutoringSystemService {
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
 		}
+		
 
 		Session s = new Session();
 		s.setId(id);
@@ -415,7 +421,7 @@ public class TutoringSystemService {
 		s.setEndTime(endTime);
 		s.setDate(date);
 		s.setIsGroupSession(isGroupSession);
-		s.getStudent().add(tutee); //This causes a null pointer exception
+		s.setStudent(tutee); //This causes a null pointer exception
 		s.setTutor(tutor);
 		s.setRoom(room);
 		s.setCourse(course);

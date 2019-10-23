@@ -5,7 +5,9 @@ import static org.junit.Assert.fail;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Test;
@@ -922,6 +924,8 @@ public class TestTutoringSystemService {
 		String schoolName = "McGill";
 		
 		Student student = service.createStudent(username, password, name, schoolName);
+		Set <Student> students = new HashSet<>();
+		students.add(student);
 		
 		int id = 4;
 		Boolean isConfirmed = false;
@@ -933,7 +937,7 @@ public class TestTutoringSystemService {
         
 		try {
 			//Sends a null pointer exception
-			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, student, tutor, room, course);
+			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, students, tutor, room, course);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
@@ -975,7 +979,9 @@ public class TestTutoringSystemService {
 		String schoolName = "McGill";
 		
 		Student student = service.createStudent(username, password, name, schoolName);
-		
+		Set <Student> students = new HashSet<>();
+		students.add(student);
+
 		int id = 4;
 		Boolean isConfirmed = false;
         Boolean isGroupSession = false;
@@ -986,7 +992,7 @@ public class TestTutoringSystemService {
         
 		String error = null;
 		try {
-			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, student, tutor, room, course);
+			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, students, tutor, room, course);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -1020,7 +1026,9 @@ public class TestTutoringSystemService {
 		String schoolName = "McGill";
 		
 		Student student = service.createStudent(username, password, name, schoolName);
-		
+		Set <Student> students = new HashSet<>();
+		students.add(student);
+
 		int id = 4;
 		Boolean isConfirmed = false;
         Boolean isGroupSession = false;
@@ -1031,7 +1039,7 @@ public class TestTutoringSystemService {
         
 		String error = null;
 		try {
-			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, student, tutor, room, course);
+			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, students, tutor, room, course);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -1066,7 +1074,9 @@ public class TestTutoringSystemService {
 		String schoolName = "McGill";
 		
 		Student student = service.createStudent(username, password, name, schoolName);
-		
+		Set <Student> students = new HashSet<>();
+		students.add(student);
+
 		int id = 4;
 		Boolean isConfirmed = false;
         Boolean isGroupSession = false;
@@ -1077,7 +1087,7 @@ public class TestTutoringSystemService {
         
 		String error = null;
 		try {
-			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, student, tutor, room, course);
+			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, students, tutor, room, course);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -1112,7 +1122,9 @@ public class TestTutoringSystemService {
 		String schoolName = "McGill";
 		
 		Student student = service.createStudent(username, password, name, schoolName);
-		
+		Set <Student> students = new HashSet<>();
+		students.add(student);
+
 		int id = 4;
 		Boolean isConfirmed = false;
         Boolean isGroupSession = false;
@@ -1123,7 +1135,7 @@ public class TestTutoringSystemService {
         
 		String error = null;
 		try {
-			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, student, tutor, room, course);
+			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, students, tutor, room, course);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -1158,7 +1170,9 @@ public class TestTutoringSystemService {
 		String schoolName = "McGill";
 		
 		Student student = service.createStudent(username, password, name, schoolName);
-		
+		Set <Student> students = new HashSet<>();
+		students.add(student);
+
 		int id = 4;
 		Boolean isConfirmed = false;
         Boolean isGroupSession = false;
@@ -1169,7 +1183,7 @@ public class TestTutoringSystemService {
         
 		String error = null;
 		try {
-			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, student, tutor, room, course);
+			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, students, tutor, room, course);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -1199,7 +1213,9 @@ public class TestTutoringSystemService {
 		Tutor tutor = service.createTutor(name, username, password, rate);
 		
 		Student student = null;
-		
+		Set <Student> students = new HashSet<>();
+		students.add(student);
+
 		int id = 4;
 		Boolean isConfirmed = false;
         Boolean isGroupSession = false;
@@ -1210,7 +1226,7 @@ public class TestTutoringSystemService {
         
 		String error = null;
 		try {
-			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, student, tutor, room, course);
+			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, students, tutor, room, course);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
@@ -1241,7 +1257,9 @@ public class TestTutoringSystemService {
 		String schoolName = "McGill";
 		
 		Student student = service.createStudent(username, password, name, schoolName);
-		
+		Set <Student> students = new HashSet<>();
+		students.add(student);
+
 		int id = 4;
 		Boolean isConfirmed = false;
         Boolean isGroupSession = false;
@@ -1252,7 +1270,7 @@ public class TestTutoringSystemService {
         
 		String error = null;
 		try {
-			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, student, tutor, room, course);
+			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, students, tutor, room, course);
 		} catch (IllegalArgumentException e) {
 			error = e.getMessage();
 		}
