@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -256,9 +257,10 @@ public class TutoringSystemService {
 		}
 		return done;
 	}
-	
+	//This can't work as room number is the primary key
 	@Transactional
-	public Room updateRoom(int oldRoomNumber, int roomNumber, Boolean isLarge) {
+	public Room updateRoomSize(int roomNumber, Boolean isLarge) {
+
 		String error = "";
 		if(roomNumber < 0){
 			error +="Room number is invalid. ";
@@ -269,15 +271,10 @@ public class TutoringSystemService {
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
 		}
-		Room room = roomRepository.findById(oldRoomNumber).get();
-		Room rm = roomRepository.findById(roomNumber).get();
-		if(rm != null){
-			throw new IllegalArgumentException("Room already exists with that ID.");
-		}else{
-			room.setRoomNr(roomNumber);
-			room.setIsLargeRoom(isLarge);
-			roomRepository.save(room);
-		}
+		Room room = roomRepository.findById(roomNumber).get();
+		
+		room.setIsLargeRoom(isLarge);
+		roomRepository.save(room);
 		return room;
 	}
 	
@@ -372,14 +369,17 @@ public class TutoringSystemService {
 	
 	@Transactional
 	public Session createSession(Integer id, Boolean isConfirmed, Time startTime, Time endTime, Date date, Boolean isGroupSession, Student tutee, Tutor tutor, Room room, Course course) {
-		
+	
 		String error = "";
+		if(id == null || id < 0) {
+			error += "Id is invalid. ";
+		}
 		if(room == null){
 			error += "Room number is invalid. ";
 		}
 		if(isConfirmed == null){
 			error += "Is Confirmed is null. ";
-		}
+		}//If start time is null it still checks before???
 		if(startTime == null || startTime.before(Time.valueOf("09:00:00")) || startTime.after(Time.valueOf("21:00:00"))){
 			error +="Start time is invalid. ";
 		}
@@ -415,7 +415,7 @@ public class TutoringSystemService {
 		s.setEndTime(endTime);
 		s.setDate(date);
 		s.setIsGroupSession(isGroupSession);
-		s.getStudent().add(tutee);
+		s.getStudent().add(tutee); //This causes a null pointer exception
 		s.setTutor(tutor);
 		s.setRoom(room);
 		s.setCourse(course);
@@ -524,35 +524,6 @@ public class TutoringSystemService {
 		}
 		return done;
 	}
-
-	@Transactional
-	public Tutor createTutor(String username, String password, String name, Double hourlyRate) {
-		String error = "";
-		if(username == null || username.trim().length() == 0){
-			error +="Username can't be empty. ";
-		}
-		if(password == null || password.trim().length() == 0){
-			error +="Password can't be empty. ";
-		}
-		if(name == null || name.trim().length() == 0){
-			error +="Name can't be empty. ";
-		}
-		if(hourlyRate < 0){
-			error += "Hourly rate is invalid";
-		}
-		if(error.length() != 0){
-			throw new IllegalArgumentException(error);
-		}
-
-		Tutor t = new Tutor();
-		t.setUsername(username);
-		t.setPassword(password);
-		t.setName(name);
-		t.setHourlyRate(hourlyRate);
-		tutorRepository.save(t);
-		return t;
-	}
-
 	//TODO: What is this all commented out for. Also why are there 2 create tutors
 	
 	/*

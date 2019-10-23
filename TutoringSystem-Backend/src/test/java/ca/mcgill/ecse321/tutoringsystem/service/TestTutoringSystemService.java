@@ -773,6 +773,8 @@ public class TestTutoringSystemService {
 		int id = 1;
 		String comments = "Good Student, listens well!";
 		int rating = 4;
+		List<Tutor> allTutors = service.getAllTutors();
+		assertEquals(1, allTutors.size());
 		try {
 			service.createTutorReview(id,comments,reviewee, rating);
 		} catch (IllegalArgumentException e) { 
@@ -930,6 +932,7 @@ public class TestTutoringSystemService {
 		Course course = service.createCourse("Math141", "Math", university);
         
 		try {
+			//Sends a null pointer exception
 			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, student, tutor, room, course);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
@@ -1316,7 +1319,7 @@ public class TestTutoringSystemService {
 		}
 		
 		@Test
-		public void testUpdateRoom() {
+		public void testUpdateRoomSize() {
 			assertEquals(0, service.getAllRooms().size());
 			
 			int roomNumber = 1;
@@ -1335,19 +1338,18 @@ public class TestTutoringSystemService {
 			assertEquals(1, allRooms.size());
 			assertEquals(roomNumber, (int) allRooms.get(0).getRoomNr());
 			assertEquals(isLargeRoom, allRooms.get(0).getIsLargeRoom());
-			
-			int newRoomNumber  = 2;
+
 			Boolean newIsLargeRoom = false; //MAY CAUSE ISSUES
 			
 			try {
-				service.updateRoom(roomNumber, newRoomNumber, newIsLargeRoom);
+				service.updateRoomSize(roomNumber, newIsLargeRoom);
 			} catch (IllegalArgumentException e) {
 				fail();
 			}
 
 			allRooms = service.getAllRooms();
 			assertEquals(1, allRooms.size());
-			assertEquals(newRoomNumber, (int) allRooms.get(0).getRoomNr());
+			assertEquals(roomNumber, (int) allRooms.get(0).getRoomNr());
 			assertEquals(newIsLargeRoom, allRooms.get(0).getIsLargeRoom());
 			
 		}
@@ -1404,7 +1406,6 @@ public class TestTutoringSystemService {
 				
 				//CHECK IF THIS WORKS??? IF THIS METHOD CREATES ISSUES
 				
-				
 				String courseCode = "ECSE321";
 				String subject = "SoftwareEng";
 				University university =  service.createUniversity(1,"McGill");
@@ -1444,6 +1445,7 @@ public class TestTutoringSystemService {
 				assertEquals(1, allCourses.size());
 				assertEquals(courseCode, allCourses.get(0).getCourseCode());
 				assertEquals(subject, allCourses.get(0).getSubject());
+				//This last one causes an error
 				assertEquals(university, allCourses.get(0).getUniversity());
 				
 				String newCourseCode = "MATH140";
@@ -1589,7 +1591,6 @@ public class TestTutoringSystemService {
 				assertEquals(endTime, allRoomBookings.get(0).getEndTime());
 				assertEquals(date, allRoomBookings.get(0).getDate());
 				
-				id = 2;
 				startTime = Time.valueOf("15:00:00");
 				endTime = Time.valueOf("16:00:00");
 				date = Date.valueOf("2019-10-20");
@@ -1600,6 +1601,8 @@ public class TestTutoringSystemService {
 				catch(IllegalArgumentException e) {
 					fail();	
 				}
+				
+				allRoomBookings = service.getAllRoomBookings();
 				
 				assertEquals(1, allRoomBookings.size());
 				assertEquals(id, allRoomBookings.get(0).getId());
