@@ -144,7 +144,7 @@ public class TutoringSystemService {
 			error += "Incorrect id value. ";
 		}
 		if(reviewee == null){
-			error += "Please insert a reviewee";
+			error += "Please insert a reviewee. ";
 		}
 		if(comments == null || comments.equals("")){
 			error += "Please insert a comment. ";
