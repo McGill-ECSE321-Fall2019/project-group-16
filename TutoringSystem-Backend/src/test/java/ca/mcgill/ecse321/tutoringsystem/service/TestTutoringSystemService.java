@@ -996,7 +996,7 @@ public class TestTutoringSystemService {
 
 		List<Session> allSessions = service.getAllSessions();
 		
-		assertEquals("Invalid date or time parameters.", error.trim());
+		assertEquals("Start time is invalid.", error.trim());
 
 
 		assertEquals(0, allSessions.size());
@@ -1681,14 +1681,14 @@ public class TestTutoringSystemService {
 				catch(IllegalArgumentException e) {
 					fail();	
 				}
+				//Test getRoomBooking
 				
-				allRoomBookings = service.getAllRoomBookings();
+				RoomBooking roomBooking = service.getRoomBooking(id);
 				
-				assertEquals(1, allRoomBookings.size());
-				assertEquals(id, allRoomBookings.get(0).getId());
-				assertEquals(startTime, allRoomBookings.get(0).getStartTime());
-				assertEquals(endTime, allRoomBookings.get(0).getEndTime());
-				assertEquals(date, allRoomBookings.get(0).getDate());
+				assertEquals(id, roomBooking.getId());
+				assertEquals(startTime, roomBooking.getStartTime());
+				assertEquals(endTime, roomBooking.getEndTime());
+				assertEquals(date, roomBooking.getDate());
 				
 			}
 			

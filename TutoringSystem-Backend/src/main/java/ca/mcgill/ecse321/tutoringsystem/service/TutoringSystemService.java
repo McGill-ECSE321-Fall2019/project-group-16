@@ -279,13 +279,13 @@ public class TutoringSystemService {
 	@Transactional
 	public RoomBooking createRoomBooking(Integer id, Time startTime, Time endTime, Date date) {
 		String error = "";
-		if(id < 0){
+		if(id == null || id < 0){
 			error +="ID is invalid. ";
 		}
 		if(startTime == null){
 			error +="Start time is null. ";
 		}
-		if(endTime == null ){
+		if(endTime == null){
 			error +="End time is null. ";
 		}
 		if(date == null){
@@ -319,7 +319,7 @@ public class TutoringSystemService {
 	@Transactional
 	public RoomBooking updateRoomBooking (Integer id, Time startTime, Time endTime, Date date) {
 		String error = "";
-		if(id < 0){
+		if(id == null || id < 0){
 			error +="ID is invalid. ";
 		}
 		if(startTime == null){
@@ -331,6 +331,9 @@ public class TutoringSystemService {
 		if(date == null){
 			error +="Date is null. ";
 		}
+		if(error.length() != 0){
+			throw new IllegalArgumentException(error);
+		}	
 		if(startTime.before(Time.valueOf("09:00:00")) || startTime.after(Time.valueOf("21:00:00"))) {
 			error += "Start time must be between 09:00 and 21:00";
 		}
@@ -378,12 +381,14 @@ public class TutoringSystemService {
 		}
 		if(isConfirmed == null){
 			error += "Is Confirmed is null. ";
-		}//If start time is null it still checks before???
+		}
 		if(startTime == null || startTime.before(Time.valueOf("09:00:00")) || startTime.after(Time.valueOf("21:00:00"))){
 			error +="Start time is invalid. ";
 		}
-		if(endTime == null || endTime.after(Time.valueOf("21:00:00")) || endTime.before(startTime)){
-			error +="End time is invalid. ";
+		if(startTime != null) {
+			if(endTime == null || endTime.after(Time.valueOf("21:00:00")) || endTime.before(startTime)){
+				error +="End time is invalid. ";
+			}	
 		}
 		if(date == null){
 			error +="Date is null. ";
@@ -515,9 +520,11 @@ public class TutoringSystemService {
 	@Transactional
 	public Student getStudent(String username) {
 		if(username == null || username.trim().length() == 0){
-			throw new IllegalArgumentException("Username can't be empty. ");
+			throw new IllegalArgumentException("Username can't be empty.");
 		}
 		Student s = studentRepository.findStudentByUsername(username);
+		if(s == null)
+			throw new IllegalArgumentException("User does not exist.");
 		return s;
 	}
 	
@@ -649,6 +656,8 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException("Name can't be empty. ");
 		}
 		University u = universityRepository.findUniversityByName(name);
+		if(u == null)
+			throw new IllegalArgumentException("University does not exist.");
 		return u;
 	}
 	
