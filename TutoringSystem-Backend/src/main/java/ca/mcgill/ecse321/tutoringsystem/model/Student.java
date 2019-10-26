@@ -55,15 +55,15 @@ public void setName(String value) {
 public String getName() {
     return this.name;
 }
-   private Set<StudentReview> studentReview1;
+   private Set<StudentReview> studentReview;
    
-   @OneToMany
-   public Set<StudentReview> getStudentReview1() {
-      return this.studentReview1;
+   @OneToMany(mappedBy="reviewee" )
+   public Set<StudentReview> getStudentReview() {
+      return this.studentReview;
    }
    
-   public void setStudentReview1(Set<StudentReview> studentReview1s) {
-      this.studentReview1 = studentReview1s;
+   public void setStudentReview(Set<StudentReview> studentReviews) {
+      this.studentReview = studentReviews;
    }
    
    }

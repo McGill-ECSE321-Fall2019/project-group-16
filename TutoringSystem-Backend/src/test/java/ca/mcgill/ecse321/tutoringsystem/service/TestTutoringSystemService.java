@@ -17,16 +17,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ca.mcgill.ecse321.tutoringsystem.dao.CourseRepository;
-import ca.mcgill.ecse321.tutoringsystem.dao.ReviewRepository;
+//import ca.mcgill.ecse321.tutoringsystem.dao.ReviewRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.RoomBookingRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.RoomRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.SessionRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.StudentRepository;
+import ca.mcgill.ecse321.tutoringsystem.dao.StudentReviewRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.TutorRepository;
+import ca.mcgill.ecse321.tutoringsystem.dao.TutorReviewRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.UniversityRepository;
 //import ca.mcgill.ecse321.tutoringsystem.dao.UserRepository;
 import ca.mcgill.ecse321.tutoringsystem.model.Course;
-import ca.mcgill.ecse321.tutoringsystem.model.Review;
+import ca.mcgill.ecse321.tutoringsystem.model.StudentReview;
+import ca.mcgill.ecse321.tutoringsystem.model.TutorReview;
 import ca.mcgill.ecse321.tutoringsystem.model.Room;
 import ca.mcgill.ecse321.tutoringsystem.model.RoomBooking;
 import ca.mcgill.ecse321.tutoringsystem.model.Session;
@@ -46,7 +49,10 @@ public class TestTutoringSystemService {
 	private CourseRepository courseRepository;
 	
 	@Autowired
-	private ReviewRepository reviewRepository;
+	private StudentReviewRepository studentReviewRepository;
+	
+	@Autowired
+	private TutorReviewRepository tutorReviewRepository;
 	
 	@Autowired
 	private RoomBookingRepository roomBookingRepository;
@@ -73,7 +79,8 @@ public class TestTutoringSystemService {
 	@After
 	public void clearDatabase() {
 		sessionRepository.deleteAll();
-		reviewRepository.deleteAll();
+		studentReviewRepository.deleteAll();
+		tutorReviewRepository.deleteAll();
 		roomBookingRepository.deleteAll();
 		roomRepository.deleteAll();
 		courseRepository.deleteAll();
@@ -211,10 +218,9 @@ public class TestTutoringSystemService {
 		String name = "richard";
 		String username = "student1";
 		String password = "studentPassword1";
-		String schoolName = "McGill";
 		
 		try {
-			service.createStudent(username, password, name, schoolName);
+			service.createStudent(username, password, name);
 		} catch (IllegalArgumentException e) {
 			
 			fail();
@@ -226,7 +232,6 @@ public class TestTutoringSystemService {
 		assertEquals(name, allStudents.get(0).getName());
 		assertEquals(username, allStudents.get(0).getUsername());
 		assertEquals(password, allStudents.get(0).getPassword());
-		assertEquals(schoolName, allStudents.get(0).getSchoolName());
 	}
 	
 	@Test
@@ -235,10 +240,9 @@ public class TestTutoringSystemService {
 		String name = "richard";
 		String username = "student1";
 		String password = "studentPassword1";
-		String schoolName = "McGill";
 
 		try {
-			service.createStudent(username, password, name, schoolName);
+			service.createStudent(username, password, name);
 		} catch (IllegalArgumentException e) {
 			
 			fail();
@@ -250,9 +254,8 @@ public class TestTutoringSystemService {
 		
 		String newusername = "student1";
 		password = "newStudentPassword";
-		schoolName = "Concordia";
 		try {
-			service.updateStudent(username, newusername, password, name, schoolName);
+			service.updateStudent(username, newusername, password, name);
 		} catch (IllegalArgumentException e) {
 			
 			fail();
@@ -262,7 +265,6 @@ public class TestTutoringSystemService {
 		assertEquals(username, allStudents.get(0).getUsername());
 		assertEquals(password, allStudents.get(0).getPassword());
 		assertEquals(name, allStudents.get(0).getName());
-		assertEquals(schoolName, allStudents.get(0).getSchoolName());
 	}
 	
 	
@@ -272,10 +274,10 @@ public class TestTutoringSystemService {
 		String name = "richard";
 		String username = "student1";
 		String password = "studentPassword1";
-		String schoolName = "McGill";
+		//String schoolName = "McGill";
 
 		try {
-			service.createStudent(username, password, name, schoolName);
+			service.createStudent(username, password, name);
 		} catch (IllegalArgumentException e) {
 			
 			fail();
@@ -299,12 +301,11 @@ public class TestTutoringSystemService {
 		String name = "richard";
 		String username = null;
 		String password = "studentPassword1";
-		String schoolName = "McGill";
 		
 		String error = null;
 
 		try {
-			service.createStudent(username, password, name, schoolName);
+			service.createStudent(username, password, name);
 		} catch (IllegalArgumentException e) {
 			
 			error = e.getMessage();
@@ -322,12 +323,11 @@ public class TestTutoringSystemService {
 		String name = "richard";
 		String username = "student1";
 		String password = null;
-		String schoolName = "McGill";
 	
 		String error = null;
 
 		try {
-			service.createStudent(username, password, name, schoolName);
+			service.createStudent(username, password, name);
 		} catch (IllegalArgumentException e) {
 			
 			error = e.getMessage();
@@ -345,12 +345,11 @@ public class TestTutoringSystemService {
 		String name = "richard";
 		String username = "student1";
 		String password = "studentPassword1";
-		String schoolName = null;
 		
 		String error = null;
 
 		try {
-			service.createStudent(username, password, name, schoolName);
+			service.createStudent(username, password, name);
 		} catch (IllegalArgumentException e) {
 			
 			error = e.getMessage();
@@ -629,9 +628,8 @@ public class TestTutoringSystemService {
 		String name = "richard";
 		String username = "student1";
 		String password = "studentPassword1";
-		String schoolName = "McGill";
 		
-		Student reviewee = service.createStudent(username, password, name, schoolName);
+		Student reviewee = service.createStudent(username, password, name);
 		int id = 1;
 		String comments = "Good Student, listens well!";
 		
@@ -641,12 +639,12 @@ public class TestTutoringSystemService {
 			fail();
 		}
 		
-		List<Review> allReviews = service.getAllReviews();
+		List<StudentReview> allReviews = service.getAllStudentReviews();
         
 		assertEquals(1, allReviews.size());
 		assertEquals(id, allReviews.get(0).getId(), 0);
 		assertEquals(comments, allReviews.get(0).getReview());
-		assertEquals(username, allReviews.get(0).getStudentReviewee().getUsername());
+		assertEquals(username, allReviews.get(0).getReviewee().getUsername());
 	}
 	
 	@Test
@@ -654,9 +652,8 @@ public class TestTutoringSystemService {
 		String name = "richard";
 		String username = "student1";
 		String password = "studentPassword1";
-		String schoolName = "McGill";
 		
-		Student reviewee = service.createStudent(username, password, name, schoolName);
+		Student reviewee = service.createStudent(username, password, name);
 		int id = 1;
 		String comments = "Good Student, listens well!";
 		
@@ -667,7 +664,7 @@ public class TestTutoringSystemService {
 			fail();
 		}
 		
-		List<Review> allReviews = service.getAllReviews();
+		List<StudentReview> allReviews = service.getAllStudentReviews();
         
 		assertEquals(1, allReviews.size());
 		
@@ -701,7 +698,7 @@ public class TestTutoringSystemService {
 		// check error
 		assertEquals("Reviewee is null.", error.trim());
 
-		List<Review> allReviews = service.getAllReviews();
+		List<StudentReview> allReviews = service.getAllStudentReviews();
 
 		assertEquals(0, allReviews.size());
 	}
@@ -712,9 +709,8 @@ public class TestTutoringSystemService {
 		String name = "richard";
 		String username = "student1";
 		String password = "studentPassword1";
-		String schoolName = "McGill";
 		
-		Student reviewee = service.createStudent(username, password, name, schoolName);
+		Student reviewee = service.createStudent(username, password, name);
 		int id = 1;
 		String comments = null;
 		
@@ -729,7 +725,7 @@ public class TestTutoringSystemService {
 		// check error
 		assertEquals("Comments can't be empty.", error.trim());
 
-		List<Review> allReviews = service.getAllReviews();
+		List<StudentReview> allReviews = service.getAllStudentReviews();
 
 		assertEquals(0, allReviews.size());
 	}
@@ -740,9 +736,8 @@ public class TestTutoringSystemService {
 		String name = "richard";
 		String username = "student1";
 		String password = "studentPassword1";
-		String schoolName = "McGill";
 		
-		Student reviewee = service.createStudent(username, password, name, schoolName);
+		Student reviewee = service.createStudent(username, password, name);
 		int id = -1;
 		String comments = "good student";
 		
@@ -757,7 +752,7 @@ public class TestTutoringSystemService {
 		// check error
 		assertEquals("ID is invalid.", error.trim());
 
-		List<Review> allReviews = service.getAllReviews();
+		List<StudentReview> allReviews = service.getAllStudentReviews();
 
 		assertEquals(0, allReviews.size());
 	}
@@ -783,12 +778,12 @@ public class TestTutoringSystemService {
 			fail();
 		}
 		
-		List<Review> allReviews = service.getAllReviews();
+		List<TutorReview> allReviews = service.getAllTutorReviews();
         
 		assertEquals(1, allReviews.size());
 		assertEquals(id, allReviews.get(0).getId(), 0);
 		assertEquals(comments, allReviews.get(0).getReview());
-		assertEquals(username, allReviews.get(0).getTutorReviewee().getUsername());
+		assertEquals(username, allReviews.get(0).getReviewee().getUsername());
 	}
 	@Test
 	public void testCreateTutorReviewNullReviewee() {
@@ -805,7 +800,7 @@ public class TestTutoringSystemService {
 			error=e.getMessage();
 		}
 		
-		List<Review> allReviews = service.getAllReviews();
+		List<TutorReview> allReviews = service.getAllTutorReviews();
         
 		assertEquals("Reviewee is null.", error.trim());
 
@@ -835,7 +830,7 @@ public class TestTutoringSystemService {
 			error=e.getMessage();
 		}
 		
-		List<Review> allReviews = service.getAllReviews();
+		List<TutorReview> allReviews = service.getAllTutorReviews();
         
 		assertEquals("Comments can't be empty.", error.trim());
 
@@ -865,7 +860,7 @@ public class TestTutoringSystemService {
 			error=e.getMessage();
 		}
 		
-		List<Review> allReviews = service.getAllReviews();
+		List<TutorReview> allReviews = service.getAllTutorReviews();
         
 		assertEquals("ID is invalid.", error.trim());
 
@@ -893,7 +888,7 @@ public class TestTutoringSystemService {
 			error=e.getMessage();
 		}
 		
-		List<Review> allReviews = service.getAllReviews();
+		List<TutorReview> allReviews = service.getAllTutorReviews();
         
 		assertEquals("Rating is invalid.", error.trim());
 
@@ -921,9 +916,8 @@ public class TestTutoringSystemService {
 		name = "richard";
 		username = "student1";
 		password = "studentPassword1";
-		String schoolName = "McGill";
 		
-		Student student = service.createStudent(username, password, name, schoolName);
+		Student student = service.createStudent(username, password, name);
 		Set <Student> students = new HashSet<>();
 		students.add(student);
 		
@@ -976,9 +970,8 @@ public class TestTutoringSystemService {
 		name = "richard";
 		username = "student1";
 		password = "studentPassword1";
-		String schoolName = "McGill";
 		
-		Student student = service.createStudent(username, password, name, schoolName);
+		Student student = service.createStudent(username, password, name);
 		Set <Student> students = new HashSet<>();
 		students.add(student);
 
@@ -1023,9 +1016,8 @@ public class TestTutoringSystemService {
 		name = "richard";
 		username = "student1";
 		password = "studentPassword1";
-		String schoolName = "McGill";
 		
-		Student student = service.createStudent(username, password, name, schoolName);
+		Student student = service.createStudent(username, password, name);
 		Set <Student> students = new HashSet<>();
 		students.add(student);
 
@@ -1071,9 +1063,8 @@ public class TestTutoringSystemService {
 		name = "richard";
 		username = "student1";
 		password = "studentPassword1";
-		String schoolName = "McGill";
 		
-		Student student = service.createStudent(username, password, name, schoolName);
+		Student student = service.createStudent(username, password, name);
 		Set <Student> students = new HashSet<>();
 		students.add(student);
 
@@ -1119,9 +1110,8 @@ public class TestTutoringSystemService {
 		name = "richard";
 		username = "student1";
 		password = "studentPassword1";
-		String schoolName = "McGill";
 		
-		Student student = service.createStudent(username, password, name, schoolName);
+		Student student = service.createStudent(username, password, name);
 		Set <Student> students = new HashSet<>();
 		students.add(student);
 
@@ -1167,9 +1157,8 @@ public class TestTutoringSystemService {
 		name = "richard";
 		username = "student1";
 		password = "studentPassword1";
-		String schoolName = "McGill";
 		
-		Student student = service.createStudent(username, password, name, schoolName);
+		Student student = service.createStudent(username, password, name);
 		Set <Student> students = new HashSet<>();
 		students.add(student);
 
@@ -1254,9 +1243,8 @@ public class TestTutoringSystemService {
 		String name = "richard";
 		String username = "student1";
 		String password = "studentPassword1";
-		String schoolName = "McGill";
 		
-		Student student = service.createStudent(username, password, name, schoolName);
+		Student student = service.createStudent(username, password, name);
 		Set <Student> students = new HashSet<>();
 		students.add(student);
 

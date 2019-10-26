@@ -22,8 +22,14 @@ public class TutoringSystemService {
 	@Autowired
 	CourseRepository courseRepository;
 	
+//	@Autowired
+//	ReviewRepository reviewRepository;
+	
 	@Autowired
-	ReviewRepository reviewRepository;
+	StudentReviewRepository studentReviewRepository;
+	
+	@Autowired
+	TutorReviewRepository tutorReviewRepository;
 	
 	@Autowired
 	RoomBookingRepository roomBookingRepository;
@@ -116,7 +122,7 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
-	public Review createStudentReview(Integer id, String comments, Student reviewee) {
+	public StudentReview createStudentReview(Integer id, String comments, Student reviewee) {
 		String error = "";
 		if(id < 0){
 			error +="ID is invalid. ";
@@ -134,13 +140,13 @@ public class TutoringSystemService {
 		StudentReview sr = new StudentReview();
 		sr.setId(id);
 		sr.setReview(comments);
-		sr.setStudentReviewee(reviewee);
-		reviewRepository.save(sr);
+		sr.setReviewee(reviewee);
+		studentReviewRepository.save(sr);
 		return sr;
 	}
 	
 	@Transactional
-	public Review updateStudentReview(int oldID, int id, String comments, Student reviewee) {
+	public StudentReview updateStudentReview(int oldID, int id, String comments, Student reviewee) {
 		String error = "";
 		if(id < 0 ||  oldID < 0){
 			error += "Incorrect id value. ";
@@ -155,19 +161,19 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException(error);
 		}
 
-		Review review = reviewRepository.findById(oldID).get();
+		StudentReview review = studentReviewRepository.findById(oldID).get();
 		if(review == null)
 			throw new IllegalArgumentException("Please enter a valid Review to update.");
 		
 		review.setId(id);
 		review.setReview(comments);
-		review.setStudentReviewee(reviewee);
+		review.setReviewee(reviewee);
 		
-		reviewRepository.save(review);
+		studentReviewRepository.save(review);
 		return review;
 	}
 	@Transactional
-	public Review createTutorReview(Integer id, String comments, Tutor reviewee, Integer rating) {
+	public TutorReview createTutorReview(Integer id, String comments, Tutor reviewee, Integer rating) {
 		String error = "";		
 		if(id < 0){
 			error +="ID is invalid. ";
@@ -188,24 +194,38 @@ public class TutoringSystemService {
 		TutorReview tr = new TutorReview();
 		tr.setId(id);
 		tr.setReview(comments);
-		tr.setTutorReviewee(reviewee);
+		tr.setReviewee(reviewee);
 		tr.setRating(rating);
-		reviewRepository.save(tr);
+		tutorReviewRepository.save(tr);
 		return tr;
 	}
 
 	@Transactional
-	public Review getReview(Integer id) {
+	public StudentReview getStudentReview(Integer id) {
 		if(id < 0){
 			throw new IllegalArgumentException("ID is invalid");
 		}
-		Review r = reviewRepository.findById(id).get();
+		StudentReview r = studentReviewRepository.findById(id).get();
 		return r;
 	}
 	
 	@Transactional
-	public List<Review> getAllReviews() {
-		return toList(reviewRepository.findAll());
+	public TutorReview getTutorReview(Integer id) {
+		if(id < 0){
+			throw new IllegalArgumentException("ID is invalid");
+		}
+		TutorReview r = tutorReviewRepository.findById(id).get();
+		return r;
+	}
+	
+	@Transactional
+	public List<StudentReview> getAllStudentReviews() {
+		return toList(studentReviewRepository.findAll());
+	}
+	
+	@Transactional
+	public List<TutorReview> getAllTutorReviews() {
+		return toList(tutorReviewRepository.findAll());
 	}
 	
 	@Transactional
@@ -444,7 +464,7 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
-	public Student createStudent(String username, String password, String name, String schoolName) {
+	public Student createStudent(String username, String password, String name) {
 		String error = "";
 		if(username == null || username.trim().length() == 0){
 			error +="Username can't be empty. ";
@@ -455,9 +475,6 @@ public class TutoringSystemService {
 		if(name == null || name.trim().length() == 0){
 			error +="Name can't be empty. ";
 		}
-		if(schoolName == null || schoolName.trim().length() == 0){
-			error +="School name can't be empty. ";
-		}
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
 		}
@@ -466,13 +483,12 @@ public class TutoringSystemService {
 		s.setUsername(username);
 		s.setPassword(password);
 		s.setName(name);
-		s.setSchoolName(schoolName);
 		studentRepository.save(s);
 		return s;
 	}
 	
 	@Transactional
-	public Student updateStudent(String username, String oldName, String password, String newName, String schoolName) {
+	public Student updateStudent(String username, String oldName, String password, String newName) {
 		String error = "";
 		if(username == null || username.trim().length() == 0){
 			error +="Username can't be empty. ";
@@ -486,9 +502,6 @@ public class TutoringSystemService {
 		if(oldName == null || oldName.trim().length() == 0){
 			error +="Old name can't be empty. ";
 		}
-		if(schoolName == null || schoolName.trim().length() == 0){
-			error +="School name can't be empty. ";
-		}
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
 		}
@@ -498,7 +511,6 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException("Please input a valid student");
 		student.setUsername(username);
 		student.setPassword(password);
-	    student.setSchoolName(schoolName);
 		studentRepository.save(student);
 		return student;
 	}

@@ -1,5 +1,5 @@
 package ca.mcgill.ecse321.tutoringsystem.model;
-import RoomBooking;
+//import RoomBooking;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
