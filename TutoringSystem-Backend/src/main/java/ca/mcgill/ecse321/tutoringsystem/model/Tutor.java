@@ -74,15 +74,15 @@ public void setName(String value) {
 public String getName() {
     return this.name;
 }
-   private Set<Review> review;
+   private Set<TutorReview> tutorReview;
    
-   @OneToMany(mappedBy="tutorReviewee" )
-   public Set<Review> getReview() {
-      return this.review;
+   @OneToMany(mappedBy="reviewee" )
+   public Set<TutorReview> getTutorReview() {
+      return this.tutorReview;
    }
    
-   public void setReview(Set<Review> reviews) {
-      this.review = reviews;
+   public void setTutorReview(Set<TutorReview> tutorReviews) {
+      this.tutorReview = tutorReviews;
    }
    
    }

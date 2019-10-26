@@ -8,37 +8,29 @@ import javax.persistence.Id;
 
 @Entity
 public class Student{
-   private String schoolName;
-
-public void setSchoolName(String value) {
-    this.schoolName = value;
-}
-public String getSchoolName() {
-    return this.schoolName;
-}
-private Set<Session> session;
-
-@ManyToMany(mappedBy="student" )
-public Set<Session> getSession() {
-   return this.session;
-}
-
-public void setSession(Set<Session> sessions) {
-   this.session = sessions;
-}
-
-private Set<TutorReview> tutorReview;
-
-@OneToMany(mappedBy="author" )
-public Set<TutorReview> getTutorReview() {
-   return this.tutorReview;
-}
-
-public void setTutorReview(Set<TutorReview> tutorReviews) {
-   this.tutorReview = tutorReviews;
-}
-
-private String username;
+   private Set<Session> session;
+   
+   @ManyToMany(mappedBy="student" )
+   public Set<Session> getSession() {
+      return this.session;
+   }
+   
+   public void setSession(Set<Session> sessions) {
+      this.session = sessions;
+   }
+   
+   private Set<TutorReview> tutorReview;
+   
+   @OneToMany(mappedBy="author" )
+   public Set<TutorReview> getTutorReview() {
+      return this.tutorReview;
+   }
+   
+   public void setTutorReview(Set<TutorReview> tutorReviews) {
+      this.tutorReview = tutorReviews;
+   }
+   
+   private String username;
 
 public void setUsername(String value) {
     this.username = value;
@@ -63,15 +55,15 @@ public void setName(String value) {
 public String getName() {
     return this.name;
 }
-   private Set<Review> review;
+   private Set<StudentReview> studentReview1;
    
-   @OneToMany(mappedBy="studentReviewee" )
-   public Set<Review> getReview() {
-      return this.review;
+   @OneToMany
+   public Set<StudentReview> getStudentReview1() {
+      return this.studentReview1;
    }
    
-   public void setReview(Set<Review> reviews) {
-      this.review = reviews;
+   public void setStudentReview1(Set<StudentReview> studentReview1s) {
+      this.studentReview1 = studentReview1s;
    }
    
    }
