@@ -21,7 +21,7 @@ public class UniversityDto {
 	}
 	
 	public int getId() {
-		return this.getId();
+		return this.id;
 	}
 	
 }
