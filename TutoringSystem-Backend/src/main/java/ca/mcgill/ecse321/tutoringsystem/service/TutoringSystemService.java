@@ -162,17 +162,18 @@ public class TutoringSystemService {
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
 		}
-
-		StudentReview review = studentReviewRepository.findById(id).get();
-		if(review == null)
+		try {
+			StudentReview review = studentReviewRepository.findById(id).get();
+			review.setId(id);
+			review.setReview(comments);
+			review.setReviewee(reviewee);
+			
+			studentReviewRepository.save(review);
+			return review;
+			
+		} catch(NoSuchElementException e ) {
 			throw new IllegalArgumentException("Please enter a valid Review to update.");
-		
-		review.setId(id);
-		review.setReview(comments);
-		review.setReviewee(reviewee);
-		
-		studentReviewRepository.save(review);
-		return review;
+		}
 	}
 	@Transactional
 	public TutorReview createTutorReview(Integer id, String comments, Tutor reviewee, Integer rating, Student reviewer) {
@@ -363,13 +364,13 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException(error);
 		}	
 		if(startTime.before(Time.valueOf("09:00:00")) || startTime.after(Time.valueOf("21:00:00"))) {
-			error += "Start time must be between 09:00 and 21:00";
+			error += "Start time must be between 09:00 and 21:00. ";
 		}
 		if(endTime.before(Time.valueOf("09:00:00")) || endTime.after(Time.valueOf("21:00:00"))) {
-			error += "End time must be between 09:00 and 21:00";
+			error += "End time must be between 09:00 and 21:00. ";
 		}
 		if(endTime.before(startTime)) {
-			error += "Start time must be before End time";
+			error += "Start time must be before End time.";
 		}
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
@@ -505,7 +506,7 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
-	public Student updateStudent(String username, String oldName, String password, String newName) {
+	public Student updateStudent(String username, String password, String name) {
 		String error = "";
 		if(username == null || username.trim().length() == 0){
 			error +="Username can't be empty. ";
@@ -513,11 +514,8 @@ public class TutoringSystemService {
 		if(password == null || password.trim().length() == 0){
 			error +="Password can't be empty. ";
 		}
-		if(newName == null || newName.trim().length() == 0){
+		if(name == null || name.trim().length() == 0){
 			error +="New name can't be empty. ";
-		}
-		if(oldName == null || oldName.trim().length() == 0){
-			error +="Old name can't be empty. ";
 		}
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
@@ -525,9 +523,9 @@ public class TutoringSystemService {
 
 		Student student = studentRepository.findStudentByUsername(username);
 		if(student == null)
-			throw new IllegalArgumentException("Please input a valid student");
-		student.setUsername(username);
+			throw new IllegalArgumentException("Please input a valid student.");
 		student.setPassword(password);
+		student.setName(name);
 		studentRepository.save(student);
 		return student;
 	}
@@ -611,7 +609,7 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
-	public Tutor updateTutor(String username, String oldName, String newName, String password, double hourlyRate) {
+	public Tutor updateTutor(String username, String name, String password, double hourlyRate) {
 		String error = "";
 		if(username == null || username.trim().length() == 0){
 			error +="Username can't be empty. ";
@@ -619,11 +617,8 @@ public class TutoringSystemService {
 		if(password == null || password.trim().length() == 0){
 			error +="Password can't be empty. ";
 		}
-		if(newName == null || newName.trim().length() == 0){
+		if(name == null || name.trim().length() == 0){
 			error +="New name can't be empty. ";
-		}
-		if(oldName == null || oldName.trim().length() == 0){
-			error +="Old name can't be empty. ";
 		}
 		if(hourlyRate < 0) {
 			error +="Hourly rate is invalid. ";
@@ -632,12 +627,12 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException(error);
 		}
 
-		Tutor tutor = tutorRepository.findTutorByUsername(oldName);
+		Tutor tutor = tutorRepository.findTutorByUsername(username);
 		if(tutor == null) {
 			throw new IllegalArgumentException("Please enter a valid tutor to update");
 			}
-		tutor.setUsername(username);
-		tutor.setName(newName);
+		
+		tutor.setName(name);
 		tutor.setPassword(password);
 		tutor.setHourlyRate(hourlyRate);
 		tutorRepository.save(tutor);
