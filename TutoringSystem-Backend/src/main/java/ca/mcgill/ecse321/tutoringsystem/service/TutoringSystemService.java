@@ -77,11 +77,8 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
-	public Course updateCourse(String oldCourseCode, String subject, String courseCode, University university) {
+	public Course updateCourse(String courseCode, String subject, University university) {
 		String error = "";
-		if(oldCourseCode == null || oldCourseCode.trim().length() == 0){
-			error +="Please provide an oldCourseCode. ";
-		}
 		if(courseCode == null || courseCode.trim().length() == 0){
 			error +="Please provide a courseCode. ";
 		}
@@ -95,13 +92,11 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException(error);
 		}
 
-		Course course = courseRepository.findByCourseCode(oldCourseCode);
+		Course course = courseRepository.findByCourseCode(courseCode);
 		if( course == null)
 			throw new IllegalArgumentException("The course does not exist. Please specify a valid Course Code");
 
 		course.setSubject(subject);
-		course.setCourseCode(courseCode);
-		course.setUniversity(university);
 		course.setUniversity(university);
 		courseRepository.save(course);
 		return course;
@@ -110,10 +105,13 @@ public class TutoringSystemService {
 	@Transactional
 	public Course getCourse(String courseCode) {
 		if(courseCode == null || courseCode.trim().length() == 0){
-			throw new IllegalArgumentException("Course can't be empty");
+			throw new IllegalArgumentException("Course can't be empty.");
 		}
-		Course c = courseRepository.findByCourseCode(courseCode);
-		return c;
+		Course course = courseRepository.findByCourseCode(courseCode);
+		if( course == null)
+			throw new IllegalArgumentException("The course does not exist. Please specify a valid Course Code");
+
+		return course;
 	}
 	
 	@Transactional
@@ -122,7 +120,7 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
-	public StudentReview createStudentReview(Integer id, String comments, Student reviewee) {
+	public StudentReview createStudentReview(Integer id, String comments, Student reviewee, Tutor reviewer) {
 		String error = "";
 		if(id < 0){
 			error +="ID is invalid. ";
@@ -133,6 +131,9 @@ public class TutoringSystemService {
 		if(reviewee == null){
 			error +="Reviewee is null. ";
 		}
+		if(reviewer == null) {
+			error +="Reviewer is null. ";
+		}
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
 		}
@@ -141,18 +142,19 @@ public class TutoringSystemService {
 		sr.setId(id);
 		sr.setReview(comments);
 		sr.setReviewee(reviewee);
+		sr.setAuthor(reviewer);
 		studentReviewRepository.save(sr);
 		return sr;
 	}
 	
 	@Transactional
-	public StudentReview updateStudentReview(int oldID, int id, String comments, Student reviewee) {
+	public StudentReview updateStudentReview(int id, String comments, Student reviewee) {
 		String error = "";
-		if(id < 0 ||  oldID < 0){
+		if(id < 0 ){
 			error += "Incorrect id value. ";
 		}
 		if(reviewee == null){
-			error += "Please insert a reviewee";
+			error += "Please insert a reviewee. ";
 		}
 		if(comments == null || comments.equals("")){
 			error += "Please insert a comment. ";
@@ -160,20 +162,21 @@ public class TutoringSystemService {
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
 		}
-
-		StudentReview review = studentReviewRepository.findById(oldID).get();
-		if(review == null)
+		try {
+			StudentReview review = studentReviewRepository.findById(id).get();
+			review.setId(id);
+			review.setReview(comments);
+			review.setReviewee(reviewee);
+			
+			studentReviewRepository.save(review);
+			return review;
+			
+		} catch(NoSuchElementException e ) {
 			throw new IllegalArgumentException("Please enter a valid Review to update.");
-		
-		review.setId(id);
-		review.setReview(comments);
-		review.setReviewee(reviewee);
-		
-		studentReviewRepository.save(review);
-		return review;
+		}
 	}
 	@Transactional
-	public TutorReview createTutorReview(Integer id, String comments, Tutor reviewee, Integer rating) {
+	public TutorReview createTutorReview(Integer id, String comments, Tutor reviewee, Integer rating, Student reviewer) {
 		String error = "";		
 		if(id < 0){
 			error +="ID is invalid. ";
@@ -187,6 +190,9 @@ public class TutoringSystemService {
 		if(rating < 0 || rating > 5){
 			error +="Rating is invalid. ";
 		}
+		if(reviewer == null) {
+			error +="Reviewer is null. ";
+		}
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
 		}
@@ -196,6 +202,7 @@ public class TutoringSystemService {
 		tr.setReview(comments);
 		tr.setReviewee(reviewee);
 		tr.setRating(rating);
+		tr.setAuthor(reviewer);
 		tutorReviewRepository.save(tr);
 		return tr;
 	}
@@ -301,13 +308,13 @@ public class TutoringSystemService {
 	@Transactional
 	public RoomBooking createRoomBooking(Integer id, Time startTime, Time endTime, Date date) {
 		String error = "";
-		if(id < 0){
+		if(id == null || id < 0){
 			error +="ID is invalid. ";
 		}
 		if(startTime == null){
 			error +="Start time is null. ";
 		}
-		if(endTime == null ){
+		if(endTime == null){
 			error +="End time is null. ";
 		}
 		if(date == null){
@@ -341,7 +348,7 @@ public class TutoringSystemService {
 	@Transactional
 	public RoomBooking updateRoomBooking (Integer id, Time startTime, Time endTime, Date date) {
 		String error = "";
-		if(id < 0){
+		if(id == null || id < 0){
 			error +="ID is invalid. ";
 		}
 		if(startTime == null){
@@ -353,14 +360,17 @@ public class TutoringSystemService {
 		if(date == null){
 			error +="Date is null. ";
 		}
+		if(error.length() != 0){
+			throw new IllegalArgumentException(error);
+		}	
 		if(startTime.before(Time.valueOf("09:00:00")) || startTime.after(Time.valueOf("21:00:00"))) {
-			error += "Start time must be between 09:00 and 21:00";
+			error += "Start time must be between 09:00 and 21:00. ";
 		}
 		if(endTime.before(Time.valueOf("09:00:00")) || endTime.after(Time.valueOf("21:00:00"))) {
-			error += "End time must be between 09:00 and 21:00";
+			error += "End time must be between 09:00 and 21:00. ";
 		}
 		if(endTime.before(startTime)) {
-			error += "Start time must be before End time";
+			error += "Start time must be before End time.";
 		}
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
@@ -378,6 +388,7 @@ public class TutoringSystemService {
 	
 	@Transactional
 	public RoomBooking getRoomBooking(Integer id) {
+		
 		RoomBooking rb = roomBookingRepository.findById(id).get();
 		return rb;
 	}
@@ -399,12 +410,14 @@ public class TutoringSystemService {
 		}
 		if(isConfirmed == null){
 			error += "Is Confirmed is null. ";
-		}//If start time is null it still checks before???
+		}
 		if(startTime == null || startTime.before(Time.valueOf("09:00:00")) || startTime.after(Time.valueOf("21:00:00"))){
 			error +="Start time is invalid. ";
 		}
-		if(endTime == null || endTime.after(Time.valueOf("21:00:00")) || endTime.before(startTime)){
-			error +="End time is invalid. ";
+		if(startTime != null) {
+			if(endTime == null || endTime.after(Time.valueOf("21:00:00")) || endTime.before(startTime)){
+				error +="End time is invalid. ";
+			}	
 		}
 		if(date == null){
 			error +="Date is null. ";
@@ -451,11 +464,16 @@ public class TutoringSystemService {
 	
 	@Transactional
 	public Session getSession(Integer id) {
-		if(id < 0){
+		if(id == null || id < 0 ){
 			throw new IllegalArgumentException("ID is invalid");
 		}
-		Session s = sessionRepository.findById(id).get();
-		return s;
+		try {
+			Session s = sessionRepository.findById(id).get();
+			return s;
+		}catch(Exception e) {
+			throw new IllegalArgumentException("ID is invalid.");
+		}
+
 	}
 	
 	@Transactional
@@ -488,7 +506,7 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
-	public Student updateStudent(String username, String oldName, String password, String newName) {
+	public Student updateStudent(String username, String password, String name) {
 		String error = "";
 		if(username == null || username.trim().length() == 0){
 			error +="Username can't be empty. ";
@@ -496,11 +514,8 @@ public class TutoringSystemService {
 		if(password == null || password.trim().length() == 0){
 			error +="Password can't be empty. ";
 		}
-		if(newName == null || newName.trim().length() == 0){
+		if(name == null || name.trim().length() == 0){
 			error +="New name can't be empty. ";
-		}
-		if(oldName == null || oldName.trim().length() == 0){
-			error +="Old name can't be empty. ";
 		}
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
@@ -508,9 +523,9 @@ public class TutoringSystemService {
 
 		Student student = studentRepository.findStudentByUsername(username);
 		if(student == null)
-			throw new IllegalArgumentException("Please input a valid student");
-		student.setUsername(username);
+			throw new IllegalArgumentException("Please input a valid student.");
 		student.setPassword(password);
+		student.setName(name);
 		studentRepository.save(student);
 		return student;
 	}
@@ -523,9 +538,11 @@ public class TutoringSystemService {
 	@Transactional
 	public Student getStudent(String username) {
 		if(username == null || username.trim().length() == 0){
-			throw new IllegalArgumentException("Username can't be empty. ");
+			throw new IllegalArgumentException("Username can't be empty.");
 		}
 		Student s = studentRepository.findStudentByUsername(username);
+		if(s == null)
+			throw new IllegalArgumentException("User does not exist.");
 		return s;
 	}
 	
@@ -542,47 +559,7 @@ public class TutoringSystemService {
 		}
 		return done;
 	}
-	//TODO: What is this all commented out for. Also why are there 2 create tutors
-	
-	/*
-	 * @Transactional public User createUser(String name, String username, String
-	 * password) {
-	 * 
-	 * if(name == null || name.equals("")){ throw new
-	 * IllegalArgumentException("Invalid name."); } if(username == null ||
-	 * username.equals("")){ throw new
-	 * IllegalArgumentException("Invalid username."); } if(password == null ||
-	 * password.equals("")){ throw new
-	 * IllegalArgumentException("Invalid password."); }
-	 * 
-	 * 
-	 * User user = new User(); user.setName(name); user.setUsername(username);
-	 * user.setPassword(password); userRepository.save(user); return user; }
-	 */
 
-	/*
-		 * @Transactional public User updateUser(String name, String oldUsername,String
-		 * newUsername, String password) { if(name == null || name.equals("")){ throw
-		 * new IllegalArgumentException("Invalid name."); } if(oldUsername == null ||
-		 * oldUsername.equals("")){ throw new
-		 * IllegalArgumentException("Invalid username."); } if(newUsername == null ||
-		 * newUsername.equals("")){ throw new
-		 * IllegalArgumentException("Invalid username."); } if(password == null ||
-		 * password.equals("")){ throw new
-		 * IllegalArgumentException("Invalid password."); } User user =
-		 * userRepository.findById(oldUsername).get(); user.setName(name);
-		 * user.setUsername(newUsername); user.setPassword(password);
-		 * userRepository.save(user); return user; }
-		 * 
-		 * @Transactional public User getUser(String username) { User u =
-		 * userRepository.findUserByUserName(username); return u; }
-		 */
-	
-	/*@Transactional
-	public List<User> getAllUsers() {
-		return toList(userRepository.findAll());
-	}*/
-	
 	private <T> List<T> toList(Iterable<T> iterable){
 		List<T> resultList = new ArrayList<T>();
 		for (T t : iterable) {
@@ -590,13 +567,6 @@ public class TutoringSystemService {
 		}
 		return resultList;
 	}
-    
-	/*
-	 * @Transactional public boolean deleteUser(String username) { boolean done =
-	 * false; User u = getUser(username); if (u != null) { userRepository.delete(u);
-	 * done = true; } return done; }
-	 */
-	
 	
 	public Tutor createTutor(String name, String username, String password, double hourlyRate) {
 		String error = "";
@@ -639,7 +609,7 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
-	public Tutor updateTutor(String username, String oldName, String newName, String password, double hourlyRate) {
+	public Tutor updateTutor(String username, String name, String password, double hourlyRate) {
 		String error = "";
 		if(username == null || username.trim().length() == 0){
 			error +="Username can't be empty. ";
@@ -647,11 +617,8 @@ public class TutoringSystemService {
 		if(password == null || password.trim().length() == 0){
 			error +="Password can't be empty. ";
 		}
-		if(newName == null || newName.trim().length() == 0){
+		if(name == null || name.trim().length() == 0){
 			error +="New name can't be empty. ";
-		}
-		if(oldName == null || oldName.trim().length() == 0){
-			error +="Old name can't be empty. ";
 		}
 		if(hourlyRate < 0) {
 			error +="Hourly rate is invalid. ";
@@ -660,12 +627,12 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException(error);
 		}
 
-		Tutor tutor = tutorRepository.findTutorByUsername(oldName);
+		Tutor tutor = tutorRepository.findTutorByUsername(username);
 		if(tutor == null) {
 			throw new IllegalArgumentException("Please enter a valid tutor to update");
 			}
-		tutor.setUsername(username);
-		tutor.setName(newName);
+		
+		tutor.setName(name);
 		tutor.setPassword(password);
 		tutor.setHourlyRate(hourlyRate);
 		tutorRepository.save(tutor);
@@ -704,6 +671,8 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException("Name can't be empty. ");
 		}
 		University u = universityRepository.findUniversityByName(name);
+		if(u == null)
+			throw new IllegalArgumentException("University does not exist.");
 		return u;
 	}
 	

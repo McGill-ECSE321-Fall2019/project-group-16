@@ -87,130 +87,8 @@ public class TestTutoringSystemService {
 		universityRepository.deleteAll();
 		studentRepository.deleteAll();
 		tutorRepository.deleteAll();
-		//userRepository.deleteAll();
 		
 	}
-	/*
-	 * //User Tests
-	 * 
-	 * @Test public void testCreateUser() {
-	 * assertEquals(0,service.getAllStudents().size());
-	 * assertEquals(0,service.getAllStudents().size());
-	 * 
-	 * String name = "User"; String username = "user123"; String password =
-	 * "Userpassword1";
-	 * 
-	 * try { service.createUser(name, username, password);
-	 * System.out.println("THE CREATE USER"); } catch (IllegalArgumentException e) {
-	 * 
-	 * fail(); }
-	 * 
-	 * List<User> allUsers = service.getAllUsers();
-	 * 
-	 * assertEquals(1, allUsers.size()); assertEquals(name,
-	 * allUsers.get(0).getName()); assertEquals(username,
-	 * allUsers.get(0).getUsername());
-	 * assertEquals(password,allUsers.get(0).getPassword()); }
-	 * 
-	 * @Test public void testUpdateUser() {
-	 * 
-	 * String name = "User"; String username = "user123"; String password =
-	 * "Userpassword1";
-	 * 
-	 * 
-	 * try { service.createUser(name, username, password); } catch
-	 * (IllegalArgumentException e) {
-	 * 
-	 * fail(); }
-	 * 
-	 * List<User> allUsers = service.getAllUsers();
-	 * 
-	 * assertEquals(1, allUsers.size());
-	 * 
-	 * name = "User"; password = "newPassword1"; String newUsername= "newuser123";
-	 * 
-	 * try { service.updateUser(name, username, newUsername, password); } catch
-	 * (IllegalArgumentException e) {
-	 * 
-	 * fail(); }
-	 * 
-	 * assertEquals(1, allUsers.size()); assertEquals(name,
-	 * allUsers.get(0).getName()); assertEquals(newUsername,
-	 * allUsers.get(0).getUsername());
-	 * assertEquals(password,allUsers.get(0).getPassword()); }
-	 * 
-	 * @Test public void deleteUser() {
-	 * 
-	 * String name = "User"; String username = "user123"; String password =
-	 * "Userpassword1";
-	 * 
-	 * try { service.createUser(name, username, password); } catch
-	 * (IllegalArgumentException e) {
-	 * 
-	 * fail(); }
-	 * 
-	 * List<User> allUsers = service.getAllUsers();
-	 * 
-	 * assertEquals(1, allUsers.size());
-	 * 
-	 * try { service.deleteUser(username); } catch (IllegalArgumentException e) {
-	 * 
-	 * fail(); } allUsers = service.getAllUsers();
-	 * 
-	 * assertEquals(0, allUsers.size()); }
-	 */
-	
-	/*
-	 * @Test public void testCreateUserNullName() {
-	 * 
-	 * String name = null; String username = "user123"; String password =
-	 * "Userpassword1";
-	 * 
-	 * 
-	 * String error = null; try { service.createUser(name, username, password); }
-	 * catch (IllegalArgumentException e) {
-	 * 
-	 * error = e.getMessage(); }
-	 * 
-	 * assertEquals("Invalid name.", error.trim()); List<User> allUsers =
-	 * service.getAllUsers(); assertEquals(0, allUsers.size());
-	 * 
-	 * }
-	 * 
-	 * @Test public void testCreateUserNullEmail() {
-	 * 
-	 * String name = "User"; String username = null; String password =
-	 * "Userpassword1";
-	 * 
-	 * 
-	 * 
-	 * String error = null; try { service.createUser(name, username, password); }
-	 * catch (IllegalArgumentException e) {
-	 * 
-	 * error = e.getMessage(); }
-	 * 
-	 * assertEquals("Invalid username.", error.trim()); List<User> allUsers =
-	 * service.getAllUsers(); assertEquals(0, allUsers.size());
-	 * 
-	 * }
-	 * 
-	 * @Test public void testCreateUserNullPassword() {
-	 * 
-	 * String name = "User"; String username = "user123"; String password = null;
-	 * 
-	 * 
-	 * 
-	 * String error = null; try { service.createUser(name, username, password); }
-	 * catch (IllegalArgumentException e) {
-	 * 
-	 * error = e.getMessage(); }
-	 * 
-	 * assertEquals("Invalid password.", error.trim()); List<User> allUsers =
-	 * service.getAllUsers(); assertEquals(0, allUsers.size());
-	 * 
-	 * }
-	 */
-	
 	//Student Tests
 	
 	@Test
@@ -252,10 +130,10 @@ public class TestTutoringSystemService {
 
 		assertEquals(1, allStudents.size());
 		
-		String newusername = "student1";
 		password = "newStudentPassword";
+		name = "Jeff";
 		try {
-			service.updateStudent(username, newusername, password, name);
+			service.updateStudent(username, password, name);
 		} catch (IllegalArgumentException e) {
 			
 			fail();
@@ -267,6 +145,64 @@ public class TestTutoringSystemService {
 		assertEquals(name, allStudents.get(0).getName());
 	}
 	
+	@Test
+	public void testUpdateStudentNull() {
+		
+		String name = "richard";
+		String username = "student1";
+		String password = "studentPassword1";
+
+		try {
+			service.createStudent(username, password, name);
+		} catch (IllegalArgumentException e) {
+			
+			fail();
+		}
+
+		List<Student> allStudents = service.getAllStudents();
+
+		assertEquals(1, allStudents.size());
+		
+		name = null;
+		username = null;
+		password = null;
+		
+		try {
+			service.updateStudent(username, password, name);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertEquals("Username can't be empty. Password can't be empty. New name can't be empty.", e.getMessage().trim());
+		}
+	}
+	@Test
+	public void testUpdateNonStudent() {
+		
+		String name = "richard";
+		String username = "student1";
+		String password = "studentPassword1";
+
+		try {
+			service.createStudent(username, password, name);
+		} catch (IllegalArgumentException e) {
+			
+			fail();
+		}
+
+		List<Student> allStudents = service.getAllStudents();
+
+		assertEquals(1, allStudents.size());
+		
+		name = "This";
+		username = "YeeHaw";
+		password = "Nice";
+		
+		try {
+			service.updateStudent(username, password, name);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertEquals("Please input a valid student.", e.getMessage().trim());
+		}
+	}
 	
 	@Test
 	public void testDeleteStudent() {
@@ -338,30 +274,7 @@ public class TestTutoringSystemService {
 
 		assertEquals(0, allStudents.size());
 	}
-	
-	@Test
-	public void testCreateStudentNullSchoolName() {
-
-		String name = "richard";
-		String username = "student1";
-		String password = "studentPassword1";
 		
-		String error = null;
-
-		try {
-			service.createStudent(username, password, name);
-		} catch (IllegalArgumentException e) {
-			
-			error = e.getMessage();
-		}
-
-		assertEquals("School name can't be empty.", error.trim());
-		List<Student> allStudents = service.getAllStudents();
-
-		assertEquals(0, allStudents.size());
-	}
-	
-	
 	//Tutor tests
 	@Test
 	public void testCreateTutor() {
@@ -386,7 +299,6 @@ public class TestTutoringSystemService {
 		assertEquals(rate, allTutors.get(0).getHourlyRate(), 0.01);
 	}
 	
-	
 	@Test
 	public void testUpdateTutor() {
 
@@ -407,24 +319,57 @@ public class TestTutoringSystemService {
 
 		assertEquals(1, allTutors.size());
 		
-		String newUsername = "tutor1";
 		name = "Michael";
 		password = "newTutorpass";
 		rate  = 14;
 		
 		try {
-			service.updateTutor(username, newUsername, name, password, rate);
+			service.updateTutor(username, name, password, rate);
 		} catch (IllegalArgumentException e) {
 			
 			fail();
 		}
 		allTutors = service.getAllTutors();
 		
-		assertEquals(newUsername, allTutors.get(0).getUsername());
+		assertEquals(username, allTutors.get(0).getUsername());
 		assertEquals(name, allTutors.get(0).getName());
 		assertEquals(password, allTutors.get(0).getPassword());
 		assertEquals(rate, allTutors.get(0).getHourlyRate(), 0.01);
 		
+	}
+	
+	@Test
+	public void testUpdateNullTutor() {
+
+		String name = "Joseph";
+		String username = "tutor1";
+		String password = "tutorPassword1";
+		double rate = 18;
+
+
+		try {
+			service.createTutor(name, username, password,rate);
+		} catch (IllegalArgumentException e) {
+			
+			fail();
+		}
+
+		List<Tutor> allTutors = service.getAllTutors();
+
+		assertEquals(1, allTutors.size());
+		
+
+		name = null;
+		password = null;
+		rate  = -14;
+		username = null;
+		
+		try {
+			service.updateTutor(username, name, password, rate);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertEquals("Username can't be empty. Password can't be empty. New name can't be empty. Hourly rate is invalid.", e.getMessage().trim());
+		}
 	}
 	
 	@Test
@@ -565,7 +510,7 @@ public class TestTutoringSystemService {
 		List<University> allUniversities = service.getAllUniversities();
 
 		assertEquals(1, allUniversities.size());
-		assertEquals(name,allUniversities.get(0).getName());		
+		assertEquals(name, service.getUniversity(name).getName());	
 		}
 	
 
@@ -633,8 +578,10 @@ public class TestTutoringSystemService {
 		int id = 1;
 		String comments = "Good Student, listens well!";
 		
+		Tutor reviewer = service.createTutor(username,password, name, 20);
+		
 		try {
-			service.createStudentReview(id,comments,reviewee);
+			service.createStudentReview(id,comments,reviewee, reviewer);
 		} catch (IllegalArgumentException e) { 
 			fail();
 		}
@@ -642,7 +589,7 @@ public class TestTutoringSystemService {
 		List<StudentReview> allReviews = service.getAllStudentReviews();
         
 		assertEquals(1, allReviews.size());
-		assertEquals(id, allReviews.get(0).getId(), 0);
+		assertEquals(id, service.getStudentReview(id).getId(), 0);
 		assertEquals(comments, allReviews.get(0).getReview());
 		assertEquals(username, allReviews.get(0).getReviewee().getUsername());
 	}
@@ -654,12 +601,13 @@ public class TestTutoringSystemService {
 		String password = "studentPassword1";
 		
 		Student reviewee = service.createStudent(username, password, name);
+		Tutor reviewer = service.createTutor(username,password, name, 20);
 		int id = 1;
 		String comments = "Good Student, listens well!";
 		
 
 		try {
-			service.createStudentReview(id,comments,reviewee);
+			service.createStudentReview(id,comments,reviewee, reviewer);
 		} catch (IllegalArgumentException e) { 
 			fail();
 		}
@@ -668,16 +616,80 @@ public class TestTutoringSystemService {
         
 		assertEquals(1, allReviews.size());
 		
-		int newId = 2;
 		comments = "Pain in the ass";
 		
 		try {
-			service.updateStudentReview(id, newId, comments, reviewee);
+			service.updateStudentReview(id, comments, reviewee);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			fail();
 		}
 		
+	}
+	@Test
+	public void testUpdateStudentReviewNull() {
+		String name = "richard";
+		String username = "student1";
+		String password = "studentPassword1";
+		
+		Student reviewee = service.createStudent(username, password, name);
+		Tutor reviewer = service.createTutor(username,password, name, 20);
+		int id = 1;
+		String comments = "Good Student, listens well!";
+		
+
+		try {
+			service.createStudentReview(id,comments,reviewee, reviewer);
+		} catch (IllegalArgumentException e) { 
+			fail();
+		}
+		
+		List<StudentReview> allReviews = service.getAllStudentReviews();
+        
+		assertEquals(1, allReviews.size());
+		
+		comments = "";
+		id = -1;
+		reviewee = null;
+		
+		try {
+			service.updateStudentReview(id, comments, reviewee);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertEquals("Incorrect id value. Please insert a reviewee. Please insert a comment.", e.getMessage().trim());
+		}	
+	}
+	
+	@Test
+	public void testUpdateStudentReviewInvalid() {
+		String name = "richard";
+		String username = "student1";
+		String password = "studentPassword1";
+		
+		Student reviewee = service.createStudent(username, password, name);
+		Tutor reviewer = service.createTutor(username,password, name, 20);
+		int id = 1;
+		String comments = "Good Student, listens well!";
+		
+
+		try {
+			service.createStudentReview(id,comments,reviewee, reviewer);
+		} catch (IllegalArgumentException e) { 
+			fail();
+		}
+		
+		List<StudentReview> allReviews = service.getAllStudentReviews();
+        
+		assertEquals(1, allReviews.size());
+
+		id = 100;
+		
+		try {
+			service.updateStudentReview(id, comments, reviewee);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertEquals("Please enter a valid Review to update.", e.getMessage().trim());
+		}	
 	}
 	
 	@Test
@@ -687,10 +699,12 @@ public class TestTutoringSystemService {
 		int id = 1;
 		String comments = "Good Student, listens well!";
 		
+		Tutor reviewer = service.createTutor("Jeff1","mynameJeff", "Jeffery", 20);
+		
 		String error = null;
 
 		try {
-			service.createStudentReview(id,comments, reviewee);
+			service.createStudentReview(id,comments, reviewee, reviewer);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -711,13 +725,15 @@ public class TestTutoringSystemService {
 		String password = "studentPassword1";
 		
 		Student reviewee = service.createStudent(username, password, name);
+		Tutor reviewer = service.createTutor(username,password, name, 20);
+		
 		int id = 1;
 		String comments = null;
 		
 		String error = null;
 
 		try {
-			service.createStudentReview(id,comments, reviewee);
+			service.createStudentReview(id,comments, reviewee, reviewer);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -738,13 +754,14 @@ public class TestTutoringSystemService {
 		String password = "studentPassword1";
 		
 		Student reviewee = service.createStudent(username, password, name);
+		Tutor reviewer = service.createTutor(username,password, name, 20);
 		int id = -1;
 		String comments = "good student";
 		
 		String error = null;
 
 		try {
-			service.createStudentReview(id,comments, reviewee);
+			service.createStudentReview(id,comments, reviewee, reviewer);
 		} catch (IllegalArgumentException e) {
 			// Check that no error occurred
 			error = e.getMessage();
@@ -767,13 +784,14 @@ public class TestTutoringSystemService {
 		double rate = 18;
 		
 		Tutor reviewee = service.createTutor(name, username, password, rate);
+		Student reviewer = service.createStudent(username, password, name);
 		int id = 1;
 		String comments = "Good Student, listens well!";
 		int rating = 4;
 		List<Tutor> allTutors = service.getAllTutors();
 		assertEquals(1, allTutors.size());
 		try {
-			service.createTutorReview(id,comments,reviewee, rating);
+			service.createTutorReview(id,comments,reviewee, rating,reviewer);
 		} catch (IllegalArgumentException e) { 
 			fail();
 		}
@@ -781,7 +799,7 @@ public class TestTutoringSystemService {
 		List<TutorReview> allReviews = service.getAllTutorReviews();
         
 		assertEquals(1, allReviews.size());
-		assertEquals(id, allReviews.get(0).getId(), 0);
+		assertEquals(id, service.getTutorReview(id).getId(), 0);
 		assertEquals(comments, allReviews.get(0).getReview());
 		assertEquals(username, allReviews.get(0).getReviewee().getUsername());
 	}
@@ -795,14 +813,14 @@ public class TestTutoringSystemService {
 		
 		String error = null;
 		try {
-			service.createTutorReview(id,comments,reviewee, rating);
+			service.createTutorReview(id,comments,reviewee, rating, null);
 		} catch (IllegalArgumentException e) { 
 			error=e.getMessage();
 		}
 		
 		List<TutorReview> allReviews = service.getAllTutorReviews();
         
-		assertEquals("Reviewee is null.", error.trim());
+		assertEquals("Reviewee is null. Reviewer is null.", error.trim());
 
 
 		assertEquals(0, allReviews.size());
@@ -819,13 +837,14 @@ public class TestTutoringSystemService {
 	double rate = 18;
 	
 	Tutor reviewee = service.createTutor(name, username, password, rate);
+	Student reviewer = service.createStudent(username, password, name);
 	int id = 1;
 	String comments = null;
 	int rating = 4;
 		
 		String error = null;
 		try {
-			service.createTutorReview(id,comments,reviewee, rating);
+			service.createTutorReview(id,comments,reviewee, rating,reviewer);
 		} catch (IllegalArgumentException e) { 
 			error=e.getMessage();
 		}
@@ -849,13 +868,14 @@ public class TestTutoringSystemService {
 	double rate = 18;
 	
 	Tutor reviewee = service.createTutor(name, username, password, rate);
+	Student reviewer = service.createStudent(username, password, name);
     int id = -1;
 	String comments = "Good Student, listens well!";
 	int rating = 4;
 		
 		String error = null;
 		try {
-			service.createTutorReview(id,comments,reviewee, rating);
+			service.createTutorReview(id,comments,reviewee, rating, reviewer);
 		} catch (IllegalArgumentException e) { 
 			error=e.getMessage();
 		}
@@ -877,13 +897,14 @@ public class TestTutoringSystemService {
 	double rate = 18;
 	
 	Tutor reviewee = service.createTutor(name, username, password, rate);
+	Student reviewer = service.createStudent(username, password, name);
     int id = 1;
 	String comments = "Good Student, listens well!";
 	int rating = 10;
 		
 		String error = null;
 		try {
-			service.createTutorReview(id,comments,reviewee, rating);
+			service.createTutorReview(id,comments,reviewee, rating, reviewer);
 		} catch (IllegalArgumentException e) { 
 			error=e.getMessage();
 		}
@@ -930,10 +951,8 @@ public class TestTutoringSystemService {
 		Course course = service.createCourse("Math141", "Math", university);
         
 		try {
-			//Sends a null pointer exception
 			service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, students, tutor, room, course);
 		} catch (IllegalArgumentException e) {
-			// Check that no error occurred
 			fail();
 		}
 
@@ -946,10 +965,9 @@ public class TestTutoringSystemService {
 		assertEquals(endTime, allSessions.get(0).getEndTime());
 		assertEquals(date, allSessions.get(0).getDate());
 		assertEquals(isGroupSession, allSessions.get(0).getIsGroupSession());
-		assertEquals(course, allSessions.get(0).getCourse());
-		assertEquals(room, allSessions.get(0).getRoom());
-		assertEquals(student, allSessions.get(0).getStudent());
-		assertEquals(tutor, allSessions.get(0).getTutor());
+		assertEquals(course.getCourseCode(), allSessions.get(0).getCourse().getCourseCode());
+		assertEquals(room.getRoomNr(), allSessions.get(0).getRoom().getRoomNr());
+		assertEquals(tutor.getUsername(), allSessions.get(0).getTutor().getUsername());
 	}
 	
 	@Test
@@ -992,7 +1010,7 @@ public class TestTutoringSystemService {
 
 		List<Session> allSessions = service.getAllSessions();
 		
-		assertEquals("Invalid date or time parameters.", error.trim());
+		assertEquals("Start time is invalid.", error.trim());
 
 
 		assertEquals(0, allSessions.size());
@@ -1359,7 +1377,35 @@ public class TestTutoringSystemService {
 			assertEquals(newIsLargeRoom, allRooms.get(0).getIsLargeRoom());
 			
 		}
-		
+		@Test
+		public void testUpdateInvalidRoomSize() {
+			assertEquals(0, service.getAllRooms().size());
+			
+			int roomNumber = 1;
+			Boolean isLargeRoom  = true;
+			
+
+			try {
+				service.createRoom(roomNumber, isLargeRoom);
+			} catch (IllegalArgumentException e) {
+				
+				fail();
+			}
+
+			List<Room> allRooms = service.getAllRooms();
+
+			assertEquals(1, allRooms.size());
+			assertEquals(roomNumber, (int) allRooms.get(0).getRoomNr());
+			assertEquals(isLargeRoom, allRooms.get(0).getIsLargeRoom());
+			
+			try {
+				service.updateRoomSize(-1, null);
+				fail();
+			} catch (IllegalArgumentException e) {
+				assertEquals("Room number is invalid. Room Type (isLarge = true || false) cannot be null. ", e.getMessage());
+			}
+			
+		}
 		@Test
 		public void testCreateRoomInvalidID() {
 
@@ -1409,9 +1455,7 @@ public class TestTutoringSystemService {
 			
 			@Test
 			public void testCreateCourse() {
-				
-				//CHECK IF THIS WORKS??? IF THIS METHOD CREATES ISSUES
-				
+						
 				String courseCode = "ECSE321";
 				String subject = "SoftwareEng";
 				University university =  service.createUniversity(1,"McGill");
@@ -1428,7 +1472,7 @@ public class TestTutoringSystemService {
 				assertEquals(1, allCourses.size());
 				assertEquals(courseCode, allCourses.get(0).getCourseCode());
 				assertEquals(subject, allCourses.get(0).getSubject());
-				assertEquals(university, allCourses.get(0).getUniversity());
+				assertEquals(university.getId(), allCourses.get(0).getUniversity().getId());
 					
 			}
 			
@@ -1451,28 +1495,67 @@ public class TestTutoringSystemService {
 				assertEquals(1, allCourses.size());
 				assertEquals(courseCode, allCourses.get(0).getCourseCode());
 				assertEquals(subject, allCourses.get(0).getSubject());
-				//This last one causes an error
-				assertEquals(university, allCourses.get(0).getUniversity());
+				assertEquals(university.getId(), allCourses.get(0).getUniversity().getId());
 				
-				String newCourseCode = "MATH140";
 				String newSubject = "Science";
 				University newUniversity = service.createUniversity(1,"Concordia");
 				
 				try {
-					service.updateCourse(courseCode, newSubject, newCourseCode, newUniversity);
+					service.updateCourse(courseCode, newSubject, newUniversity);
 				} catch (IllegalArgumentException e) {
 					fail();
 				}
-
+				
+				allCourses = service.getAllCourses();
+				
 				assertEquals(1, allCourses.size());
-				assertEquals(newCourseCode, allCourses.get(0).getCourseCode());	
+				assertEquals(courseCode, allCourses.get(0).getCourseCode());	
 				assertEquals(newSubject, allCourses.get(0).getSubject());
-				assertEquals(newUniversity, allCourses.get(0).getUniversity());
+				assertEquals(newUniversity.getId(), allCourses.get(0).getUniversity().getId());
 				
 			}
+			@Test
+			public void testUpdateCourseInvalid() {
+				String courseCode = "ECSE321";
+				String subject = "SoftwareEng";
+				University university =  service.createUniversity(1,"McGill");
+				
+				try {
+					service.createCourse(courseCode, subject, university);
+				}
+				catch (IllegalArgumentException e) {
+					fail();
+				}
+				
+				List<Course> allCourses = service.getAllCourses();
+				
+				assertEquals(1, allCourses.size());
+				assertEquals(courseCode, allCourses.get(0).getCourseCode());
+				assertEquals(subject, allCourses.get(0).getSubject());
+				assertEquals(university.getId(), allCourses.get(0).getUniversity().getId());
+				
+				String newSubject = "";
+				University newUniversity = null;
+				
+				try {
+					service.updateCourse("", newSubject, newUniversity);
+					fail();
+				} catch (IllegalArgumentException e) {
+					assertEquals("Please provide a courseCode. Please provide a subject. University cannot be null. ", e.getMessage());
+				}
+			}
 			
-			//DELETE COURSE METHOD NEEDS TO BE IMPLEMENTED
-			
+			@Test
+			public void testUpdateCourseNonExistant() {
+				University u = service.createUniversity(1, "McGill");
+				try {
+					service.updateCourse("FakeCourse", "YeeHaw", u);
+					fail();
+				} catch(IllegalArgumentException e) {
+					assertEquals("The course does not exist. Please specify a valid Course Code", e.getMessage());
+				}
+			}
+						
 			@Test
 			public void testCreateCourseNullCourseCode() {
 				
@@ -1607,14 +1690,88 @@ public class TestTutoringSystemService {
 				catch(IllegalArgumentException e) {
 					fail();	
 				}
+				//Test getRoomBooking
 				
-				allRoomBookings = service.getAllRoomBookings();
+				RoomBooking roomBooking = service.getRoomBooking(id);
+				
+				assertEquals(id, roomBooking.getId());
+				assertEquals(startTime, roomBooking.getStartTime());
+				assertEquals(endTime, roomBooking.getEndTime());
+				assertEquals(date, roomBooking.getDate());
+				
+			}
+			@Test
+			public void testUpdateInvalidTimesRoomBooking() {
+
+				Integer id = 1;
+				Time startTime = Time.valueOf("16:00:00");
+				Time endTime = Time.valueOf("17:00:00");
+				Date date = Date.valueOf("2019-10-10");
+				
+				try {
+					service.createRoomBooking(id, startTime, endTime, date);
+				}
+				catch(IllegalArgumentException e){
+					fail();
+				}
+				
+				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
 				
 				assertEquals(1, allRoomBookings.size());
 				assertEquals(id, allRoomBookings.get(0).getId());
 				assertEquals(startTime, allRoomBookings.get(0).getStartTime());
 				assertEquals(endTime, allRoomBookings.get(0).getEndTime());
 				assertEquals(date, allRoomBookings.get(0).getDate());
+				
+				startTime = Time.valueOf("22:00:00");
+				endTime = Time.valueOf("03:00:00");
+				date = Date.valueOf("2019-10-20");
+				
+				try {
+					service.updateRoomBooking(id, startTime, endTime, date);
+					fail();
+				}
+				catch(IllegalArgumentException e) {
+					assertEquals("Start time must be between 09:00 and 21:00. End time must be between 09:00 and 21:00. Start time must be before End time.", e.getMessage().trim());
+				}
+				
+			}
+			
+			@Test
+			public void testUpdateNullRoomBooking() {
+
+				Integer id = 1;
+				Time startTime = Time.valueOf("16:00:00");
+				Time endTime = Time.valueOf("17:00:00");
+				Date date = Date.valueOf("2019-10-10");
+				
+				try {
+					service.createRoomBooking(id, startTime, endTime, date);
+				}
+				catch(IllegalArgumentException e){
+					fail();
+				}
+				
+				List <RoomBooking> allRoomBookings = service.getAllRoomBookings();
+				
+				assertEquals(1, allRoomBookings.size());
+				assertEquals(id, allRoomBookings.get(0).getId());
+				assertEquals(startTime, allRoomBookings.get(0).getStartTime());
+				assertEquals(endTime, allRoomBookings.get(0).getEndTime());
+				assertEquals(date, allRoomBookings.get(0).getDate());
+				
+				startTime = null;
+				endTime = null;
+				date = null;
+				id = null;
+				
+				try {
+					service.updateRoomBooking(id, startTime, endTime, date);
+					fail();
+				}
+				catch(IllegalArgumentException e) {
+					assertEquals("ID is invalid. Start time is null. End time is null. Date is null.", e.getMessage().trim());
+				}
 				
 			}
 			
@@ -1797,5 +1954,80 @@ public class TestTutoringSystemService {
 				
 				
 			}
-
+			
+			@Test
+			public void testGetCourse() {
+				University u = service.createUniversity(1, "McGill");
+				service.createCourse("ECSE200", "Circuits 1", u);
+				try {
+					Course c = service.getCourse("ECSE200");
+					assertEquals(c.getCourseCode(), service.getAllCourses().get(0).getCourseCode());
+				}catch(IllegalArgumentException e){
+					fail();
+				}
+			}
+			
+			@Test
+			public void testGetNullCorse() {
+				try {
+					Course c = service.getCourse(null);
+					fail();
+				}catch(IllegalArgumentException e){
+					assertEquals("Course can't be empty.", e.getMessage());
+				}
+			}
+			
+			@Test
+			public void testGetNonCourse() {
+				try {
+					service.getCourse("SampleCourse");
+					fail();
+				}catch(IllegalArgumentException e){
+					assertEquals("The course does not exist. Please specify a valid Course Code", e.getMessage());
+				}
+				
+			}
+			
+			// @Test
+			// public void testGetSession() {
+			// 	Student s = service.createStudent("student1", "YeeHaw", "Also Jeff", "McGIll");
+			// 	Tutor t = service.createTutor("Jeff", "jeffMyBoy", "12Mut", 18.0);
+				
+			// 	University u = service.createUniversity(12, "McGill");
+			// 	Room r = service.createRoom(1, true);
+			// 	Course c = service.createCourse("FACC100", "Intro to Engineering Proffession", u);
+			
+				
+			// 	Date date = Date.valueOf("2019-10-10");
+			// 	Time startTime = Time.valueOf("10:00:00");
+			// 	Time endTime = Time.valueOf("14:00:00");
+				
+				
+			// 	service.createSession(1, true, startTime, endTime, date, false, s, t, r, c);
+			// 	try {
+			// 		service.getSession(1);
+			// 	} catch(IllegalArgumentException e) {
+			// 		fail();
+			// 	}
+			// }
+			
+			@Test
+			public void testGetNullSession() {
+				try {
+					Integer id = null;
+					service.getSession(id);
+					fail();
+				}catch(IllegalArgumentException e) {
+					assertEquals("ID is invalid", e.getMessage());
+				}			}
+			
+			@Test
+			public void testGetInvalidSession() {
+				try {
+					service.getSession(-1);
+					fail();
+				}catch(IllegalArgumentException e) {
+					assertEquals("ID is invalid", e.getMessage());
+				}
+			}
 }
