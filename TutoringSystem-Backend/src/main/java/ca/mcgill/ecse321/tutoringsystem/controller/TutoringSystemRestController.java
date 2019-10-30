@@ -48,7 +48,7 @@ public class TutoringSystemRestController {
 //register new student
 	@PostMapping(value = {"/student/{username}/{password}/{name}/{schoolName}", "/student/{username}/{password}/{name}/{schoolName}/"})
 	public StudentDto registerStudent(@PathVariable("username") String username,@PathVariable("password") String password,@PathVariable("name") String name, @PathVariable("schoolName") String schoolName){
-		Student s = service.createStudent(username, password, name, schoolName);
+		Student s = service.createStudent(username, password, name);
 		return convertToDto(s);
 	}
 
@@ -138,8 +138,6 @@ public class TutoringSystemRestController {
 		return universityDtos;
 	}
 	
-   //<----------- Post Mappings ------------>
-	
 	//enter university to system
 	@PostMapping(value = {"/university/{id}/{name}", "/university/{id}/{name}/"})
 	public UniversityDto enterUniversity(@PathVariable("id") int id, @PathVariable("name") String name){
@@ -156,7 +154,7 @@ public class TutoringSystemRestController {
 		if(s==null) {
 			throw new IllegalArgumentException("There is no such student!");
 		}
-		StudentDto sDto = new StudentDto(s.getUsername(), s.getPassword(), s.getName(),s.getSchoolName());
+		StudentDto sDto = new StudentDto(s.getUsername(), s.getPassword(), s.getName());
 		return sDto;
 	}
 	

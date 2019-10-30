@@ -10,17 +10,15 @@ public class StudentDto {
 	private String name;
 	private String username;
 	private String password;
-	private String schoolName;
 	private Set<Session> session;
 	private Set<TutorReview> tutorReview;
 	
-	public StudentDto() {
+	public StudentDto(String string, String string2, String string3) {
 	}
 	public StudentDto(String username, String password, String name, String schoolName) {
 		this.username = username;
 		this.password = password;
 		this.name = name;
-		this.schoolName = schoolName;
 	}
 	
 	public String getUsername() {
@@ -37,9 +35,6 @@ public class StudentDto {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public void setSchoolName(String schoolName) {
-		this.schoolName = schoolName;
 	}
 	public void setPassword(String password) {
 		this.password = password;

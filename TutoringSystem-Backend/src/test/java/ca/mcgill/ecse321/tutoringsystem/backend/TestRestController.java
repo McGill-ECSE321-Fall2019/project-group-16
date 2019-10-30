@@ -73,7 +73,7 @@ public class TestRestController {
 				student.setUsername(STUDENT_USERNAME);
 				student.setName(STUDENT_NAME);
 				student.setPassword(STUDENT_PASS);
-				student.setSchoolName(STUDENT_SCHOOLNAME);
+				//student.setSchoolName(STUDENT_SCHOOLNAME);
 				return student;
 			} else {
 				return null;
@@ -151,7 +151,7 @@ public class TestRestController {
 	public void testCreateValidStudent() {
 	Student s= null;
 		try {
-			s=service.createStudent(STUDENT_USERNAME,STUDENT_PASS, STUDENT_NAME, STUDENT_SCHOOLNAME);
+			s=service.createStudent(STUDENT_USERNAME,STUDENT_PASS, STUDENT_NAME);
 		} catch (IllegalArgumentException e) {
 			fail();
 		}
@@ -161,7 +161,6 @@ public class TestRestController {
 		//assertEquals(1, allStudents.size());
 		assertEquals(STUDENT_USERNAME,s.getUsername());
 		assertEquals(STUDENT_PASS,s.getPassword());
-		assertEquals(STUDENT_SCHOOLNAME, s.getSchoolName());
 		assertEquals(STUDENT_NAME,s.getName());
 	}
 	
@@ -171,7 +170,7 @@ public class TestRestController {
 		String error = null;
 
 		try {
-			service.createStudent(null,STUDENT_PASS, STUDENT_NAME, STUDENT_SCHOOLNAME);
+			service.createStudent(null,STUDENT_PASS, STUDENT_NAME);
 		} catch (IllegalArgumentException e) {
 			
 			error = e.getMessage();
@@ -188,7 +187,7 @@ public class TestRestController {
 		String error = null;
 
 		try {
-			service.createStudent("",STUDENT_PASS, STUDENT_NAME, STUDENT_SCHOOLNAME);
+			service.createStudent("",STUDENT_PASS, STUDENT_NAME);
 		} catch (IllegalArgumentException e) {
 			
 			error = e.getMessage();
@@ -206,7 +205,7 @@ public class TestRestController {
 		String error = null;
 
 		try {
-			service.createStudent(STUDENT_USERNAME, null, STUDENT_NAME, STUDENT_SCHOOLNAME);
+			service.createStudent(STUDENT_USERNAME, null, STUDENT_NAME);
 		} catch (IllegalArgumentException e) {
 			
 			error = e.getMessage();
@@ -224,7 +223,7 @@ public class TestRestController {
 		String error = null;
 
 		try {
-			service.createStudent(STUDENT_USERNAME, "", STUDENT_NAME, STUDENT_SCHOOLNAME);
+			service.createStudent(STUDENT_USERNAME, "", STUDENT_NAME);
 		} catch (IllegalArgumentException e) {
 			
 			error = e.getMessage();
@@ -242,7 +241,7 @@ public class TestRestController {
 		String error = null;
 
 		try {
-			service.createStudent(STUDENT_USERNAME, STUDENT_PASS, null, STUDENT_SCHOOLNAME);
+			service.createStudent(STUDENT_USERNAME, STUDENT_PASS, null);
 		} catch (IllegalArgumentException e) {
 			
 			error = e.getMessage();
@@ -260,7 +259,7 @@ public class TestRestController {
 		String error = null;
 
 		try {
-			service.createStudent(STUDENT_USERNAME, STUDENT_PASS, "", STUDENT_SCHOOLNAME);
+			service.createStudent(STUDENT_USERNAME, STUDENT_PASS, "");
 		} catch (IllegalArgumentException e) {
 			
 			error = e.getMessage();
@@ -272,40 +271,5 @@ public class TestRestController {
 		assertEquals(0, allStudents.size());
 	}
 	
-	@Test
-	public void testCreateStudentNullSchoolName() {
 
-		String error = null;
-
-		try {
-			service.createStudent(STUDENT_USERNAME, STUDENT_PASS, STUDENT_NAME, null);
-		} catch (IllegalArgumentException e) {
-			
-			error = e.getMessage();
-		}
-
-		assertEquals("School name can't be empty.", error.trim());
-		List<Student> allStudents = service.getAllStudents();
-
-		assertEquals(0, allStudents.size());
-	}
-	
-	@Test
-	public void testCreateStudentEmptySchoolName() {
-
-		String error = null;
-
-		try {
-			service.createStudent(STUDENT_USERNAME, STUDENT_PASS, STUDENT_NAME, "");
-		} catch (IllegalArgumentException e) {
-			
-			error = e.getMessage();
-		}
-
-		assertEquals("School name can't be empty.", error.trim());
-		List<Student> allStudents = service.getAllStudents();
-
-		assertEquals(0, allStudents.size());
-	}
-	
 }
