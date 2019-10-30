@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.tutoringsystem.TutoringSystemApplication;
@@ -28,8 +29,11 @@ public class TutoringSystemRestController {
 	@Autowired
 	TutoringSystemService service;
 	
-	// <-------------- Register and LogIn ------------>
+	// <---------------------------------Register and LogIn------------------------------------->
 
+//	<--------Get Mappings-------->
+	
+	
 	//list of students registered
 	@GetMapping(value = {"/students" , "/students/"})
 	public List<StudentDto> getAllStudents(){
@@ -39,8 +43,37 @@ public class TutoringSystemRestController {
 		}
 		return studentDtos;
 	}
+// <-----Post Mappings------->
 	
-	// <----------------- Searching for Courses ---------------->
+//register new student
+	@PostMapping(value = {"/student/{username}/{password}/{name}/{schoolName}", "/student/{username}/{password}/{name}/{schoolName}/"})
+	public StudentDto registerStudent(@PathVariable("username") String username,@PathVariable("password") String password,@PathVariable("name") String name, @PathVariable("schoolName") String schoolName){
+		Student s = service.createStudent(username, password, name, schoolName);
+		return convertToDto(s);
+	}
+
+// log in student
+	@PostMapping(value = {"/student/{username}/{password}", "/student/{username}/{password}/"})
+	public void loginStudent(@PathVariable("username") String username, @PathVariable("password") String password) {
+		Student s = service.getStudent(username);
+		if(s==null) throw new IllegalArgumentException("There is no such student!");
+		String studentPass = s.getPassword();
+		if(password.equals(studentPass)) {
+		TutoringSystemApplication.setCurrentlyLoggedInStudent(s);
+		}else {
+		throw new IllegalArgumentException("Incorrect Password!");
+	}
+	}
+
+	@PutMapping(value = {"/logout", "/logout/"})
+	public void logoutStudent() {
+		if(TutoringSystemApplication.getCurrentlyLoggedInStudent() == null) throw new IllegalArgumentException("User not Logged In!");
+		TutoringSystemApplication.setCurrentlyLoggedInStudent(null);
+	}
+	
+	// <-----------------------------Searching for Courses ------------------------------>
+	
+	//<----Get Mappings---->
 	
 	//get all courses
 	@GetMapping(value = {"/courses", "/courses/"})
@@ -53,7 +86,7 @@ public class TutoringSystemRestController {
 		
 	}
 	//search by courseCode
-	@GetMapping(value= {"/courses/{code}", "/courses/{code}/"})
+	@GetMapping(value= {"/course/{code}", "/course/{code}/"})
 	public CourseDto getCourseByCourseCode(@PathVariable("code") String code){
 		Course c = service.getCourse(code);
 		if(c==null) {
@@ -62,7 +95,7 @@ public class TutoringSystemRestController {
 		return convertToDto(c);
 	}
 	
-	//search courses using university
+	//search courses using universityName
 	@GetMapping(value= {"/courses/{university}" , "/courses/{university}"})
 	public List<CourseDto> getCoursesForUniversity(@PathVariable("university") String university){
 		University u = service.getUniversity(university);
@@ -75,6 +108,20 @@ public class TutoringSystemRestController {
 			courseDtos.add(convertToDto(c));
 		}
 		return courseDtos;
+	}
+	
+	// <-----Post Mappings------->
+	
+	//add course using uni name
+	@PostMapping(value = {"/course/{code}/{UniversityName}/{subject}","/course/{code}/{UniversityName}/{subject}/" })
+	public CourseDto enterCourse(@PathVariable("code") String code, @PathVariable("UniversityName") String UniversityName, @PathVariable("subject") String subject) {
+		
+		University u = service.getUniversity(UniversityName);
+		
+		if(u==null)	throw new IllegalArgumentException("There is no such university!");
+		
+		Course c = service.createCourse(code, subject, u);
+		return convertToDto(c);
 	}
 	
 	// <-------------- Searching for University --------------->
@@ -91,26 +138,7 @@ public class TutoringSystemRestController {
 		return universityDtos;
 	}
 	
-		// <--------------------- Post Mappings ---------------------->
-	
-	//register new student
-	@PostMapping(value = {"/student/{username}/{password}/{name}/{schoolName}", "/student/{username}/{password}/{name}/{schoolName}/"})
-	public StudentDto registerStudent(@PathVariable("username") String username,@PathVariable("password") String password,@PathVariable("name") String name, @PathVariable("schoolName") String schoolName){
-		Student s = service.createStudent(username, password, name, schoolName);
-		return convertToDto(s);
-	}
-	
-	// log in student
-	@PostMapping(value = {"/student/{username}/{password}", "/student/{username}/{password}/"})
-	public void loginStudent(@PathVariable("username") String username, @PathVariable("password") String password) {
-		Student s = service.getStudent(username);
-		if(s==null) throw new IllegalArgumentException("There is no such student!");
-		String studentPass = s.getPassword();
-		if(password == studentPass) {
-			// needs to be completed
-			//TutoringSystemApplication.setCurrentStudent(s);
-		}
-	}
+   //<----------- Post Mappings ------------>
 	
 	//enter university to system
 	@PostMapping(value = {"/university/{id}/{name}", "/university/{id}/{name}/"})
@@ -119,6 +147,8 @@ public class TutoringSystemRestController {
 		UniversityDto UDto = convertToDto(u);
 		return UDto;	
 	}
+	
+
 	
 	// <--------------------- DTOs ------------------>
 	

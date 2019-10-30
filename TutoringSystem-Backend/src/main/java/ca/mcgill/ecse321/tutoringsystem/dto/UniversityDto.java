@@ -7,7 +7,7 @@ import ca.mcgill.ecse321.tutoringsystem.model.Course;
 public class UniversityDto {
 	private String name;
 	private int id;
-	private Set<Course> course;
+	//private Set<Course> course;
 	
 	public UniversityDto(){
 	}

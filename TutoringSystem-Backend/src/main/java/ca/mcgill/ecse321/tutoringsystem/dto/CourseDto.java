@@ -10,7 +10,8 @@ public class CourseDto {
 	private String courseCode;
 	private String subject;
 	private Set<Tutor> tutor;
-    private University university;
+    private int universityID;
+    private String universityName;
     private Set<Session> session;
     
     public CourseDto() {
@@ -18,7 +19,8 @@ public class CourseDto {
     public CourseDto(String code, String sub, University u) {
     		this.courseCode = code;
     		this.subject = sub;
-    		this.university = u;
+    		this.universityID = u.getId();
+    		this.universityName = u.getName();
     }
     
     public String getCourseCode() {
@@ -27,7 +29,10 @@ public class CourseDto {
     public String getSubject() {
         return this.subject;
     }
-    public University getUniversity() {
-        return this.university;
+    public int getUniversityID() {
+        return this.universityID;
+    }
+    public String getUniversityName() {
+    		return this.universityName;
     }
 }
