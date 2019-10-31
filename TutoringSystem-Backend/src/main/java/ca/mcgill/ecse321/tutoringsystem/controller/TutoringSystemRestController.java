@@ -46,8 +46,8 @@ public class TutoringSystemRestController {
 // <-----Post Mappings------->
 	
 //register new student
-	@PostMapping(value = {"/student/{username}/{password}/{name}/{schoolName}", "/student/{username}/{password}/{name}/{schoolName}/"})
-	public StudentDto registerStudent(@PathVariable("username") String username,@PathVariable("password") String password,@PathVariable("name") String name, @PathVariable("schoolName") String schoolName){
+	@PostMapping(value = {"/student/{username}/{password}/{name}", "/student/{username}/{password}/{name}/"})
+	public StudentDto registerStudent(@PathVariable("username") String username,@PathVariable("password") String password,@PathVariable("name") String name){
 		Student s = service.createStudent(username, password, name);
 		return convertToDto(s);
 	}
@@ -65,6 +65,7 @@ public class TutoringSystemRestController {
 	}
 	}
 
+	//logout student
 	@PutMapping(value = {"/logout", "/logout/"})
 	public void logoutStudent() {
 		if(TutoringSystemApplication.getCurrentlyLoggedInStudent() == null) throw new IllegalArgumentException("User not Logged In!");
@@ -85,6 +86,7 @@ public class TutoringSystemRestController {
 		return courseDtos;
 		
 	}
+	
 	//search by courseCode
 	@GetMapping(value= {"/course/{code}", "/course/{code}/"})
 	public CourseDto getCourseByCourseCode(@PathVariable("code") String code){
@@ -154,7 +156,10 @@ public class TutoringSystemRestController {
 		if(s==null) {
 			throw new IllegalArgumentException("There is no such student!");
 		}
-		StudentDto sDto = new StudentDto(s.getUsername(), s.getPassword(), s.getName());
+		StudentDto sDto = new StudentDto();
+		sDto.setUsername(s.getUsername());
+		sDto.setName(s.getName());
+		sDto.setPassword(s.getPassword());
 		return sDto;
 	}
 	
