@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.tutoringsystem.TutoringSystemApplication;
 import ca.mcgill.ecse321.tutoringsystem.dto.CourseDto;
+import ca.mcgill.ecse321.tutoringsystem.dto.RoomBookingDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.RoomDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.StudentDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.StudentReviewDto;
@@ -179,10 +180,18 @@ public class TutoringSystemRestController {
 			StudentReview sr = service.createStudentReview(id, review, s, t);
 			return convertToDto(sr);
 		}
+		//Create Room
+		@PostMapping(value = {"/room/{roomNr}/{isLargeRoom}", "/room/{roomNr}/{isLargeRoom}"})
+		public RoomDto createRoom(@PathVariable("roomNr") int roomNr, @PathVariable("isLargeRoom") boolean isLargeRoom) {
+			Room r = service.createRoom(roomNr, isLargeRoom);
+			return convertToDto(r);
+		}
 		
-	// Check Room availability
-		@GetMapping(value = {"/{roomNr}/{testDate}/{testStartTime}/{testEndTime}","/{roomNr}/{testDate}/{testStartTime}/{testEndTime}"})
-		public RoomDto checkAvailability(@PathVariable("roomNr") Integer roomNr, @PathVariable("testTime") Time testStartTime, @PathVariable("testDate") Date testDate, @PathVariable("testEndTime") Time testEndTime) {
+	// Create Booking
+		@PostMapping(value = {"/room/createBooking/{roomNr}/{id}/{testDate}/{testStartTime}/{testEndTime}","/room/createBooking/{roomNr}/{id}/{testDate}/{testStartTime}/{testEndTime}"})
+		public RoomBookingDto createBooking(@PathVariable("roomNr") Integer roomNr, @PathVariable("id") Integer id,
+												@PathVariable("testStartTime") Time testStartTime,
+												@PathVariable("testDate") Date testDate, @PathVariable("testEndTime") Time testEndTime) {
 			Room r = service.getRoom(roomNr);
 			Set<RoomBooking> unavaiabilities = r.getUnavailability();
 			for(RoomBooking session: unavaiabilities) {
@@ -191,7 +200,8 @@ public class TutoringSystemRestController {
 					if(session.getStartTime().before(testEndTime) && session.getEndTime().after(testEndTime)) return null;
 				}
 			}
-			return convertToDto(r);
+			RoomBooking rb = service.createRoomBooking(id, testStartTime, testStartTime, testDate);
+			return convertToDto(rb);
 		}
 		
 	
@@ -236,5 +246,12 @@ public class TutoringSystemRestController {
 		}
 		RoomDto rDto = new RoomDto(r.getRoomNr(), r.getIsLargeRoom(), r.getSession());
 		return rDto;
+	}
+	private RoomBookingDto convertToDto(RoomBooking rb) {
+		if(rb == null) {
+			throw new IllegalArgumentException("No room booking exists");
+		}
+		RoomBookingDto rbDto = new RoomBookingDto(rb.getId(),rb.getDate(),rb.getStartTime(),rb.getEndTime());
+		return rbDto;
 	}
 }
