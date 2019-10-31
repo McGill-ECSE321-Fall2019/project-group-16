@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.tutoringsystem.dao.*;
 import ca.mcgill.ecse321.tutoringsystem.model.*;
-import ca.mcgill.ecse321.tutoringsystem.model.TutorReview;
 
 @Service
 public class TutoringSystemService {
@@ -270,6 +269,30 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
+	public List<Room> getAllLargeRooms(){
+		List<Room> largeRooms = new ArrayList<Room>();
+		for (Room r : roomRepository.findAll()) {
+			if (r.getIsLargeRoom() == true) {
+				largeRooms.add(r);
+			}
+		}
+		
+		return largeRooms;
+	}
+	
+	@Transactional
+	public List<Room> getAllSmallRooms(){
+		List<Room> smallRooms = new ArrayList<Room>();
+		for (Room r : roomRepository.findAll()) {
+			if (r.getIsLargeRoom() == false) {
+				smallRooms.add(r);
+			}
+		}
+		
+		return smallRooms;
+	}
+	
+	@Transactional
 	public boolean deleteRoom(int roomNr) {
 		if(roomNr < 0){
 			throw new IllegalArgumentException("Room number is invalid");
@@ -463,6 +486,14 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
+	public Session updateSessionIsConfirmed(Integer id, Boolean isConfirmed) {
+		Session s = sessionRepository.findById(id).get();
+		s.setIsConfirmed(isConfirmed);
+		sessionRepository.save(s);
+		return s;
+	}
+	
+	@Transactional
 	public Session getSession(Integer id) {
 		if(id == null || id < 0 ){
 			throw new IllegalArgumentException("ID is invalid");
@@ -479,6 +510,139 @@ public class TutoringSystemService {
 	@Transactional
 	public List<Session> getAllSessions() {
 		return toList(sessionRepository.findAll());
+	}
+	
+	@Transactional
+	public Session randomlyAssignRoom(Session s) {
+		if (s == null) {
+			throw new IllegalArgumentException("Session must exist.");
+		}
+		
+		Date sessionDate = s.getDate();
+		Time sessionStartTime = s.getStartTime();
+		Time sessionEndTime = s.getEndTime();
+		boolean isGroupSession = s.getIsGroupSession();
+		
+		Date roomDate;
+		Time roomStartTime;
+		Time roomEndTime;
+		boolean taken;
+		if (isGroupSession) {
+						
+			for(Room r : getAllLargeRooms()) {
+				Set<RoomBooking> bookings = r.getUnavailability();
+				if (bookings == null || bookings.size() == 0) {
+					s.setRoom(r);
+					r.getSession().add(s);
+					int id = s.hashCode() * r.hashCode();
+					RoomBooking booking = createRoomBooking(id, sessionStartTime, sessionEndTime, sessionDate);
+					bookings.add(booking);
+					r.setUnavailability(bookings);
+					
+					sessionRepository.save(s);
+					roomRepository.save(r);
+					roomBookingRepository.save(booking);
+					break;
+				}
+				
+				taken = false;
+				for (RoomBooking rm : bookings) {
+					if (rm.getDate() == sessionDate) {
+						taken = true;
+						break;
+					}
+					
+					//session starts before booking start and ends after booking start
+					if ((sessionStartTime.compareTo(rm.getStartTime()) <=0) && (sessionEndTime.compareTo(rm.getStartTime()) > 0)) {
+						taken = true;
+						break;
+					}
+					
+					//session starts after booking start but before booking end
+					if ((sessionStartTime.compareTo(rm.getStartTime())>= 0) && (sessionStartTime.compareTo(rm.getEndTime())<=0 )) {
+						taken = true;
+						break;
+					}
+				}
+				//there are no bookings during the session's time
+				if (!taken) {
+					s.setRoom(r);
+					r.getSession().add(s);
+					int id = s.hashCode() * r.hashCode();
+					RoomBooking booking = createRoomBooking(id, sessionStartTime, sessionEndTime, sessionDate);
+					bookings.add(booking);
+					r.setUnavailability(bookings);
+					
+					sessionRepository.save(s);
+					roomRepository.save(r);
+					roomBookingRepository.save(booking);
+					break;
+				}
+				
+			}
+			if (s.getRoom() == null) {
+				throw new RuntimeException("Could not find an available room.");
+			}
+		} else {
+			//when it's not a group session
+			
+			for(Room r : getAllSmallRooms()) {
+				Set<RoomBooking> bookings = r.getUnavailability();
+				if (bookings == null || bookings.size() == 0) {
+					s.setRoom(r);
+					r.getSession().add(s);
+					int id = s.hashCode() * r.hashCode();
+					RoomBooking booking = createRoomBooking(id, sessionStartTime, sessionEndTime, sessionDate);
+					bookings.add(booking);
+					r.setUnavailability(bookings);
+					
+					sessionRepository.save(s);
+					roomRepository.save(r);
+					roomBookingRepository.save(booking);
+					break;
+				}
+				
+				taken = false;
+				for (RoomBooking rm : bookings) {
+					if (rm.getDate() == sessionDate) {
+						taken = true;
+						break;
+					}
+					
+					//session starts before booking start and ends after booking start
+					if ((sessionStartTime.compareTo(rm.getStartTime()) <=0) && (sessionEndTime.compareTo(rm.getStartTime()) > 0)) {
+						taken = true;
+						break;
+					}
+					
+					//session starts after booking start but before booking end
+					if ((sessionStartTime.compareTo(rm.getStartTime())>= 0) && (sessionStartTime.compareTo(rm.getEndTime())<=0 )) {
+						taken = true;
+						break;
+					}
+				}
+				//there are no bookings during the session's time
+				if (!taken) {
+					s.setRoom(r);
+					r.getSession().add(s);
+					int id = s.hashCode() * r.hashCode();
+					RoomBooking booking = createRoomBooking(id, sessionStartTime, sessionEndTime, sessionDate);
+					bookings.add(booking);
+					r.setUnavailability(bookings);
+					
+					sessionRepository.save(s);
+					roomRepository.save(r);
+					roomBookingRepository.save(booking);
+					break;
+				}
+				
+			}
+			if (s.getRoom() == null) {
+				throw new RuntimeException("Could not find an available room.");
+			}
+		}
+		return s;
+		
 	}
 	
 	@Transactional
@@ -543,6 +707,13 @@ public class TutoringSystemService {
 		Student s = studentRepository.findStudentByUsername(username);
 		if(s == null)
 			throw new IllegalArgumentException("User does not exist.");
+		return s;
+	}
+	
+	@Transactional
+	public Student getStudentByUsername(String username) {
+		Student s = new Student();
+		s = studentRepository.findStudentByUsername(username);
 		return s;
 	}
 	
@@ -696,6 +867,21 @@ public class TutoringSystemService {
 		university.setName(name);
 		universityRepository.save(university);
 		return university;
+	}
+
+	@Transactional
+	public void notifyTutor(Tutor t, Session s) {
+		String error = "";
+		if(t == null ){
+			error += "Need to have valid tutor. ";
+		}		
+		if(s == null ){
+			error += "Need to have valid session. ";
+		}
+		if(error.length() != 0){
+			throw new IllegalArgumentException(error);
+		}
+		t.getPendingSession().add(s);
 	}
 
 }

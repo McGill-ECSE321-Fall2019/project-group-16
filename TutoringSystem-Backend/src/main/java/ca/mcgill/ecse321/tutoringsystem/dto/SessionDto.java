@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.Set;
 
+
 import ca.mcgill.ecse321.tutoringsystem.model.Course;
 import ca.mcgill.ecse321.tutoringsystem.model.Room;
 import ca.mcgill.ecse321.tutoringsystem.model.Student;
@@ -116,7 +117,4 @@ public class SessionDto {
 	}
 	
 	   
-	
-	
-	
 }

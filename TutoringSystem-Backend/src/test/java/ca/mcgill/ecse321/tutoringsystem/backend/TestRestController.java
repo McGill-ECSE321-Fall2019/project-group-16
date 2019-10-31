@@ -73,23 +73,26 @@ public class TestRestController {
 	public void setMockOutput() {
 		//setMockOutputStudent();
 		setMockOutputUniversity();
+		setMockOutputAllCourse();
 		setMockOutputCourse();
 	}
 
-//	private void setMockOutputStudent() {
-//		when(studentDao.findStudentByUsername(anyString())).thenAnswer( (InvocationOnMock invocation) -> {
-//			if(invocation.getArgument(0).equals(STUDENT_USERNAME)) {
-//				Student student = new Student();
-//				student.setUsername(STUDENT_USERNAME);
-//				student.setName(STUDENT_NAME);
-//				student.setPassword(STUDENT_PASS);
-//				//student.setSchoolName(STUDENT_SCHOOLNAME);
-//				return student;
-//			} else {
-//				return null;
-//			}
-//		});
-//	}
+
+
+
+	private void setMockOutputStudent() {
+		when(studentDao.findStudentByUsername(anyString())).thenAnswer( (InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(STUDENT_USERNAME)) {
+				Student student = new Student();
+				student.setUsername(STUDENT_USERNAME);
+				student.setName(STUDENT_NAME);
+				student.setPassword(STUDENT_PASS);
+				return student;
+			} else {
+			return null;
+			}
+		});
+	}
 	
 
 	private void setMockOutputUniversity() {
@@ -99,7 +102,7 @@ public class TestRestController {
 			uni.setName(UNI_NAME);
 			uni.setId(UNI_ID);
 			universities.add(uni);
-			return uni;
+			return universities;
 		});	
 	}
 	
@@ -129,12 +132,38 @@ public class TestRestController {
 		});
 	}
 	
+	private void setMockOutputUniversityInvalidName() {
+		when(universityDao.findUniversityByName(anyString())).thenAnswer((InvocationOnMock invocation) -> {
+			return null;
+		});
+	}
+	
+	private void setMockOutputCourse() {
+		when(courseDao.findByCourseCode(anyString())).thenAnswer( (InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(COURSE_CODE)) {
+				University uni = new University();
+				uni.setName(UNI_NAME);
+				uni.setId(UNI_ID);
+				Course course = new Course();
+				course.setCourseCode(COURSE_CODE);
+				course.setSubject(COURSE_SUB);
+				course.setUniversity(uni);
+				return course;
+			} else {
+				return null;
+			}
+		});
+	}
+	
+	
+	
 	// mock output for course
-		private void setMockOutputCourse() {
+		private void setMockOutputAllCourse() {
 			when(courseDao.findAll()).thenAnswer((InvocationOnMock invocation) -> {
 				// create a university
 				University uni = new University();
 				uni.setName(UNI_NAME);
+				uni.setId(UNI_ID);
 				
 				// create a course
 				List<Course> courses = new ArrayList<>();
@@ -162,6 +191,7 @@ public class TestRestController {
 				return cs;
 			});
 		}
+		
 		// mock output for a course without a university
 		private void setMockOutputCourseNoUni() {
 			when(courseDao.findAll()).thenAnswer((InvocationOnMock invocation) -> {
@@ -194,6 +224,20 @@ public class TestRestController {
 	}
 	
 	@Test
+	public void testGetStudent() {
+		Student s = new Student();
+		try {
+			s = service.getStudent(STUDENT_USERNAME);
+		}
+		catch(IllegalArgumentException e) {
+			fail();
+		}
+		assertEquals(STUDENT_USERNAME, s.getUsername());
+		assertEquals(STUDENT_NAME, s.getName());
+		assertEquals(STUDENT_PASS,s.getPassword());
+	}
+	
+	@Test
 	public void testCreateStudentNullUsername() {
 
 		String error = null;
@@ -210,6 +254,7 @@ public class TestRestController {
 
 		assertEquals(0, allStudents.size());
 	}
+	
 	@Test
 	public void testCreateStudentEmptyUsername() {
 
@@ -301,7 +346,7 @@ public class TestRestController {
 	}
 	
 	@Test
-	public void testAllStudents() {
+	public void testAllTutors() {
 		List<Tutor> tutors = new ArrayList<>();
 		Tutor tutor = null;
 		
@@ -321,5 +366,148 @@ public class TestRestController {
 	
 	}
 	
+	// check that the service can retrieve all universities properly
+		@Test
+		public void getAllUniversities() {
+			List<University> uniList = new ArrayList<>();
+			
+			// get all universities
+			try {
+				uniList = service.getAllUniversities();
+			} catch(IllegalArgumentException e) { fail();}
+			
+			// check that only 1 and its the right one
+			assertEquals(1, uniList.size());
+			University u = uniList.get(0);
+			assertEquals(UNI_NAME, u.getName());
+			assertEquals(UNI_ID, u.getId());
+		}
+		
+		// check for no universities created
+		// test coverage: 100%
+		@Test
+		public void getAllUniversitiesEmpty() {
+			List<University> uniList = new ArrayList<>();
+			
+			// run the correct mock output
+			setMockOutputUniversityEmpty();
+			
+			// get all universities
+			try {
+				uniList = service.getAllUniversities();
+			} catch(IllegalArgumentException e) { fail();}
+			
+			assertEquals(0, uniList.size());
+		}
+		
+		@Test
+		public void getUniversityByInvalidName() {
+			setMockOutputUniversityInvalidName();
+			University u = new University();
+			String error = "";
+			try {
+				u = service.getUniversity(NONEXISTING_SCHOOLNAME);
+			}catch(IllegalArgumentException e) { 
+				error = e.getMessage();
+			}
+			assertEquals("University does not exist.",error);
+			
+		}
+	
+	// check that we can get all the courses
+		@Test
+		public void getAllCourses() {
+			List<Course> courseList = new ArrayList<>();
+			
+			// get all universities
+			try {
+				courseList = service.getAllCourses();
+			} catch(IllegalArgumentException e) { fail();}
+			
+			// check that only 1 and its the right one
+			assertEquals(1, courseList.size());
+			Course c = courseList.get(0);
+			assertEquals(COURSE_CODE, c.getCourseCode());
+			assertEquals(COURSE_SUB, c.getSubject());
+		}
+		
+		// check that we can get all the courses
+		@Test
+		public void getAllCoursesEmpty() {
+			List<Course> courseList = new ArrayList<>();
+			
+			// run the correct mock ouptut
+			setMockOutputCourseEmpty();
+			
+			// get all universities
+			try {
+				courseList = service.getAllCourses();
+			} catch(IllegalArgumentException e) { fail();}
+			
+			// check that only 1 and its the right one
+			assertEquals(0, courseList.size());
+		}
+		
+		// check if we can get course using course code
+		@Test
+		public void getCourseByCourseCode() {
+			Course c = new Course();
+			try {
+				c = service.getCourse(COURSE_CODE);
+			} catch(IllegalArgumentException e){ 
+				//System.out.println(e.getMessage());
+				fail(); 
+			}
+			
+			assertEquals(COURSE_CODE, c.getCourseCode());
+			assertEquals(COURSE_SUB, c.getSubject());
+			assertEquals(UNI_ID, c.getUniversity().getId());
+			
+		}
+		
+		@Test
+		public void getCourseByCourseCodeNull() {
+			
+			String error = "";
+			Course c = new Course();
+			try {
+				c = service.getCourse(null);
+			} catch(IllegalArgumentException e){ 
+				error = e.getMessage();
+				//fail(); 
+			}
+			String errorMessage = "Course can't be empty.";
+			
+			assertEquals(error, errorMessage);
+		
+		}
+		
+		@Test
+		public void getCourseByCourseCodeEmpty() {
+			
+			String error = "";
+			Course c = new Course();
+			try {
+				c = service.getCourse("");
+			} catch(IllegalArgumentException e){ 
+				error = e.getMessage();
+				//fail(); 
+			}
+			String errorMessage = "Course can't be empty.";
+			
+			assertEquals(error, errorMessage);
+		}
+		
+		@Test
+		public void getCourseByCourseCodeNoUni() {
+			setMockOutputCourseNoUni();
+			List<Course> courses = new ArrayList<>();
+			try {
+				courses = service.getAllCourses();
+			}catch(IllegalArgumentException e){
+				fail();
+			}
+			assertEquals(1,courses.size());
+		}
 
 }

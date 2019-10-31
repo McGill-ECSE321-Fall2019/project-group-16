@@ -40,6 +40,6 @@ Group 16 is working on the student viewpoint of the application. The viewpoint m
 | :---         |     :---:      |          ---: |
 | Erdong Luo         |        |   |
 | Mustafain Ali Khan     |  Requirement 1,2,3    |     |
-| Paul Hooley        |         |    |
+| Paul Hooley        |    Fix database from deliverable 1, Code coverage for backend, Requirements 8,9     |    |
 | Talha Riaz         |      |    |
 | Zheng Cui          |       |    |

@@ -9,97 +9,109 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Session{
-   private Boolean isConfirmed;
+public class Session {
+	private Boolean isConfirmed;
 
-public void setIsConfirmed(Boolean value) {
-    this.isConfirmed = value;
-}
-public Boolean getIsConfirmed() {
-    return this.isConfirmed;
-}
-private Time startTime;
+	public void setIsConfirmed(Boolean value) {
+		this.isConfirmed = value;
+	}
 
-public void setStartTime(Time value) {
-    this.startTime = value;
-}
-public Time getStartTime() {
-    return this.startTime;
-}
-private Time endTime;
+	public Boolean getIsConfirmed() {
+		return this.isConfirmed;
+	}
 
-public void setEndTime(Time value) {
-    this.endTime = value;
-}
-public Time getEndTime() {
-    return this.endTime;
-}
-private Date date;
+	private Time startTime;
 
-public void setDate(Date value) {
-    this.date = value;
-}
-public Date getDate() {
-    return this.date;
-}
-private Integer id;
+	public void setStartTime(Time value) {
+		this.startTime = value;
+	}
 
-public void setId(Integer value) {
-    this.id = value;
-}
-@Id
-public Integer getId() {
-    return this.id;
-}
-private Set<Student> student;
+	public Time getStartTime() {
+		return this.startTime;
+	}
 
-@ManyToMany
-public Set<Student> getStudent() {
-   return this.student;
-}
+	private Time endTime;
 
-public void setStudent(Set<Student> students) {
-   this.student = students;
-}
+	public void setEndTime(Time value) {
+		this.endTime = value;
+	}
 
-private Boolean isGroupSession;
+	public Time getEndTime() {
+		return this.endTime;
+	}
 
-public void setIsGroupSession(Boolean value) {
-    this.isGroupSession = value;
-}
-public Boolean getIsGroupSession() {
-    return this.isGroupSession;
-}
-   private Tutor tutor;
-   
-   @ManyToOne(optional=false)
-   public Tutor getTutor() {
-      return this.tutor;
-   }
-   
-   public void setTutor(Tutor tutor) {
-      this.tutor = tutor;
-   }
-   
-   private Room room;
-   
-   @ManyToOne(optional=false)
-   public Room getRoom() {
-      return this.room;
-   }
-   
-   public void setRoom(Room room) {
-      this.room = room;
-   }
-   
-   private Course course;
-   
-   @ManyToOne(optional=false)
-   public Course getCourse() {
-      return this.course;
-   }
-   
-   public void setCourse(Course course) {
-      this.course = course;
-   }   
+	private Date date;
+
+	public void setDate(Date value) {
+		this.date = value;
+	}
+
+	public Date getDate() {
+		return this.date;
+	}
+
+	private Integer id;
+
+	public void setId(Integer value) {
+		this.id = value;
+	}
+
+	@Id
+	public Integer getId() {
+		return this.id;
+	}
+
+	private Set<Student> student;
+
+	@ManyToMany
+	public Set<Student> getStudent() {
+		return this.student;
+	}
+
+	public void setStudent(Set<Student> students) {
+		this.student = students;
+	}
+
+	private Boolean isGroupSession;
+
+	public void setIsGroupSession(Boolean value) {
+		this.isGroupSession = value;
+	}
+
+	public Boolean getIsGroupSession() {
+		return this.isGroupSession;
+	}
+
+	private Tutor tutor;
+
+	@ManyToOne(optional = false)
+	public Tutor getTutor() {
+		return this.tutor;
+	}
+
+	public void setTutor(Tutor tutor) {
+		this.tutor = tutor;
+	}
+
+	private Room room;
+
+	@ManyToOne(optional = false)
+	public Room getRoom() {
+		return this.room;
+	}
+
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+
+	private Course course;
+
+	@ManyToOne(optional = false)
+	public Course getCourse() {
+		return this.course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
 }
