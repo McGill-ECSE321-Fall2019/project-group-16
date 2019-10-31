@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import ca.mcgill.ecse321.tutoringsystem.TutoringSystemApplication;
 import ca.mcgill.ecse321.tutoringsystem.dto.CourseDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.StudentDto;
+import ca.mcgill.ecse321.tutoringsystem.dto.StudentReviewDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.UniversityDto;
 import ca.mcgill.ecse321.tutoringsystem.model.Course;
 import ca.mcgill.ecse321.tutoringsystem.model.Student;
+import ca.mcgill.ecse321.tutoringsystem.model.StudentReview;
+import ca.mcgill.ecse321.tutoringsystem.model.Tutor;
 import ca.mcgill.ecse321.tutoringsystem.model.University;
 import ca.mcgill.ecse321.tutoringsystem.service.TutoringSystemService;
 
@@ -51,6 +54,8 @@ public class TutoringSystemRestController {
 		Student s = service.createStudent(username, password, name);
 		return convertToDto(s);
 	}
+	
+
 
 // log in student
 	@PostMapping(value = {"/student/{username}/{password}", "/student/{username}/{password}/"})
@@ -118,6 +123,7 @@ public class TutoringSystemRestController {
 		
 		University u = service.getUniversity(UniversityName);
 		
+		
 		if(u==null)	throw new IllegalArgumentException("There is no such university!");
 		
 		Course c = service.createCourse(code, subject, u);
@@ -146,6 +152,21 @@ public class TutoringSystemRestController {
 		return UDto;	
 	}
 	
+	//register new student
+		@PostMapping(value = {"/studentReview/{id}/{review}/{reviewerId}/{revieweeId}", "studentReview/{id}/{review}/{reviewerId}/{revieweeId}/"})
+		public StudentReviewDto enterCourse(@PathVariable("id") int id, @PathVariable("review") String review, @PathVariable("reviewerId") String reviewerId, @PathVariable("revieweeId") String revieweeId) {
+			
+			Tutor t = service.getTutor(reviewerId);
+			
+			Student s = service.getStudent(revieweeId);
+			
+			if(t==null)	throw new IllegalArgumentException("There is no such tutor!");
+			if(s==null)	throw new IllegalArgumentException("There is no such student!");
+			
+			StudentReview sr = service.createStudentReview(id, review, s, t);
+			return convertToDto(sr);
+		}
+	
 
 	
 	// <--------------------- DTOs ------------------>
@@ -172,5 +193,12 @@ public class TutoringSystemRestController {
 		}
 		CourseDto cDto = new CourseDto(c.getCourseCode(),c.getSubject(),c.getUniversity());
 		return cDto;
+	}
+	private StudentReviewDto convertToDto(StudentReview sr) {
+		if(sr == null) {
+			throw new IllegalArgumentException("There is no such student review!");
+		}
+		StudentReviewDto srDto = new StudentReviewDto(sr.getId(),sr.getReview(),sr.getAuthor(),sr.getReviewee());
+		return srDto;
 	}
 }
