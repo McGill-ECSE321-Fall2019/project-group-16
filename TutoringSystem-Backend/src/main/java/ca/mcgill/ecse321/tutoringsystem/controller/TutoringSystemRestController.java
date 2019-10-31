@@ -1,6 +1,9 @@
 package ca.mcgill.ecse321.tutoringsystem.controller;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,10 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.tutoringsystem.TutoringSystemApplication;
 import ca.mcgill.ecse321.tutoringsystem.dto.CourseDto;
+import ca.mcgill.ecse321.tutoringsystem.dto.SessionDto;
+import ca.mcgill.ecse321.tutoringsystem.dto.RoomBookingDto;
+import ca.mcgill.ecse321.tutoringsystem.dto.RoomDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.StudentDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.StudentReviewDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.UniversityDto;
 import ca.mcgill.ecse321.tutoringsystem.model.Course;
+import ca.mcgill.ecse321.tutoringsystem.model.Room;
+import ca.mcgill.ecse321.tutoringsystem.model.Session;
+import ca.mcgill.ecse321.tutoringsystem.model.RoomBooking;
 import ca.mcgill.ecse321.tutoringsystem.model.Student;
 import ca.mcgill.ecse321.tutoringsystem.model.StudentReview;
 import ca.mcgill.ecse321.tutoringsystem.model.Tutor;
@@ -47,15 +56,16 @@ public class TutoringSystemRestController {
 		return studentDtos;
 	}
 // <-----Post Mappings------->
-
 	
 //register new student
+
 	@PostMapping(value = {"/student/{username}/{password}/{name}", "/student/{username}/{password}/{name}/"})
 	public StudentDto registerStudent(@PathVariable("username") String username,@PathVariable("password") String password,@PathVariable("name") String name){
 
 		if(service.getStudentByUsername(username)!=null) {
 			throw new IllegalArgumentException("Student with username already exists!");
 		}
+
 		Student s = service.createStudent(username, password, name);
 		return convertToDto(s);
 	}
@@ -64,19 +74,17 @@ public class TutoringSystemRestController {
 
 // log in student
 	@PostMapping(value = {"/student/{username}/{password}", "/student/{username}/{password}/"})
-	public StudentDto loginStudent(@PathVariable("username") String username, @PathVariable("password") String password) {
+	public void loginStudent(@PathVariable("username") String username, @PathVariable("password") String password) {
 		Student s = service.getStudent(username);
 		if(s==null) throw new IllegalArgumentException("There is no such student!");
 		String studentPass = s.getPassword();
 		if(password.equals(studentPass)) {
 		TutoringSystemApplication.setCurrentlyLoggedInStudent(s);
-		return convertToDto(s);
 		}else {
 		throw new IllegalArgumentException("Incorrect Password!");
-		}
+	}
 	}
 
-	//logout student
 	@PutMapping(value = {"/logout", "/logout/"})
 	public void logoutStudent() {
 		if(TutoringSystemApplication.getCurrentlyLoggedInStudent() == null) throw new IllegalArgumentException("User not Logged In!");
@@ -97,9 +105,8 @@ public class TutoringSystemRestController {
 		return courseDtos;
 		
 	}
-	
 	//search by courseCode
-	@GetMapping(value= {"/course/{code}", "/course/{code}/"})
+	@GetMapping(value= {"/courses/{code}", "/courses/{code}/"})
 	public CourseDto getCourseByCourseCode(@PathVariable("code") String code){
 		Course c = service.getCourse(code);
 		if(c==null) {
@@ -175,18 +182,113 @@ public class TutoringSystemRestController {
 			return convertToDto(sr);
 		}
 	
+	
+	// <--------------------- Sessions ------------------>
+	
+	//get all sessions
+	@GetMapping(value = {"/sessions", "/sessions/"})
+	public List<SessionDto> getAllSessions(){
+		List<SessionDto> sessionDtoList = new ArrayList<>();
+		for(Session s : service.getAllSessions()) {
+			sessionDtoList.add(convertToDto(s));
+		}
+		return sessionDtoList;
+	}
+	
+	//get session with id
+	@GetMapping(value = {"/sessions/{id}", "/sessions/{id}/"})
+	public SessionDto getSessionWithId(@PathVariable("id") int id) {
+		
+		Session s = service.getSession(id);
+		
+		if (s == null) {
+			throw new IllegalArgumentException("There is no such session!");
+		}
+		return convertToDto(s);
+	}
+	
+	//creating a solo session and notifying the tutor
+	@PostMapping(value = {"/session/{sessionId}/{tutorName}/{studentName}/{startTime}/{endTime}/{date}/{roomNr}/{courseCode}","/session/{sessionId}/{tutorName}/{studentName}/{startTime}/{endTime}/{date}/{roomNr}/{courseCode}/"})
+	public SessionDto enterSession(@PathVariable("sessionId") int sessionId, @PathVariable("tutorName") String tutorUsername,  @PathVariable("studentName") String studentUsername,  @PathVariable("startTime") Time startTime,  @PathVariable("endTime") Time endTime,  @PathVariable("date") Date date,  @PathVariable("roomNr") int roomNr,  @PathVariable("courseCode") String courseCode) {
+		Tutor t = service.getTutor(tutorUsername);
+		Student s = service.getStudent(studentUsername);
+		Set<Student> studentSet = new HashSet<>();
+		studentSet.add(s);
+		Room r = service.getRoom(roomNr);
+		Course c = service.getCourse(courseCode);
+		
+		Session ss = service.createSession(sessionId, false, startTime, endTime, date, false, studentSet, t, r, c);
+		
+		service.notifyTutor(t, ss);
+		return convertToDto(ss);
+	}
+	
+	//confirm or decline session
+	@PostMapping(value = {"/session/{sessionId}/{iscConfirmed}","/notify/{sessionId}/{isConfirmed}/"})
+	public SessionDto confirmSession(@PathVariable("sessionId") int sessionId, @PathVariable("isConfirmed") boolean isConfirmed) {
+				
+		service.updateSessionIsConfirmed(sessionId, isConfirmed);
+		
+		Session ss = service.getSession(sessionId);
+		
+		return convertToDto(ss);
+	}
+	
+		
 
 	
+		//Create Room
+		@PostMapping(value = {"/room/{roomNr}/{isLargeRoom}", "/room/{roomNr}/{isLargeRoom}"})
+		public RoomDto createRoom(@PathVariable("roomNr") int roomNr, @PathVariable("isLargeRoom") boolean isLargeRoom) {
+			Room r = service.createRoom(roomNr, isLargeRoom);
+			return convertToDto(r);
+		}
+		//Get Room
+		@GetMapping(value = {"/room/{roomNr}", "/room/{roomNr}"})
+		public RoomDto getRoom(@PathVariable("roomNr") int roomNr) {
+			Room r = service.getRoom(roomNr);
+			return convertToDto(r);
+		}
+		
+	// Create Room Booking
+		@PostMapping(value = {"/room/createBooking/{roomNr}/{id}/{testDate}/{testStartTime}/{testEndTime}","/room/createBooking/{roomNr}/{id}/{testDate}/{testStartTime}/{testEndTime}"})
+		public RoomBookingDto bookRoom(@PathVariable("roomNr") Integer roomNr, @PathVariable("id") Integer id,
+												@PathVariable("testStartTime") Time testStartTime,
+												@PathVariable("testDate") Date testDate, @PathVariable("testEndTime") Time testEndTime) {
+			Room r = service.getRoom(roomNr);
+			Set<RoomBooking> unavaiabilities = r.getUnavailability();
+			for(RoomBooking session: unavaiabilities) {
+				if(session.getDate() == testDate) {
+					if(session.getStartTime().before(testStartTime) && session.getEndTime().after(testStartTime)) return null;
+					if(session.getStartTime().before(testEndTime) && session.getEndTime().after(testEndTime)) return null;
+				}
+			}
+			RoomBooking rb = service.createRoomBooking(id, testStartTime, testStartTime, testDate);
+			return convertToDto(rb);
+		}
+	// Check availability	
+		@GetMapping(value = {"/room/checkAvail/{roomNr}/{testDate}/{testStartTime}/{testEndTime}","/room/checkAvail/{roomNr}/testDate}/{testStartTime}/{testEndTime}"})
+		public Boolean checkAvailability(@PathVariable("roomNr") Integer roomNr,@PathVariable("testStartTime") Time testStartTime,
+												@PathVariable("testDate") Date testDate, @PathVariable("testEndTime") Time testEndTime) {
+			Room r = service.getRoom(roomNr);
+			Set<RoomBooking> unavaiabilities = r.getUnavailability();
+			for(RoomBooking session: unavaiabilities) {
+				if(session.getDate() == testDate) {
+					if(session.getStartTime().before(testStartTime) && session.getEndTime().after(testStartTime)) return false;
+					if(session.getStartTime().before(testEndTime) && session.getEndTime().after(testEndTime)) return false;
+				}
+			}
+//			RoomBooking rb = service.createRoomBooking(id, testStartTime, testStartTime, testDate);
+//			return convertToDto(rb);
+			return true;
+		}
 	// <--------------------- DTOs ------------------>
 	
 	private StudentDto convertToDto(Student s) {
 		if(s==null) {
 			throw new IllegalArgumentException("There is no such student!");
 		}
-		StudentDto sDto = new StudentDto();
-		sDto.setUsername(s.getUsername());
-		sDto.setName(s.getName());
-		sDto.setPassword(s.getPassword());
+		StudentDto sDto = new StudentDto(s.getUsername(), s.getPassword(), s.getName());
 		return sDto;
 	}
 	
@@ -211,5 +313,26 @@ public class TutoringSystemRestController {
 		}
 		StudentReviewDto srDto = new StudentReviewDto(sr.getId(),sr.getReview(),sr.getAuthor(),sr.getReviewee());
 		return srDto;
+	}
+	private SessionDto convertToDto(Session s) {
+		if (s == null) {
+			throw new IllegalArgumentException("There is no such session!");
+		}
+		SessionDto sdto = new SessionDto(s.getStartTime(), s.getEndTime(), s.getDate(), s.getId(), s.getIsGroupSession(), s.getIsConfirmed());
+		return sdto;
+	}
+	private RoomDto convertToDto(Room r) {
+		if(r == null) {
+			throw new IllegalArgumentException("No such room exists");
+		}
+		RoomDto rDto = new RoomDto(r.getRoomNr(), r.getIsLargeRoom(), r.getSession());
+		return rDto;
+	}
+	private RoomBookingDto convertToDto(RoomBooking rb) {
+		if(rb == null) {
+			throw new IllegalArgumentException("No room booking exists");
+		}
+		RoomBookingDto rbDto = new RoomBookingDto(rb.getId(),rb.getDate(),rb.getStartTime(),rb.getEndTime());
+		return rbDto;
 	}
 }
