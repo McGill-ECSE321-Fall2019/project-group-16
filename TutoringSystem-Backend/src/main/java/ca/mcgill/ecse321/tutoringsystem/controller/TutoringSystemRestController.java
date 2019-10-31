@@ -187,9 +187,9 @@ public class TutoringSystemRestController {
 			return convertToDto(r);
 		}
 		
-	// Create Booking
+	// Check Room availability
 		@PostMapping(value = {"/room/createBooking/{roomNr}/{id}/{testDate}/{testStartTime}/{testEndTime}","/room/createBooking/{roomNr}/{id}/{testDate}/{testStartTime}/{testEndTime}"})
-		public RoomBookingDto createBooking(@PathVariable("roomNr") Integer roomNr, @PathVariable("id") Integer id,
+		public RoomBookingDto checkAvailability(@PathVariable("roomNr") Integer roomNr, @PathVariable("id") Integer id,
 												@PathVariable("testStartTime") Time testStartTime,
 												@PathVariable("testDate") Date testDate, @PathVariable("testEndTime") Time testEndTime) {
 			Room r = service.getRoom(roomNr);
