@@ -102,6 +102,12 @@ public class TestRestController {
 		});
 	}
 	
+	private void setMockOutputUniversityInvalidName() {
+		when(universityDao.findUniversityByName(anyString())).thenAnswer((InvocationOnMock invocation) -> {
+			return null;
+		});
+	}
+	
 	private void setMockOutputCourse() {
 		when(courseDao.findByCourseCode(anyString())).thenAnswer( (InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(COURSE_CODE)) {
@@ -341,6 +347,20 @@ public class TestRestController {
 			} catch(IllegalArgumentException e) { fail();}
 			
 			assertEquals(0, uniList.size());
+		}
+		
+		@Test
+		public void getUniversityByInvalidName() {
+			setMockOutputUniversityInvalidName();
+			University u = new University();
+			String error = "";
+			try {
+				u = service.getUniversity(NONEXISTING_SCHOOLNAME);
+			}catch(IllegalArgumentException e) { 
+				error = e.getMessage();
+			}
+			assertEquals("University does not exist.",error);
+			
 		}
 	
 	// check that we can get all the courses

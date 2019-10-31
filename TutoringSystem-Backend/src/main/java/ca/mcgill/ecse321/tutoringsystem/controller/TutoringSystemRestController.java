@@ -52,8 +52,8 @@ public class TutoringSystemRestController {
 //register new student
 	@PostMapping(value = {"/student/{username}/{password}/{name}", "/student/{username}/{password}/{name}/"})
 	public StudentDto registerStudent(@PathVariable("username") String username,@PathVariable("password") String password,@PathVariable("name") String name){
-		Student student = service.getStudent(username);
-		if(student!=null) {
+
+		if(service.getStudentByUsername(username)!=null) {
 			throw new IllegalArgumentException("Student with username already exists!");
 		}
 		Student s = service.createStudent(username, password, name);
