@@ -1,6 +1,6 @@
 package ca.mcgill.ecse321.tutoringsystem.controller;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.List;
 import java.util.Set;
 
@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.tutoringsystem.TutoringSystemApplication;
-import ca.mcgill.ecse321.tutoringsystem.dto.CourseDto;
-import ca.mcgill.ecse321.tutoringsystem.dto.StudentDto;
-import ca.mcgill.ecse321.tutoringsystem.dto.UniversityDto;
+import ca.mcgill.ecse321.tutoringsystem.dto.*;
+
 import ca.mcgill.ecse321.tutoringsystem.model.Course;
+import ca.mcgill.ecse321.tutoringsystem.model.Session;
 import ca.mcgill.ecse321.tutoringsystem.model.Student;
+import ca.mcgill.ecse321.tutoringsystem.model.Tutor;
 import ca.mcgill.ecse321.tutoringsystem.model.University;
 import ca.mcgill.ecse321.tutoringsystem.service.TutoringSystemService;
 
@@ -146,10 +147,62 @@ public class TutoringSystemRestController {
 		return UDto;	
 	}
 	
+	
+	// <-------------- Search using subject category ------------>
+	//Done by TR
+	
+	@GetMapping(value = {"/courses/{subject}", "/courses/{subject}"})
+	public List<CourseDto> getCoursesForSubject(@PathVariable("subject") String subject){
+	
+		List<CourseDto> courseDtos = new ArrayList<>();
+		
+		for(Course c: service.getAllCourses()) {
+			
+			if(c.getSubject().equals(subject)) {
+				courseDtos.add(convertToDto(c));
+			}
+			
+		}	
+		return courseDtos;	
+	}
+	
+	
+	// <-------------- Tutor Profile ------------------>
+	//Done by TR
+	
+	@GetMapping(value = {"/courses/tutors/{courseCode}","/courses/tutors/{courseCode}/"})
+	public List<TutorDto> getTutorsForCourse (@PathVariable("courseCode") String courseCode){
+		
+		List<TutorDto> tutorDtos = new ArrayList<>();
+		Course c = service.getCourse(courseCode);
+		
+		for(Tutor t: c.getTutor()) {
+			tutorDtos.add(convertToDto(t));
+		}
+		
+		return tutorDtos;
+		
+	}
+	
+	// <--------------- Manage Session ----------------->
+	//Done by TR
+	
+	@GetMapping(value = {"/sessions", "/sessions/"})
+	public List<SessionDto> getSessions (){
+		
+		Student student = TutoringSystemApplication.getCurrentlyLoggedInStudent();
+		List <SessionDto> sessionDtos = new ArrayList<>();
+		
+		for(Session s: student.getSession()) {		
+			sessionDtos.add(convertToDto(s));		
+		}
+		
+		return sessionDtos;		
+	}
+	
 
 	
 	// <--------------------- DTOs ------------------>
-	
 	private StudentDto convertToDto(Student s) {
 		if(s==null) {
 			throw new IllegalArgumentException("There is no such student!");
@@ -173,4 +226,21 @@ public class TutoringSystemRestController {
 		CourseDto cDto = new CourseDto(c.getCourseCode(),c.getSubject(),c.getUniversity());
 		return cDto;
 	}
+	
+	private TutorDto convertToDto (Tutor t) {
+		if(t==null) {
+			throw new IllegalArgumentException("There is no such tutor!");
+		}
+		TutorDto tDto = new TutorDto(t.getName(), t.getHourlyRate(), t.getStudentReview(), t.getCourse());
+		return tDto;
+	}
+	
+	private SessionDto convertToDto (Session s) {
+		if(s==null) {
+			throw new IllegalArgumentException("There is no such session!");
+		}
+		SessionDto sDto = new SessionDto(s.getId(), s.getIsConfirmed(), s.getStartTime(), s.getEndTime(), s.getDate(), s.getIsGroupSession(), s.getStudent(), s.getTutor(), s.getRoom(), s.getCourse());
+		return sDto;
+	}	
+ 
 }

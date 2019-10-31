@@ -23,6 +23,7 @@ import java.util.List;
 
 import ca.mcgill.ecse321.tutoringsystem.dao.CourseRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.StudentRepository;
+import ca.mcgill.ecse321.tutoringsystem.dao.TutorRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.UniversityRepository;
 import ca.mcgill.ecse321.tutoringsystem.model.*;
 import ca.mcgill.ecse321.tutoringsystem.service.TutoringSystemService;
@@ -39,6 +40,9 @@ public class TestRestController {
 	@Mock
 	private CourseRepository courseDao;
 	
+	@Mock
+	private TutorRepository tutorDao;
+	
 	
 	@InjectMocks
 	private TutoringSystemService service;
@@ -54,6 +58,12 @@ public class TestRestController {
 
 	private static final String UNI_NAME = "TestUniName";
 	private static final int UNI_ID = 1;
+	
+	private static final String TUT_NAME = "Rijul_Saini";
+	private static final String TUT_USERNAME = "rijul.saini";
+	private static final String TUT_PWD = "password";
+	private static final Double TUT_RATE = 18.00;
+			
 
 	private static final String COURSE_CODE = "TestCode";
 	private static final String COURSE_SUB ="TestSubject";
@@ -61,25 +71,25 @@ public class TestRestController {
 	
 	@Before
 	public void setMockOutput() {
-		setMockOutputStudent();
+		//setMockOutputStudent();
 		setMockOutputUniversity();
 		setMockOutputCourse();
 	}
 
-	private void setMockOutputStudent() {
-		when(studentDao.findStudentByUsername(anyString())).thenAnswer( (InvocationOnMock invocation) -> {
-			if(invocation.getArgument(0).equals(STUDENT_USERNAME)) {
-				Student student = new Student();
-				student.setUsername(STUDENT_USERNAME);
-				student.setName(STUDENT_NAME);
-				student.setPassword(STUDENT_PASS);
-				//student.setSchoolName(STUDENT_SCHOOLNAME);
-				return student;
-			} else {
-				return null;
-			}
-		});
-	}
+//	private void setMockOutputStudent() {
+//		when(studentDao.findStudentByUsername(anyString())).thenAnswer( (InvocationOnMock invocation) -> {
+//			if(invocation.getArgument(0).equals(STUDENT_USERNAME)) {
+//				Student student = new Student();
+//				student.setUsername(STUDENT_USERNAME);
+//				student.setName(STUDENT_NAME);
+//				student.setPassword(STUDENT_PASS);
+//				//student.setSchoolName(STUDENT_SCHOOLNAME);
+//				return student;
+//			} else {
+//				return null;
+//			}
+//		});
+//	}
 	
 
 	private void setMockOutputUniversity() {
@@ -97,6 +107,25 @@ public class TestRestController {
 		when(universityDao.findAll()).thenAnswer((InvocationOnMock invocation) -> {
 			List<University> universities = new ArrayList<>();
 			return universities;
+		});
+	}
+	
+	//Mock Tests Tutors
+	private void setMockOutputTutor() {
+		when(tutorDao.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+			List<Tutor> tutors = new ArrayList<>();
+			Tutor tutor = new Tutor();
+			tutor.setName(TUT_NAME);
+			tutor.setUsername(TUT_USERNAME);
+			tutors.add(tutor);
+			return tutors;
+		});	
+	}
+	
+	private void setMockOutputTutorEmpty() {
+		when(tutorDao.findAll()).thenAnswer((InvocationOnMock invocation) -> {
+			List<Tutor> tutors = new ArrayList<>();
+			return tutors;
 		});
 	}
 	
@@ -269,6 +298,27 @@ public class TestRestController {
 		List<Student> allStudents = service.getAllStudents();
 
 		assertEquals(0, allStudents.size());
+	}
+	
+	@Test
+	public void testAllStudents() {
+		List<Tutor> tutors = new ArrayList<>();
+		Tutor tutor = null;
+		
+		try {
+			tutor = service.createTutor(TUT_NAME, TUT_USERNAME, TUT_PWD, TUT_RATE);
+		}
+		catch(IllegalArgumentException e) {
+			fail();
+		}
+		
+		tutors.add(tutor);
+		assertEquals(1, tutors.size());
+		assertEquals(TUT_NAME, tutors.get(0).getName());
+		assertEquals(TUT_USERNAME, tutors.get(0).getUsername());
+		assertEquals(TUT_PWD, tutors.get(0).getPassword());
+		assertEquals(TUT_RATE, tutors.get(0).getHourlyRate());
+	
 	}
 	
 
