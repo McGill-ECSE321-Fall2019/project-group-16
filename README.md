@@ -28,3 +28,18 @@ Group 16 is working on the student viewpoint of the application. The viewpoint m
 | Paul Hooley        | Persistence Layer & Database       | 7      |
 | Talha Riaz         | Documentaton, Issue Tracking, Persistence Testing       | 12      |
 | Zheng Cui          | Documentation, Issue Tracking, Persistence Layer & Database       | 15      |
+
+ ## Sprint 2 (Due Thu, Oct 31)
+ 
+ #### *Sprint 1 is complete. Project Report is now available!*
+ #### -> Access [Sprint 2 Project Report](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki/Project-Report-(Sprint-1))
+ 
+ ### Member Roles & Time Spent
+ 
+| Name | Roles/Tasks | Time Spent (Hours) | 
+| :---         |     :---:      |          ---: |
+| Erdong Luo         |        |   |
+| Mustafain Ali Khan     |  Requirement 1,2,3    |     |
+| Paul Hooley        |         |    |
+| Talha Riaz         |      |    |
+| Zheng Cui          |       |    |
