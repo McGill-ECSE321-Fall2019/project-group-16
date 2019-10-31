@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.tutoringsystem.controller;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -14,10 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.tutoringsystem.TutoringSystemApplication;
 import ca.mcgill.ecse321.tutoringsystem.dto.CourseDto;
+import ca.mcgill.ecse321.tutoringsystem.dto.RoomDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.StudentDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.StudentReviewDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.UniversityDto;
 import ca.mcgill.ecse321.tutoringsystem.model.Course;
+import ca.mcgill.ecse321.tutoringsystem.model.Room;
+import ca.mcgill.ecse321.tutoringsystem.model.RoomBooking;
 import ca.mcgill.ecse321.tutoringsystem.model.Student;
 import ca.mcgill.ecse321.tutoringsystem.model.StudentReview;
 import ca.mcgill.ecse321.tutoringsystem.model.Tutor;
@@ -174,8 +179,21 @@ public class TutoringSystemRestController {
 			StudentReview sr = service.createStudentReview(id, review, s, t);
 			return convertToDto(sr);
 		}
-	
-
+		
+	// Check Room availability
+		@GetMapping(value = {"/{roomNr}/{testDate}/{testStartTime}/{testEndTime}","/{roomNr}/{testDate}/{testStartTime}/{testEndTime}"})
+		public RoomDto checkAvailability(@PathVariable("roomNr") Integer roomNr, @PathVariable("testTime") Time testStartTime, @PathVariable("testDate") Date testDate, @PathVariable("testEndTime") Time testEndTime) {
+			Room r = service.getRoom(roomNr);
+			Set<RoomBooking> unavaiabilities = r.getUnavailability();
+			for(RoomBooking session: unavaiabilities) {
+				if(session.getDate() == testDate) {
+					if(session.getStartTime().before(testStartTime) && session.getEndTime().after(testStartTime)) return null;
+					if(session.getStartTime().before(testEndTime) && session.getEndTime().after(testEndTime)) return null;
+				}
+			}
+			return convertToDto(r);
+		}
+		
 	
 	// <--------------------- DTOs ------------------>
 	
@@ -211,5 +229,12 @@ public class TutoringSystemRestController {
 		}
 		StudentReviewDto srDto = new StudentReviewDto(sr.getId(),sr.getReview(),sr.getAuthor(),sr.getReviewee());
 		return srDto;
+	}
+	private RoomDto convertToDto(Room r) {
+		if(r == null) {
+			throw new IllegalArgumentException("No such room exists");
+		}
+		RoomDto rDto = new RoomDto(r.getRoomNr(), r.getIsLargeRoom(), r.getSession());
+		return rDto;
 	}
 }
