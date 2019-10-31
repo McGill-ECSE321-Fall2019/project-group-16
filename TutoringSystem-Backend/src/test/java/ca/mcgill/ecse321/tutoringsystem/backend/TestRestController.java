@@ -91,7 +91,7 @@ public class TestRestController {
 			uni.setName(UNI_NAME);
 			uni.setId(UNI_ID);
 			universities.add(uni);
-			return uni;
+			return universities;
 		});	
 	}
 	
@@ -185,6 +185,20 @@ public class TestRestController {
 		assertEquals(STUDENT_USERNAME,s.getUsername());
 		assertEquals(STUDENT_PASS,s.getPassword());
 		assertEquals(STUDENT_NAME,s.getName());
+	}
+	
+	@Test
+	public void testGetStudent() {
+		Student s = new Student();
+		try {
+			s = service.getStudent(STUDENT_USERNAME);
+		}
+		catch(IllegalArgumentException e) {
+			fail();
+		}
+		assertEquals(STUDENT_USERNAME, s.getUsername());
+		assertEquals(STUDENT_NAME, s.getName());
+		assertEquals(STUDENT_PASS,s.getPassword());
 	}
 	
 	@Test
