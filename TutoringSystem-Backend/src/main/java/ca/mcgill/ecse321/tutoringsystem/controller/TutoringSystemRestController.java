@@ -186,6 +186,12 @@ public class TutoringSystemRestController {
 			Room r = service.createRoom(roomNr, isLargeRoom);
 			return convertToDto(r);
 		}
+		//Get Room
+		@GetMapping(value = {"/room/{roomNr}", "/room/{roomNr}"})
+		public RoomDto getRoom(@PathVariable("roomNr") int roomNr) {
+			Room r = service.getRoom(roomNr);
+			return convertToDto(r);
+		}
 		
 	// Create Room Booking
 		@PostMapping(value = {"/room/createBooking/{roomNr}/{id}/{testDate}/{testStartTime}/{testEndTime}","/room/createBooking/{roomNr}/{id}/{testDate}/{testStartTime}/{testEndTime}"})
