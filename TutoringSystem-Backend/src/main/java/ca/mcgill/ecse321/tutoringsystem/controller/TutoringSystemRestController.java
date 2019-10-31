@@ -187,9 +187,9 @@ public class TutoringSystemRestController {
 			return convertToDto(r);
 		}
 		
-	// Check Room availability
+	// Create Room Booking
 		@PostMapping(value = {"/room/createBooking/{roomNr}/{id}/{testDate}/{testStartTime}/{testEndTime}","/room/createBooking/{roomNr}/{id}/{testDate}/{testStartTime}/{testEndTime}"})
-		public RoomBookingDto checkAvailability(@PathVariable("roomNr") Integer roomNr, @PathVariable("id") Integer id,
+		public RoomBookingDto bookRoom(@PathVariable("roomNr") Integer roomNr, @PathVariable("id") Integer id,
 												@PathVariable("testStartTime") Time testStartTime,
 												@PathVariable("testDate") Date testDate, @PathVariable("testEndTime") Time testEndTime) {
 			Room r = service.getRoom(roomNr);
@@ -203,8 +203,22 @@ public class TutoringSystemRestController {
 			RoomBooking rb = service.createRoomBooking(id, testStartTime, testStartTime, testDate);
 			return convertToDto(rb);
 		}
-		
-	
+	// Check availability	
+		@GetMapping(value = {"/room/checkAvail/{roomNr}/{testDate}/{testStartTime}/{testEndTime}","/room/checkAvail/{roomNr}/testDate}/{testStartTime}/{testEndTime}"})
+		public Boolean checkAvailability(@PathVariable("roomNr") Integer roomNr,@PathVariable("testStartTime") Time testStartTime,
+												@PathVariable("testDate") Date testDate, @PathVariable("testEndTime") Time testEndTime) {
+			Room r = service.getRoom(roomNr);
+			Set<RoomBooking> unavaiabilities = r.getUnavailability();
+			for(RoomBooking session: unavaiabilities) {
+				if(session.getDate() == testDate) {
+					if(session.getStartTime().before(testStartTime) && session.getEndTime().after(testStartTime)) return false;
+					if(session.getStartTime().before(testEndTime) && session.getEndTime().after(testEndTime)) return false;
+				}
+			}
+//			RoomBooking rb = service.createRoomBooking(id, testStartTime, testStartTime, testDate);
+//			return convertToDto(rb);
+			return true;
+		}
 	// <--------------------- DTOs ------------------>
 	
 	private StudentDto convertToDto(Student s) {
