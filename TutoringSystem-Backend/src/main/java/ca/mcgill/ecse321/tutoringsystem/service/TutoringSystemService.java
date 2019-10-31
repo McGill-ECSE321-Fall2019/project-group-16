@@ -67,11 +67,16 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException(error);
 		}
 
-		Course c = new Course();
-		c.setCourseCode(courseCode);
-		c.setSubject(subject);
-		c.setUniversity(university);
-		courseRepository.save(c);
+		Course c = courseRepository.findByCourseCode(courseCode);
+		
+		if (c == null) {
+			c = new Course();
+			c.setCourseCode(courseCode);
+			c.setSubject(subject);
+			c.setUniversity(university);
+			courseRepository.save(c);
+		}
+		
 		return c;
 	}
 	
@@ -137,12 +142,15 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException(error);
 		}
 
-		StudentReview sr = new StudentReview();
-		sr.setId(id);
-		sr.setReview(comments);
-		sr.setReviewee(reviewee);
-		sr.setAuthor(reviewer);
-		studentReviewRepository.save(sr);
+		StudentReview sr = studentReviewRepository.findById(id).get();
+		if (sr == null) {
+			sr = new StudentReview();
+			sr.setId(id);
+			sr.setReview(comments);
+			sr.setReviewee(reviewee);
+			sr.setAuthor(reviewer);
+			studentReviewRepository.save(sr);
+		}
 		return sr;
 	}
 	
@@ -196,13 +204,19 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException(error);
 		}
 
-		TutorReview tr = new TutorReview();
-		tr.setId(id);
-		tr.setReview(comments);
-		tr.setReviewee(reviewee);
-		tr.setRating(rating);
-		tr.setAuthor(reviewer);
-		tutorReviewRepository.save(tr);
+		
+		TutorReview tr = tutorReviewRepository.findById(id).get();
+		
+		if (tr == null) {
+			tr = new TutorReview();
+			tr.setId(id);
+			tr.setReview(comments);
+			tr.setReviewee(reviewee);
+			tr.setRating(rating);
+			tr.setAuthor(reviewer);
+			tutorReviewRepository.save(tr);
+		}
+		
 		return tr;
 	}
 
@@ -247,10 +261,16 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException(error);
 		}
 
-		Room r = new Room();
-		r.setRoomNr(roomNr);
-		r.setIsLargeRoom(isLargeRoom);
-		roomRepository.save(r);
+		
+		Room r = roomRepository.findById(roomNr).get();
+		
+		if (r == null) {
+			r = new Room();
+			r.setRoomNr(roomNr);
+			r.setIsLargeRoom(isLargeRoom);
+			roomRepository.save(r);
+		}
+		
 		return r;
 	}
 	
@@ -359,12 +379,17 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException(error);
 		}		
 		
-		RoomBooking rb = new RoomBooking();
-		rb.setId(id);
-		rb.setStartTime(startTime);
-		rb.setEndTime(endTime);
-		rb.setDate(date);
-		roomBookingRepository.save(rb);
+		RoomBooking rb = roomBookingRepository.findById(id).get();
+		
+		if (rb == null) {
+			rb = new RoomBooking();
+			rb.setId(id);
+			rb.setStartTime(startTime);
+			rb.setEndTime(endTime);
+			rb.setDate(date);
+			roomBookingRepository.save(rb);
+		}
+		
 		return rb;
 	}
 	
@@ -469,19 +494,24 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException(error);
 		}
 		
-
-		Session s = new Session();
-		s.setId(id);
-		s.setIsConfirmed(isConfirmed);
-		s.setStartTime(startTime);
-		s.setEndTime(endTime);
-		s.setDate(date);
-		s.setIsGroupSession(isGroupSession);
-		s.setStudent(tutee); //This causes a null pointer exception
-		s.setTutor(tutor);
-		s.setRoom(room);
-		s.setCourse(course);
-		sessionRepository.save(s);
+		
+		Session s = sessionRepository.findById(id).get();
+		
+		if (s == null) {
+			s = new Session();
+			s.setId(id);
+			s.setIsConfirmed(isConfirmed);
+			s.setStartTime(startTime);
+			s.setEndTime(endTime);
+			s.setDate(date);
+			s.setIsGroupSession(isGroupSession);
+			s.setStudent(tutee); //This causes a null pointer exception
+			s.setTutor(tutor);
+			s.setRoom(room);
+			s.setCourse(course);
+			sessionRepository.save(s);
+		}
+		
 		return s;
 	}
 	
@@ -661,11 +691,16 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException(error);
 		}
 		
-		Student s = new Student();
-		s.setUsername(username);
-		s.setPassword(password);
-		s.setName(name);
-		studentRepository.save(s);
+		Student s = studentRepository.findById(username).get();
+		
+		if (s == null) {
+			s = new Student();
+			s.setUsername(username);
+			s.setPassword(password);
+			s.setName(name);
+			studentRepository.save(s);
+		}
+		
 		return s;
 	}
 	
@@ -749,12 +784,19 @@ public class TutoringSystemService {
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
 		}
-		Tutor tutor = new Tutor();
-		tutor.setName(name);
-		tutor.setUsername(username);
-		tutor.setPassword(password);
-		tutor.setHourlyRate(hourlyRate);
-		tutorRepository.save(tutor);
+		
+		
+		Tutor tutor = tutorRepository.findTutorByUsername(username);
+		
+		if (tutor == null) {
+			tutor = new Tutor();
+			tutor.setName(name);
+			tutor.setUsername(username);
+			tutor.setPassword(password);
+			tutor.setHourlyRate(hourlyRate);
+			tutorRepository.save(tutor);
+		}
+		
 		return tutor;
 	}
 	
@@ -822,10 +864,15 @@ public class TutoringSystemService {
 		if(name == null || name.trim().length() == 0){
 			throw new IllegalArgumentException("Name can't be empty. ");
 		}
-		University u = new University();
-		u.setName(name);
-		u.setId(id);
-		universityRepository.save(u);
+		University u = universityRepository.findById(id).get();
+		
+		if (u == null) {
+			u = new University();
+			u.setName(name);
+			u.setId(id);
+			universityRepository.save(u);
+		}
+		
 		return u;
 	}
 	
