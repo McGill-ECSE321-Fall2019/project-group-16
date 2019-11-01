@@ -77,12 +77,13 @@ public class TutoringSystemRestController {
 
 // log in student
 	@PostMapping(value = {"/student/{username}/{password}", "/student/{username}/{password}/"})
-	public void loginStudent(@PathVariable("username") String username, @PathVariable("password") String password) {
+	public StudentDto loginStudent(@PathVariable("username") String username, @PathVariable("password") String password) {
 		Student s = service.getStudent(username);
 		if(s==null) throw new IllegalArgumentException("There is no such student!");
 		String studentPass = s.getPassword();
 		if(password.equals(studentPass)) {
 		TutoringSystemApplication.setCurrentlyLoggedInStudent(s);
+		return(convertToDto(s));
 		}else {
 		throw new IllegalArgumentException("Incorrect Password!");
 	}
