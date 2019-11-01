@@ -48,10 +48,13 @@ public class TestRestController {
 	private TutoringSystemService service;
 	
 	private static final String STUDENT_USERNAME = "TestStudent";
+	private static final String TUTOR_USERNAME = "TestSTutor";
 	private static final String NONEXISTING_USERNAME = "NotAStudent";
 	private static final String STUDENT_NAME ="TestName";
+	private static final String Tutor_NAME ="TestName2";
 	private static final String NONEXISTING_NAME ="NotAName";
 	private static final String STUDENT_PASS ="TestPass";
+	private static final String Tutor_PASS ="TestPass2";
 	private static final String NONEXISTING_PASS ="NotAPass";
 	private static final String STUDENT_SCHOOLNAME ="TestPass";
 	private static final String NONEXISTING_SCHOOLNAME ="NotAPass";
