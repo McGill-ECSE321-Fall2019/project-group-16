@@ -487,9 +487,18 @@ public class TutoringSystemService {
 	
 	@Transactional
 	public Session updateSessionIsConfirmed(Integer id, Boolean isConfirmed) {
+				
 		Session s = sessionRepository.findById(id).get();
 		s.setIsConfirmed(isConfirmed);
 		sessionRepository.save(s);
+		
+		if (isConfirmed) {
+			Tutor t = s.getTutor();
+			Set<Session> pendingSessions = t.getPendingSession();
+			Set<Session> currentSessions = t.getSession();
+			currentSessions.add(s);
+			pendingSessions.remove(s);
+		}
 		return s;
 	}
 	
@@ -882,6 +891,31 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException(error);
 		}
 		t.getPendingSession().add(s);
+		tutorRepository.save(t);
+	}
+
+	public Course requestCourse(String courseCode, String subject, String universityName) {
+		if(courseCode == null || courseCode.trim().length() == 0){
+			throw new IllegalArgumentException("Course can't be empty.");
+		}
+		if(subject == null || subject.trim().length() == 0){
+			throw new IllegalArgumentException("Subject can't be empty.");
+		}
+		if(universityName == null || universityName.trim().length() == 0){
+			throw new IllegalArgumentException("University can't be empty.");
+		}
+		
+		Course c = courseRepository.findByCourseCode(courseCode);
+		if (c != null) {
+			throw new IllegalArgumentException("Course already exists.");
+		}
+		
+		University u = getUniversity(universityName);
+		Course course = createCourse(courseCode, subject, u);
+		course.setIsRequested(true);
+		courseRepository.save(course);
+		
+		return course;
 	}
 
 }
