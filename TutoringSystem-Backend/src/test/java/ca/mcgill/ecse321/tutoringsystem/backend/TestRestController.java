@@ -83,6 +83,7 @@ public class TestRestController {
 		setMockOutputUniversity();
 		setMockOutputAllCourse();
 		setMockOutputCourse();
+		setMockOutputStudentReview();
 	}
 
 
@@ -556,6 +557,22 @@ public class TestRestController {
 				fail();
 			}
 			assertEquals(1,courses.size());
+		}
+		
+		
+		@Test
+		public void testCreateValidStudentReview() {
+		StudentReview sr= null;
+		Student s = new Student();
+		Tutor t = new Tutor();
+			try {
+				sr=service.createStudentReview(UNI_ID, "good", s, t);
+			} catch (IllegalArgumentException e) {
+				fail();
+			}
+
+			assertEquals("good", sr.getReview());
+			
 		}
 
 }
