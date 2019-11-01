@@ -24,6 +24,7 @@ import ca.mcgill.ecse321.tutoringsystem.dto.RoomDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.StudentDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.StudentReviewDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.TutorDto;
+import ca.mcgill.ecse321.tutoringsystem.dto.TutorReviewDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.UniversityDto;
 import ca.mcgill.ecse321.tutoringsystem.model.Course;
 import ca.mcgill.ecse321.tutoringsystem.model.Room;
@@ -33,6 +34,7 @@ import ca.mcgill.ecse321.tutoringsystem.model.Student;
 import ca.mcgill.ecse321.tutoringsystem.model.StudentReview;
 
 import ca.mcgill.ecse321.tutoringsystem.model.Tutor;
+import ca.mcgill.ecse321.tutoringsystem.model.TutorReview;
 import ca.mcgill.ecse321.tutoringsystem.model.University;
 import ca.mcgill.ecse321.tutoringsystem.service.TutoringSystemService;
 
@@ -212,25 +214,21 @@ public class TutoringSystemRestController {
 
 	// <--------------- Manage Session ----------------->
 
-	// register new student
-	@PostMapping(value = { "/studentReview/{id}/{review}/{reviewerId}/{revieweeId}",
-			"studentReview/{id}/{review}/{reviewerId}/{revieweeId}/" })
-	public StudentReviewDto enterCourse(@PathVariable("id") int id, @PathVariable("review") String review,
-			@PathVariable("reviewerId") String reviewerId, @PathVariable("revieweeId") String revieweeId) {
-
-		Tutor t = service.getTutor(reviewerId);
-
-		Student s = service.getStudent(revieweeId);
-
-		if (t == null)
-			throw new IllegalArgumentException("There is no such tutor!");
-		if (s == null)
-			throw new IllegalArgumentException("There is no such student!");
-
-		StudentReview sr = service.createStudentReview(id, review, s, t);
-		return convertToDto(sr);
-	}
-
+	//student review
+		@PostMapping(value = {"/studentReview/{id}/{review}/{reviewerId}/{revieweeId}", "studentReview/{id}/{review}/{reviewerId}/{revieweeId}/"})
+		public StudentReviewDto enterCourse(@PathVariable("id") int id, @PathVariable("review") String review, @PathVariable("reviewerId") String reviewerId, @PathVariable("revieweeId") String revieweeId) {
+			
+			Tutor t = service.getTutor(reviewerId);
+			
+			Student s = service.getStudent(revieweeId);
+			
+			if(t==null)	throw new IllegalArgumentException("There is no such tutor!");
+			if(s==null)	throw new IllegalArgumentException("There is no such student!");
+			
+			StudentReview sr = service.createStudentReview(id, review, s, t);
+			return convertToDto(sr);
+		}
+	
 	// <--------------------- Sessions ------------------>
 
 	// get all sessions
@@ -414,6 +412,14 @@ public class TutoringSystemRestController {
 		RoomDto rDto = new RoomDto(r.getRoomNr(), r.getIsLargeRoom(), r.getSession());
 		return rDto;
 	}
+
+	private TutorReviewDto convertToDto(TutorReview tr) {
+ 		if(tr == null) {
+ 			throw new IllegalArgumentException("There is no such Tutor review!");
+ 		}
+ 		TutorReviewDto trDto = new TutorReviewDto(tr.getId(), tr.getReview(), tr.getReviewee(), tr.getRating(), tr.getAuthor());
+ 		return trDto;
+ 	}
 
 	private RoomBookingDto convertToDto(RoomBooking rb) {
 		if (rb == null) {
