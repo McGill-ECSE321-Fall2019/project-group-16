@@ -41,6 +41,6 @@ Group 16 is working on the student viewpoint of the application. The viewpoint m
 | :---         |     :---:      |          ---: |
 | Erdong Luo   |                |               |
 | Mustafain Ali Khan |  Business Methods for Requirements 1,2,3,4, Unit Testing for Business Methods using Mockito, Improving Code Coverage, Documentation    |  25   |
-| Paul Hooley        |    Fix database from deliverable 1, Code coverage for backend, Requirements 8,9, Documentation,      |  25  |
+| Paul Hooley        |    Fix database from deliverable 1, Code coverage for backend, Requirements 8,9, Documentation      |  25  |
 | Talha Riaz         | Business Methods for Requirements 5,6 & 15, Unit Testing for Business Methods using Mockito, Documentation     |  12  |
 | Zheng Cui          |       |    |
