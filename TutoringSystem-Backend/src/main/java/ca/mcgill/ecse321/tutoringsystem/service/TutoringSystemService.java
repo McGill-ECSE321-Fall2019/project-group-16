@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.tutoringsystem.service;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -881,15 +882,16 @@ public class TutoringSystemService {
 	@Transactional
 	public void notifyTutor(Tutor t, Session s) {
 		String error = "";
-		if(t == null ){
+		if(t == null){
 			error += "Need to have valid tutor. ";
 		}		
-		if(s == null ){
+		if(s == null){
 			error += "Need to have valid session. ";
 		}
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
 		}
+
 		t.getPendingSession().add(s);
 		tutorRepository.save(t);
 	}

@@ -318,6 +318,10 @@ public class TutoringSystemRestController {
 				if (session.getStartTime().before(testEndTime) && session.getEndTime().after(testEndTime))
 					return null;
 			}
+
+			RoomBooking rb = service.createRoomBooking(id, testStartTime, testStartTime, testDate);
+			return convertToDto(rb);	
+
 		}
 		RoomBooking rb = service.createRoomBooking(id, testStartTime, testStartTime, testDate);
 		return convertToDto(rb);
