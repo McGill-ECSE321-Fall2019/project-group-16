@@ -746,6 +746,13 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
+	public Student getStudentByUsername(String username) {
+		Student s = new Student();
+		s = studentRepository.findStudentByUsername(username);
+		return s;
+	}
+	
+	@Transactional
 	public boolean deleteStudent(String username) {
 		if(username == null || username.trim().length() == 0){
 			throw new IllegalArgumentException("Username can't be empty. ");

@@ -39,7 +39,7 @@ Group 16 is working on the student viewpoint of the application. The viewpoint m
 | Name | Roles/Tasks | Time Spent (Hours) | 
 | :---         |     :---:      |          ---: |
 | Erdong Luo         |        |   |
-| Mustafain Ali Khan     |  Requirement 1,2,3    |     |
-| Paul Hooley        |         |    |
+| Mustafain Ali Khan     |  Business Methods for Requirements 1,2,3,4, Unit Testing for Business Methods using Mockito, Improving Code Coverage, Documentation    |     |
+| Paul Hooley        |    Fix database from deliverable 1, Code coverage for backend, Requirements 8,9     |    |
 | Talha Riaz         |      |    |
 | Zheng Cui          |       |    |

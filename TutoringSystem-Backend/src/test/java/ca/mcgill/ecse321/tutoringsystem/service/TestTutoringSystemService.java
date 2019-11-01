@@ -146,6 +146,32 @@ public class TestTutoringSystemService {
 	}
 	
 	@Test
+	public void testGetStudentUserNameNull() {
+		
+		String error = "";
+		try {
+		Student s = service.getStudent(null);
+		}catch(IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("Username can't be empty.",error);
+		
+	}
+	
+	@Test
+	public void testGetStudentUserNameNotExisting() {
+		
+		String error = "";
+		try {
+		Student s = service.getStudent("rich");
+		}catch(IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals("User does not exist.",error);
+		
+	}
+	
+	@Test
 	public void testUpdateStudentNull() {
 		
 		String name = "richard";
@@ -274,7 +300,30 @@ public class TestTutoringSystemService {
 
 		assertEquals(0, allStudents.size());
 	}
+	
+	@Test
+	public void testGetStudentByUsername() {
+		String name = "richard";
+		String username = "student1";
+		String password = "password";
+		String error = null;
 		
+		try {
+			service.createStudent(username, password, name);
+		} catch (IllegalArgumentException e) {
+			
+			error = e.getMessage();
+		}
+		
+        Student s = new Student();
+		try {
+			s = service.getStudentByUsername(username);
+		} catch (IllegalArgumentException e) {
+			error = e.getMessage();
+		}
+		assertEquals(username, s.getUsername());
+	}
+	
 	//Tutor tests
 	@Test
 	public void testCreateTutor() {
@@ -298,6 +347,7 @@ public class TestTutoringSystemService {
 		assertEquals(password, allTutors.get(0).getPassword());
 		assertEquals(rate, allTutors.get(0).getHourlyRate(), 0.01);
 	}
+	
 	
 	@Test
 	public void testUpdateTutor() {
@@ -513,7 +563,18 @@ public class TestTutoringSystemService {
 		assertEquals(name, service.getUniversity(name).getName());	
 		}
 	
-
+    @Test
+    public void testGetUniversityNullName() {
+    		
+    		String error = "";
+    		try {
+    			service.getUniversity(null);
+    		}catch (IllegalArgumentException e) {
+    		  error = e.getMessage();
+    		}
+    		assertEquals("Name can't be empty. ", error);
+    	
+    }  
 	@Test
 	public void testUpdateUniversity() {
 

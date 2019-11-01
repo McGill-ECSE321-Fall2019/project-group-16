@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.tutoringsystem.TutoringSystemApplication;
+
 import ca.mcgill.ecse321.tutoringsystem.dto.CourseDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.SessionDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.RoomBookingDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.RoomDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.StudentDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.StudentReviewDto;
+import ca.mcgill.ecse321.tutoringsystem.dto.TutorDto;
 import ca.mcgill.ecse321.tutoringsystem.dto.UniversityDto;
 import ca.mcgill.ecse321.tutoringsystem.model.Course;
 import ca.mcgill.ecse321.tutoringsystem.model.Room;
@@ -29,6 +31,7 @@ import ca.mcgill.ecse321.tutoringsystem.model.Session;
 import ca.mcgill.ecse321.tutoringsystem.model.RoomBooking;
 import ca.mcgill.ecse321.tutoringsystem.model.Student;
 import ca.mcgill.ecse321.tutoringsystem.model.StudentReview;
+
 import ca.mcgill.ecse321.tutoringsystem.model.Tutor;
 import ca.mcgill.ecse321.tutoringsystem.model.University;
 import ca.mcgill.ecse321.tutoringsystem.service.TutoringSystemService;
@@ -58,8 +61,14 @@ public class TutoringSystemRestController {
 // <-----Post Mappings------->
 	
 //register new student
-	@PostMapping(value = {"/student/{username}/{password}/{name}/{schoolName}", "/student/{username}/{password}/{name}/{schoolName}/"})
-	public StudentDto registerStudent(@PathVariable("username") String username,@PathVariable("password") String password,@PathVariable("name") String name, @PathVariable("schoolName") String schoolName){
+
+	@PostMapping(value = {"/student/{username}/{password}/{name}", "/student/{username}/{password}/{name}/"})
+	public StudentDto registerStudent(@PathVariable("username") String username,@PathVariable("password") String password,@PathVariable("name") String name){
+
+		if(service.getStudentByUsername(username)!=null) {
+			throw new IllegalArgumentException("Student with username already exists!");
+		}
+
 		Student s = service.createStudent(username, password, name);
 		return convertToDto(s);
 	}
@@ -68,12 +77,13 @@ public class TutoringSystemRestController {
 
 // log in student
 	@PostMapping(value = {"/student/{username}/{password}", "/student/{username}/{password}/"})
-	public void loginStudent(@PathVariable("username") String username, @PathVariable("password") String password) {
+	public StudentDto loginStudent(@PathVariable("username") String username, @PathVariable("password") String password) {
 		Student s = service.getStudent(username);
 		if(s==null) throw new IllegalArgumentException("There is no such student!");
 		String studentPass = s.getPassword();
 		if(password.equals(studentPass)) {
 		TutoringSystemApplication.setCurrentlyLoggedInStudent(s);
+		return(convertToDto(s));
 		}else {
 		throw new IllegalArgumentException("Incorrect Password!");
 	}
@@ -161,6 +171,47 @@ public class TutoringSystemRestController {
 		return UDto;	
 	}
 	
+
+	
+	// <-------------- Search using subject category ------------>
+	//Done by TR
+	
+	@GetMapping(value = {"/courses/subject/{sub}", "/courses/subject/{sub}"})
+	public List<CourseDto> getCoursesForSubject(@PathVariable("sub") String sub){
+	
+		List<CourseDto> courseDtos = new ArrayList<>();
+		
+		for(Course c: service.getAllCourses()) {
+			
+			if(c.getSubject().equals(sub)) {
+				courseDtos.add(convertToDto(c));
+			}
+			
+		}	
+		return courseDtos;	
+	}
+	
+	
+	// <-------------- Tutor Profile ------------------>
+	//Done by TR
+	
+	@GetMapping(value = {"/courses/tutors/{courseCode}","/courses/tutors/{courseCode}/"})
+	public List<TutorDto> getTutorsForCourse (@PathVariable("courseCode") String courseCode){
+		
+		List<TutorDto> tutorDtos = new ArrayList<>();
+		Course c = service.getCourse(courseCode);
+		
+		for(Tutor t: c.getTutor()) {
+			tutorDtos.add(convertToDto(t));
+		}
+		
+		return tutorDtos;
+		
+	}
+	
+	// <--------------- Manage Session ----------------->
+
+
 	//register new student
 		@PostMapping(value = {"/studentReview/{id}/{review}/{reviewerId}/{revieweeId}", "studentReview/{id}/{review}/{reviewerId}/{revieweeId}/"})
 		public StudentReviewDto enterCourse(@PathVariable("id") int id, @PathVariable("review") String review, @PathVariable("reviewerId") String reviewerId, @PathVariable("revieweeId") String revieweeId) {
@@ -228,7 +279,6 @@ public class TutoringSystemRestController {
 		return convertToDto(ss);
 	}
 	
-		
 
 	
 		//Create Room
@@ -277,7 +327,6 @@ public class TutoringSystemRestController {
 			return true;
 		}
 	// <--------------------- DTOs ------------------>
-	
 	private StudentDto convertToDto(Student s) {
 		if(s==null) {
 			throw new IllegalArgumentException("There is no such student!");
@@ -301,6 +350,23 @@ public class TutoringSystemRestController {
 		CourseDto cDto = new CourseDto(c.getCourseCode(),c.getSubject(),c.getUniversity());
 		return cDto;
 	}
+
+	private TutorDto convertToDto (Tutor t) {
+		if(t==null) {
+			throw new IllegalArgumentException("There is no such tutor!");
+		}
+		TutorDto tDto = new TutorDto(t.getName(), t.getHourlyRate(), t.getStudentReview(), t.getCourse());
+		return tDto;
+	}
+	
+	private SessionDto convertToDto (Session s) {
+		if(s==null) {
+			throw new IllegalArgumentException("There is no such session!");
+		}
+		SessionDto sDto = new SessionDto(s.getId(), s.getIsConfirmed(), s.getStartTime(), s.getEndTime(), s.getDate(), s.getIsGroupSession(), s.getStudent(), s.getTutor(), s.getRoom(), s.getCourse());
+		return sDto;
+	}	
+
 	private StudentReviewDto convertToDto(StudentReview sr) {
 		if(sr == null) {
 			throw new IllegalArgumentException("There is no such student review!");
@@ -308,13 +374,7 @@ public class TutoringSystemRestController {
 		StudentReviewDto srDto = new StudentReviewDto(sr.getId(),sr.getReview(),sr.getAuthor(),sr.getReviewee());
 		return srDto;
 	}
-	private SessionDto convertToDto(Session s) {
-		if (s == null) {
-			throw new IllegalArgumentException("There is no such session!");
-		}
-		SessionDto sdto = new SessionDto(s.getStartTime(), s.getEndTime(), s.getDate(), s.getId(), s.getIsGroupSession(), s.getIsConfirmed());
-		return sdto;
-	}
+
 	private RoomDto convertToDto(Room r) {
 		if(r == null) {
 			throw new IllegalArgumentException("No such room exists");
@@ -329,4 +389,5 @@ public class TutoringSystemRestController {
 		RoomBookingDto rbDto = new RoomBookingDto(rb.getId(),rb.getDate(),rb.getStartTime(),rb.getEndTime());
 		return rbDto;
 	}
+
 }
