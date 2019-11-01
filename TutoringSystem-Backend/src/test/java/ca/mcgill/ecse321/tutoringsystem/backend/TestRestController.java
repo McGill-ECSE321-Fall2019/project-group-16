@@ -621,7 +621,22 @@ public class TestRestController {
 		assertEquals("good",tr.getReview());
 		assertEquals(RATING, tr.getRating());
 	
-	
-}
+	}
+		
+		@Test
+		public void testCreateStudentReviewNullReviewr() {
+
+			String error = null;
+			Tutor t = new Tutor();
+			try {
+				service.createStudentReview(UNI_ID, "good", null, t);
+			} catch (IllegalArgumentException e) {
+				
+				error = e.getMessage();
+			}
+
+			assertEquals("Reviewee is null.", error.trim());
+
+		}
 
 }
