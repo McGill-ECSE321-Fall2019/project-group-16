@@ -209,7 +209,6 @@ public class TutoringSystemRestController {
 	}
 	
 	// <--------------- Manage Session ----------------->
-	//Done by TR
 
 
 	//register new student
