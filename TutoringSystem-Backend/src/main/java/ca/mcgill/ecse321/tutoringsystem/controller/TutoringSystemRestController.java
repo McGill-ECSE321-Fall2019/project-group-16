@@ -77,12 +77,13 @@ public class TutoringSystemRestController {
 
 // log in student
 	@PostMapping(value = {"/student/{username}/{password}", "/student/{username}/{password}/"})
-	public void loginStudent(@PathVariable("username") String username, @PathVariable("password") String password) {
+	public StudentDto loginStudent(@PathVariable("username") String username, @PathVariable("password") String password) {
 		Student s = service.getStudent(username);
 		if(s==null) throw new IllegalArgumentException("There is no such student!");
 		String studentPass = s.getPassword();
 		if(password.equals(studentPass)) {
 		TutoringSystemApplication.setCurrentlyLoggedInStudent(s);
+		return(convertToDto(s));
 		}else {
 		throw new IllegalArgumentException("Incorrect Password!");
 	}
@@ -175,14 +176,14 @@ public class TutoringSystemRestController {
 	// <-------------- Search using subject category ------------>
 	//Done by TR
 	
-	@GetMapping(value = {"/courses/{subject}", "/courses/{subject}"})
-	public List<CourseDto> getCoursesForSubject(@PathVariable("subject") String subject){
+	@GetMapping(value = {"/courses/subject/{sub}", "/courses/subject/{sub}"})
+	public List<CourseDto> getCoursesForSubject(@PathVariable("sub") String sub){
 	
 		List<CourseDto> courseDtos = new ArrayList<>();
 		
 		for(Course c: service.getAllCourses()) {
 			
-			if(c.getSubject().equals(subject)) {
+			if(c.getSubject().equals(sub)) {
 				courseDtos.add(convertToDto(c));
 			}
 			
