@@ -88,8 +88,8 @@ public class TestRestController {
 		setMockOutputUniversity();
 		setMockOutputAllCourse();
 		setMockOutputCourse();
-		setMockOutputStudentReview();
-		setMockOutputTutorReview();
+		//setMockOutputStudentReview();
+		//setMockOutputTutorReview();
 	}
 
 
@@ -142,55 +142,55 @@ public class TestRestController {
 		});
 	}
 	
-	private void setMockOutputStudentReview() {
-		when(studentReviewDao.findById(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
-			if(invocation.getArgument(0).equals(UNI_ID)) {
-				StudentReview sr = new StudentReview();
-				Student student = new Student();
-				Tutor tutor = new Tutor();
-				student.setUsername(STUDENT_USERNAME);
-				student.setName(STUDENT_NAME);
-				student.setPassword(STUDENT_PASS);
-				tutor.setUsername(TUT_USERNAME);
-				tutor.setName(TUT_NAME);
-				tutor.setPassword(Tutor_PASS);
-				tutor.setHourlyRate(TUT_RATE);
-				sr.setAuthor(tutor);
-				sr.setId(UNI_ID);
-				sr.setReview("good");
-				sr.setReviewee(student);
-				
-				return sr;
-			} else {
-			return null;
-			}
-		});
-	}
-	private void setMockOutputTutorReview() {
-		when(TutorReviewDao.findById(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
-			if(invocation.getArgument(0).equals(UNI_ID)) {
-				TutorReview tr = new TutorReview();
-				Student student = new Student();
-				Tutor tutor = new Tutor();
-				student.setUsername(STUDENT_USERNAME);
-				student.setName(STUDENT_NAME);
-				student.setPassword(STUDENT_PASS);
-				tutor.setUsername(TUT_USERNAME);
-				tutor.setName(TUT_NAME);
-				tutor.setPassword(Tutor_PASS);
-				tutor.setHourlyRate(TUT_RATE);
-				tr.setAuthor(student);
-				tr.setId(UNI_ID);
-				tr.setReview("good");
-				tr.setReviewee(tutor);
-				tr.setRating(1);
-				
-				return tr;
-			} else {
-			return null;
-			}
-		});
-	}
+//	private void setMockOutputStudentReview() {
+//		when(studentReviewDao.findById(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
+//			if(invocation.getArgument(0).equals(UNI_ID)) {
+//				StudentReview sr = new StudentReview();
+//				Student student = new Student();
+//				Tutor tutor = new Tutor();
+//				student.setUsername(STUDENT_USERNAME);
+//				student.setName(STUDENT_NAME);
+//				student.setPassword(STUDENT_PASS);
+//				tutor.setUsername(TUT_USERNAME);
+//				tutor.setName(TUT_NAME);
+//				tutor.setPassword(Tutor_PASS);
+//				tutor.setHourlyRate(TUT_RATE);
+//				sr.setAuthor(tutor);
+//				sr.setId(UNI_ID);
+//				sr.setReview("good");
+//				sr.setReviewee(student);
+//				
+//				return sr;
+//			} else {
+//			return null;
+//			}
+//		});
+//	}
+//	private void setMockOutputTutorReview() {
+//		when(TutorReviewDao.findById(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
+//			if(invocation.getArgument(0).equals(UNI_ID)) {
+//				TutorReview tr = new TutorReview();
+//				Student student = new Student();
+//				Tutor tutor = new Tutor();
+//				student.setUsername(STUDENT_USERNAME);
+//				student.setName(STUDENT_NAME);
+//				student.setPassword(STUDENT_PASS);
+//				tutor.setUsername(TUT_USERNAME);
+//				tutor.setName(TUT_NAME);
+//				tutor.setPassword(Tutor_PASS);
+//				tutor.setHourlyRate(TUT_RATE);
+//				tr.setAuthor(student);
+//				tr.setId(UNI_ID);
+//				tr.setReview("good");
+//				tr.setReviewee(tutor);
+//				tr.setRating(1);
+//				
+//				return tr;
+//			} else {
+//			return null;
+//			}
+//		});
+//	}
 	
 	
 	//Mock Tests Tutors
