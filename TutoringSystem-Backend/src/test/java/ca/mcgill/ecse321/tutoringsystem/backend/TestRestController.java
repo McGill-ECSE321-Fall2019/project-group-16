@@ -48,10 +48,13 @@ public class TestRestController {
 	private TutoringSystemService service;
 	
 	private static final String STUDENT_USERNAME = "TestStudent";
+	private static final String TUTOR_USERNAME = "TestSTutor";
 	private static final String NONEXISTING_USERNAME = "NotAStudent";
 	private static final String STUDENT_NAME ="TestName";
+	private static final String Tutor_NAME ="TestName2";
 	private static final String NONEXISTING_NAME ="NotAName";
 	private static final String STUDENT_PASS ="TestPass";
+	private static final String Tutor_PASS ="TestPass2";
 	private static final String NONEXISTING_PASS ="NotAPass";
 	private static final String STUDENT_SCHOOLNAME ="TestPass";
 	private static final String NONEXISTING_SCHOOLNAME ="NotAPass";
@@ -88,6 +91,20 @@ public class TestRestController {
 				student.setName(STUDENT_NAME);
 				student.setPassword(STUDENT_PASS);
 				return student;
+			} else {
+			return null;
+			}
+		});
+	}
+	private void setMockOutputTutor2() {
+		when(tutorDao.findTutorByUsername(anyString())).thenAnswer( (InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(TUTOR_USERNAME)) {
+				Tutor tutor = new Tutor();
+				tutor.setUsername(TUTOR_USERNAME);
+				tutor.setName(STUDENT_NAME);
+				tutor.setPassword(STUDENT_PASS);
+				tutor.setHourlyRate(1.0);
+				return tutor;
 			} else {
 			return null;
 			}
