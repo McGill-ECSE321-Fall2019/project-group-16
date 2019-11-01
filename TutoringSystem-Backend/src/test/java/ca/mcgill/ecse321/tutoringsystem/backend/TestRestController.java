@@ -15,6 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -23,6 +24,7 @@ import java.util.List;
 
 import ca.mcgill.ecse321.tutoringsystem.dao.CourseRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.StudentRepository;
+import ca.mcgill.ecse321.tutoringsystem.dao.StudentReviewRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.TutorRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.UniversityRepository;
 import ca.mcgill.ecse321.tutoringsystem.model.*;
@@ -42,6 +44,9 @@ public class TestRestController {
 	
 	@Mock
 	private TutorRepository tutorDao;
+	
+	@Mock
+	private StudentReviewRepository studentReviewDao;
 	
 	
 	@InjectMocks
@@ -129,6 +134,32 @@ public class TestRestController {
 			return universities;
 		});
 	}
+	
+	private void setMockOutputStudentReview() {
+		when(studentReviewDao.findById(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(UNI_ID)) {
+				StudentReview sr = new StudentReview();
+				Student student = new Student();
+				Tutor tutor = new Tutor();
+				student.setUsername(STUDENT_USERNAME);
+				student.setName(STUDENT_NAME);
+				student.setPassword(STUDENT_PASS);
+				tutor.setUsername(TUT_USERNAME);
+				tutor.setName(TUT_NAME);
+				tutor.setPassword(Tutor_PASS);
+				tutor.setHourlyRate(TUT_RATE);
+				sr.setAuthor(tutor);
+				sr.setId(UNI_ID);
+				sr.setReview("good");
+				sr.setReviewee(student);
+				
+				return sr;
+			} else {
+			return null;
+			}
+		});
+	}
+	
 	
 	//Mock Tests Tutors
 	private void setMockOutputTutor() {
