@@ -210,20 +210,7 @@ public class TutoringSystemRestController {
 	
 	// <--------------- Manage Session ----------------->
 	//Done by TR
-	
-	@GetMapping(value = {"/sessions", "/sessions/"})
-	public List<SessionDto> getSessions (){
-		
-		Student student = TutoringSystemApplication.getCurrentlyLoggedInStudent();
-		List <SessionDto> sessionDtos = new ArrayList<>();
-		
-		for(Session s: student.getSession()) {		
-			sessionDtos.add(convertToDto(s));		
-		}
-		
-		return sessionDtos;		
-	}
-	
+
 
 	//register new student
 		@PostMapping(value = {"/studentReview/{id}/{review}/{reviewerId}/{revieweeId}", "studentReview/{id}/{review}/{reviewerId}/{revieweeId}/"})
