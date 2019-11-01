@@ -70,6 +70,7 @@ public class TestRestController {
 
 	private static final String UNI_NAME = "TestUniName";
 	private static final int UNI_ID = 1;
+	private static final Integer RATING = 1;
 	
 	private static final String TUT_NAME = "Rijul_Saini";
 	private static final String TUT_USERNAME = "rijul.saini";
