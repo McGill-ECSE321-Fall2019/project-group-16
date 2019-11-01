@@ -228,6 +228,22 @@ public class TutoringSystemRestController {
 			StudentReview sr = service.createStudentReview(id, review, s, t);
 			return convertToDto(sr);
 		}
+		
+		//create tutor review
+		@PostMapping(value = {"/tutorReview/{id}/{review}/{revieweeId}/{rating}/{reviewerId}", "/tutorReview/{id}/{review}/{revieweeId}/{rating}/{reviewerId}/"})
+		public TutorReviewDto createTutorReview(@PathVariable("id") int id, @PathVariable("review") String review, @PathVariable("reviewerId") String revieweeId, @PathVariable("rating") int rating,@PathVariable("revieweeId") String reviewerId) {
+
+
+		  Tutor t = service.getTutor(reviewerId);
+		  Student s = service.getStudent(revieweeId);
+
+
+		  if(t==null)	throw new IllegalArgumentException("The tutor didn't exist!");
+		  if(s==null)	throw new IllegalArgumentException("The student didn't exist!");
+
+		  TutorReview tr = service.createTutorReview(id, review, t, rating, s);
+		  return convertToDto(tr);
+		}
 	
 	// <--------------------- Sessions ------------------>
 
