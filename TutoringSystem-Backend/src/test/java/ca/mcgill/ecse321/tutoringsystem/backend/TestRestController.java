@@ -70,6 +70,7 @@ public class TestRestController {
 
 	private static final String UNI_NAME = "TestUniName";
 	private static final int UNI_ID = 1;
+	private static final Integer RATING = 1;
 	
 	private static final String TUT_NAME = "Rijul_Saini";
 	private static final String TUT_USERNAME = "rijul.saini";
@@ -605,5 +606,22 @@ public class TestRestController {
 			assertEquals("good", sr.getReview());
 			
 		}
+
+		@Test
+		public void testCreateValidTutorReview() {
+				TutorReview tr= null;
+		Student s = new Student();
+		Tutor t = new Tutor();
+		try {
+			tr=service.createTutorReview(UNI_ID, "good", t, 1 ,s);
+		} catch (IllegalArgumentException e) {
+			fail();
+		}
+
+		assertEquals("good",tr.getReview());
+		assertEquals(RATING, tr.getRating());
+	
+	
+}
 
 }
