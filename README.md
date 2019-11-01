@@ -32,6 +32,7 @@ Group 16 is working on the student viewpoint of the application. The viewpoint m
  ## Sprint 2 (Due Thu, Oct 31)
  
  #### *Sprint 1 is complete. Project Report is now available!*
+ 
  #### -> Access [Sprint 2 Project Report](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki/Project-Report-(Sprint-1))
  
  ### Member Roles & Time Spent
