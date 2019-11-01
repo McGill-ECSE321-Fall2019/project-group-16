@@ -96,6 +96,20 @@ public class TestRestController {
 			}
 		});
 	}
+	private void setMockOutputTutor2() {
+		when(tutorDao.findTutorByUsername(anyString())).thenAnswer( (InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(TUTOR_USERNAME)) {
+				Tutor tutor = new Tutor();
+				tutor.setUsername(TUTOR_USERNAME);
+				tutor.setName(STUDENT_NAME);
+				tutor.setPassword(STUDENT_PASS);
+				tutor.setHourlyRate(1.0);
+				return tutor;
+			} else {
+			return null;
+			}
+		});
+	}
 	
 
 	private void setMockOutputUniversity() {
