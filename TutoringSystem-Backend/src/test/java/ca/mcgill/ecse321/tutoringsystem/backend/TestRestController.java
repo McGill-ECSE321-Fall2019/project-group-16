@@ -26,6 +26,7 @@ import ca.mcgill.ecse321.tutoringsystem.dao.CourseRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.StudentRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.StudentReviewRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.TutorRepository;
+import ca.mcgill.ecse321.tutoringsystem.dao.TutorReviewRepository;
 import ca.mcgill.ecse321.tutoringsystem.dao.UniversityRepository;
 import ca.mcgill.ecse321.tutoringsystem.model.*;
 import ca.mcgill.ecse321.tutoringsystem.service.TutoringSystemService;
@@ -47,6 +48,9 @@ public class TestRestController {
 	
 	@Mock
 	private StudentReviewRepository studentReviewDao;
+	
+	@Mock
+	private TutorReviewRepository TutorReviewDao;
 	
 	
 	@InjectMocks
@@ -84,6 +88,7 @@ public class TestRestController {
 		setMockOutputAllCourse();
 		setMockOutputCourse();
 		setMockOutputStudentReview();
+		setMockOutputTutorReview();
 	}
 
 
@@ -155,6 +160,31 @@ public class TestRestController {
 				sr.setReviewee(student);
 				
 				return sr;
+			} else {
+			return null;
+			}
+		});
+	}
+	private void setMockOutputTutorReview() {
+		when(TutorReviewDao.findById(anyInt())).thenAnswer( (InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(UNI_ID)) {
+				TutorReview tr = new TutorReview();
+				Student student = new Student();
+				Tutor tutor = new Tutor();
+				student.setUsername(STUDENT_USERNAME);
+				student.setName(STUDENT_NAME);
+				student.setPassword(STUDENT_PASS);
+				tutor.setUsername(TUT_USERNAME);
+				tutor.setName(TUT_NAME);
+				tutor.setPassword(Tutor_PASS);
+				tutor.setHourlyRate(TUT_RATE);
+				tr.setAuthor(student);
+				tr.setId(UNI_ID);
+				tr.setReview("good");
+				tr.setReviewee(tutor);
+				tr.setRating(1);
+				
+				return tr;
 			} else {
 			return null;
 			}
