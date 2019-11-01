@@ -307,7 +307,7 @@ public class TutoringSystemRestController {
 				}
 			}
 			RoomBooking rb = service.createRoomBooking(id, testStartTime, testStartTime, testDate);
-			return convertToDto(rb);
+			return convertToDto(rb);	
 		}
 	// Check availability	
 		@GetMapping(value = {"/room/checkAvail/{roomNr}/{testDate}/{testStartTime}/{testEndTime}","/room/checkAvail/{roomNr}/testDate}/{testStartTime}/{testEndTime}"})

@@ -2050,28 +2050,55 @@ public class TestTutoringSystemService {
 				
 			}
 			
-			// @Test
-			// public void testGetSession() {
-			// 	Student s = service.createStudent("student1", "YeeHaw", "Also Jeff", "McGIll");
-			// 	Tutor t = service.createTutor("Jeff", "jeffMyBoy", "12Mut", 18.0);
+			@Test
+			public void testNotifyTutor() {
 				
-			// 	University u = service.createUniversity(12, "McGill");
-			// 	Room r = service.createRoom(1, true);
-			// 	Course c = service.createCourse("FACC100", "Intro to Engineering Proffession", u);
+				Date date = Date.valueOf("2019-10-10");
+				Time startTime = Time.valueOf("10:00:00");
+				Time endTime = Time.valueOf("14:00:00");
+				
+				String name = "Joseph";
+				String username = "tutor1";
+				String password = "tutorPassword1";
+				double rate = 18;
+				
+				Tutor tutor = service.createTutor(name, username, password, rate);
 			
+				name = "richard";
+				username = "student1";
+				password = "studentPassword1";
 				
-			// 	Date date = Date.valueOf("2019-10-10");
-			// 	Time startTime = Time.valueOf("10:00:00");
-			// 	Time endTime = Time.valueOf("14:00:00");
+				Student student = service.createStudent(username, password, name);
+				Set <Student> students = new HashSet<>();
+				students.add(student);
 				
+				int id = 4;
+				Boolean isConfirmed = false;
+		        Boolean isGroupSession = false;
+		        
+		        University university = service.createUniversity(1, "McGill University");
+		        Room room = service.createRoom(1, false);
+				Course course = service.createCourse("Math141", "Math", university);
 				
-			// 	service.createSession(1, true, startTime, endTime, date, false, s, t, r, c);
-			// 	try {
-			// 		service.getSession(1);
-			// 	} catch(IllegalArgumentException e) {
-			// 		fail();
-			// 	}
-			// }
+		        Session s = service.createSession(id,isConfirmed,startTime,endTime,date,isGroupSession, students, tutor, room, course);
+				
+				try {
+					service.notifyTutor(tutor, s);
+				} catch(IllegalArgumentException e) {
+					fail();
+				}
+				assertEquals(true,true);
+			}
+			
+			@Test
+			public void testNotifyTutorNull() {
+				try {
+					service.notifyTutor(null, null);
+					fail();
+				}catch(IllegalArgumentException e) {
+					assertEquals(e.getMessage().trim(), "Need to have valid tutor. Need to have valid session.");
+				}
+			}
 			
 			@Test
 			public void testGetNullSession() {
