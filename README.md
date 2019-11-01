@@ -31,16 +31,16 @@ Group 16 is working on the student viewpoint of the application. The viewpoint m
 
  ## Sprint 2 (Due Thu, Oct 31)
  
- #### *Sprint 1 is complete. Project Report is now available!*
+ #### *Sprint 2 is complete. Project Report is now available!*
  
- #### -> Access [Sprint 2 Project Report](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki/Project-Report-(Sprint-1))
+ #### -> Access [Sprint 2 Project Report](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki/Project-Report-(Sprint-2))
  
  ### Member Roles & Time Spent
- 
+
 | Name | Roles/Tasks | Time Spent (Hours) | 
 | :---         |     :---:      |          ---: |
-| Erdong Luo         |        |   |
-| Mustafain Ali Khan     |  Business Methods for Requirements 1,2,3,4, Unit Testing for Business Methods using Mockito, Improving Code Coverage, Documentation    |     |
-| Paul Hooley        |    Fix database from deliverable 1, Code coverage for backend, Requirements 8,9     |    |
-| Talha Riaz         |      |    |
+| Erdong Luo   |                |               |
+| Mustafain Ali Khan |  Business Methods for Requirements 1,2,3,4, Unit Testing for Business Methods using Mockito, Improving Code Coverage, Documentation    |  25   |
+| Paul Hooley        |    Fix database from deliverable 1, Code coverage for backend, Requirements 8,9, Documentation,      |  25  |
+| Talha Riaz         | Business Methods for Requirements 5,6 & 15, Unit Testing for Business Methods using Mockito, Documentation     |  12  |
 | Zheng Cui          |       |    |
