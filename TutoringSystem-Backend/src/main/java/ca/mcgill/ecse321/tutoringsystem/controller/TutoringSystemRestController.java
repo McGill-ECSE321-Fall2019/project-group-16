@@ -175,14 +175,14 @@ public class TutoringSystemRestController {
 	// <-------------- Search using subject category ------------>
 	//Done by TR
 	
-	@GetMapping(value = {"/courses/{subject}", "/courses/{subject}"})
-	public List<CourseDto> getCoursesForSubject(@PathVariable("subject") String subject){
+	@GetMapping(value = {"/courses/subject/{sub}", "/courses/subject/{sub}"})
+	public List<CourseDto> getCoursesForSubject(@PathVariable("sub") String sub){
 	
 		List<CourseDto> courseDtos = new ArrayList<>();
 		
 		for(Course c: service.getAllCourses()) {
 			
-			if(c.getSubject().equals(subject)) {
+			if(c.getSubject().equals(sub)) {
 				courseDtos.add(convertToDto(c));
 			}
 			

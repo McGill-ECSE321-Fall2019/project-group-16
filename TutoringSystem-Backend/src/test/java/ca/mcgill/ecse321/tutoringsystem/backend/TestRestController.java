@@ -83,7 +83,7 @@ public class TestRestController {
 	
 	@Before
 	public void setMockOutput() {
-		//setMockOutputStudent();
+		setMockOutputStudent();
 		setMockOutputUniversity();
 		setMockOutputAllCourse();
 		setMockOutputCourse();
@@ -304,6 +304,7 @@ public class TestRestController {
 	
 	@Test
 	public void testGetStudent() {
+		
 		Student s = new Student();
 		try {
 			s = service.getStudent(STUDENT_USERNAME);
