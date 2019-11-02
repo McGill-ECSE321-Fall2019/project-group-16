@@ -278,16 +278,20 @@ public class TutoringSystemRestController {
 			@PathVariable("startTime") Time startTime, @PathVariable("endTime") Time endTime,
 			@PathVariable("date") Date date, @PathVariable("roomNr") int roomNr,
 			@PathVariable("courseCode") String courseCode) {
+		
 		Tutor t = service.getTutor(tutorUsername);
 		Student s = service.getStudent(studentUsername);
 		Set<Student> studentSet = new HashSet<>();
 		studentSet.add(s);
 		Room r = service.getRoom(roomNr);
 		Course c = service.getCourse(courseCode);
+		
 
 		Session ss = service.createSession(sessionId, false, startTime, endTime, date, false, studentSet, t, r, c);
-
-		service.notifyTutor(t, ss);
+		Set <Session> pendingSessions = t.getPendingSession();
+		pendingSessions.add(ss);
+		
+		service.updateTutor(t.getUsername(), t.getName(), t.getPassword(), t.getHourlyRate(), pendingSessions, t.getSession());
 		return convertToDto(ss);
 	}
 
@@ -301,6 +305,12 @@ public class TutoringSystemRestController {
 		Session ss = service.getSession(sessionId);
 
 		return convertToDto(ss);
+	}
+	
+	// Cancel Session
+	@PostMapping(value = {"/session/cancel/{sessionId}", "/session/cancel/{sessionId}/"})
+	public void cancelSession(@PathVariable("sessionId") int sessionId) {
+		service.deleteSession(sessionId);
 	}
 
 	// Create Room
@@ -316,6 +326,132 @@ public class TutoringSystemRestController {
 		Room r = service.getRoom(roomNr);
 		return convertToDto(r);
 	}
+	
+	// Assign Room to Session
+	@PostMapping(value = {"/session/assign/{sessionId}", "/session/assign/{sessionId}/"})
+	public SessionDto assignRoomToSession(@PathVariable("sessionId") int sessionId) {
+		Session s = service.getSession(sessionId);
+		
+		Date sessionDate = s.getDate();
+		Time sessionStartTime = s.getStartTime();
+		Time sessionEndTime = s.getEndTime();
+		boolean isGroupSession = s.getIsGroupSession();
+		
+		Date roomDate;
+		Time roomStartTime;
+		Time roomEndTime;
+		boolean taken;
+		if (isGroupSession) {
+						
+			for(Room r : service.getAllLargeRooms()) {
+				Set<RoomBooking> bookings = r.getUnavailability();
+				if (bookings == null || bookings.size() == 0) {
+					
+					Set<Session> roomSessions = r.getSession();
+					roomSessions.add(s);
+					int id = s.hashCode() * r.hashCode();
+					RoomBooking booking = service.createRoomBooking(id, sessionStartTime, sessionEndTime, sessionDate);
+					bookings.add(booking);
+					
+					service.updateRoom(r.getRoomNr(), r.getIsLargeRoom(), roomSessions, bookings);
+					service.updateSession(id, s.getIsConfirmed(), s.getStartTime(), s.getEndTime(), s.getDate(), s.getIsGroupSession(), s.getStudent(), s.getTutor(), r, s.getCourse());
+					break;
+				}
+				
+				taken = false;
+				for (RoomBooking rm : bookings) {
+					if (rm.getDate() == sessionDate) {
+						taken = true;
+						break;
+					}
+					
+					//session starts before booking start and ends after booking start
+					if ((sessionStartTime.compareTo(rm.getStartTime()) <=0) && (sessionEndTime.compareTo(rm.getStartTime()) > 0)) {
+						taken = true;
+						break;
+					}
+					
+					//session starts after booking start but before booking end
+					if ((sessionStartTime.compareTo(rm.getStartTime())>= 0) && (sessionStartTime.compareTo(rm.getEndTime())<=0 )) {
+						taken = true;
+						break;
+					}
+				}
+				//there are no bookings during the session's time
+				if (!taken) {
+					Set<Session> roomSessions = r.getSession();
+					roomSessions.add(s);
+					int id = s.hashCode() * r.hashCode();
+					RoomBooking booking = service.createRoomBooking(id, sessionStartTime, sessionEndTime, sessionDate);
+					bookings.add(booking);
+					
+					service.updateRoom(r.getRoomNr(), r.getIsLargeRoom(), roomSessions, bookings);
+					service.updateSession(id, s.getIsConfirmed(), s.getStartTime(), s.getEndTime(), s.getDate(), s.getIsGroupSession(), s.getStudent(), s.getTutor(), r, s.getCourse());
+					break;
+				}
+				
+			}
+			if (s.getRoom() == null) {
+				throw new RuntimeException("Could not find an available room.");
+			}
+		} else {
+			//when it's not a group session
+			
+			for(Room r : service.getAllSmallRooms()) {
+				Set<RoomBooking> bookings = r.getUnavailability();
+				if (bookings == null || bookings.size() == 0) {
+					Set<Session> roomSessions = r.getSession();
+					roomSessions.add(s);
+					int id = s.hashCode() * r.hashCode();
+					RoomBooking booking = service.createRoomBooking(id, sessionStartTime, sessionEndTime, sessionDate);
+					bookings.add(booking);
+					
+					service.updateRoom(r.getRoomNr(), r.getIsLargeRoom(), roomSessions, bookings);
+					service.updateSession(id, s.getIsConfirmed(), s.getStartTime(), s.getEndTime(), s.getDate(), s.getIsGroupSession(), s.getStudent(), s.getTutor(), r, s.getCourse());
+					break;
+				}
+				
+				taken = false;
+				for (RoomBooking rm : bookings) {
+					if (rm.getDate() == sessionDate) {
+						taken = true;
+						break;
+					}
+					
+					//session starts before booking start and ends after booking start
+					if ((sessionStartTime.compareTo(rm.getStartTime()) <=0) && (sessionEndTime.compareTo(rm.getStartTime()) > 0)) {
+						taken = true;
+						break;
+					}
+					
+					//session starts after booking start but before booking end
+					if ((sessionStartTime.compareTo(rm.getStartTime())>= 0) && (sessionStartTime.compareTo(rm.getEndTime())<=0 )) {
+						taken = true;
+						break;
+					}
+				}
+				//there are no bookings during the session's time
+				if (!taken) {
+					Set<Session> roomSessions = r.getSession();
+					roomSessions.add(s);
+					int id = s.hashCode() * r.hashCode();
+					RoomBooking booking = service.createRoomBooking(id, sessionStartTime, sessionEndTime, sessionDate);
+					bookings.add(booking);
+					
+					service.updateRoom(r.getRoomNr(), r.getIsLargeRoom(), roomSessions, bookings);
+					service.updateSession(id, s.getIsConfirmed(), s.getStartTime(), s.getEndTime(), s.getDate(), s.getIsGroupSession(), s.getStudent(), s.getTutor(), r, s.getCourse());
+					break;
+				}
+				
+			}
+			if (s.getRoom() == null) {
+				throw new RuntimeException("Could not find an available room.");
+			}
+		}
+		
+		return convertToDto(s);
+	}
+	
 
 	// Create Room Booking
 	@PostMapping(value = { "/room/createBooking/{roomNr}/{id}/{testDate}/{testStartTime}/{testEndTime}",
@@ -363,13 +499,21 @@ public class TutoringSystemRestController {
 	}
 
 	// Request course
-	@PostMapping(value = {"/course/request/{courseCode}/{subject}/{university}", "/course/request/{courseCode}/{subject}/{university}/"})
+	@PostMapping(value = {"/course/request/{courseCode}/{subject}/{universityName}", "/course/request/{courseCode}/{subject}/{universityName}/"})
 	public CourseDto requestCourse(@PathVariable("courseCode") String courseCode,
-			@PathVariable("subject") String subject, @PathVariable("university") String universityName) {
-		Course c = service.requestCourse(courseCode, subject, universityName);
+			@PathVariable("subject") String subject, @PathVariable("universityName") String universityName) {
+		
+		Course c = service.getCourse(courseCode);
+		if (c != null) {
+			throw new IllegalArgumentException("Course already exists.");
+		}
+		University u = service.getUniversity(universityName);
+		
+		Course course = service.createCourse(courseCode, subject, u);
+		course = service.updateCourse(courseCode, subject, u, true);
 		
 		//c.setIsRequested(true);
-		return convertToDto(c);
+		return convertToDto(course);
 	}
 	// <--------------------- DTOs ------------------>
 	private StudentDto convertToDto(Student s) {

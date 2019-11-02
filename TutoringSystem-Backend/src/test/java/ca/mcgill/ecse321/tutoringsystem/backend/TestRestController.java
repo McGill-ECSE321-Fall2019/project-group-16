@@ -317,6 +317,7 @@ public class TestRestController {
 		assertEquals(STUDENT_NAME, s.getName());
 		assertEquals(STUDENT_PASS,s.getPassword());
 	}
+
 	
 	@Test
 	public void testCreateStudentNullUsername() {

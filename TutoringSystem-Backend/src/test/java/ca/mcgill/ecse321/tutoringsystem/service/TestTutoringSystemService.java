@@ -356,7 +356,9 @@ public class TestTutoringSystemService {
 		String username = "tutor1";
 		String password = "tutorPassword1";
 		double rate = 18;
-
+		
+		Set<Session> sessions = new HashSet<Session>();
+		Set<Session> pendingSessions = new HashSet<Session>();
 
 		try {
 			service.createTutor(name, username, password,rate);
@@ -374,7 +376,7 @@ public class TestTutoringSystemService {
 		rate  = 14;
 		
 		try {
-			service.updateTutor(username, name, password, rate);
+			service.updateTutor(username, name, password, rate, pendingSessions, sessions);
 		} catch (IllegalArgumentException e) {
 			
 			fail();
@@ -396,6 +398,8 @@ public class TestTutoringSystemService {
 		String password = "tutorPassword1";
 		double rate = 18;
 
+		Set<Session> sessions = new HashSet<Session>();
+		Set<Session> pendingSessions = new HashSet<Session>();
 
 		try {
 			service.createTutor(name, username, password,rate);
@@ -415,7 +419,7 @@ public class TestTutoringSystemService {
 		username = null;
 		
 		try {
-			service.updateTutor(username, name, password, rate);
+			service.updateTutor(username, name, password, rate, pendingSessions, sessions);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Username can't be empty. Password can't be empty. New name can't be empty. Hourly rate is invalid.", e.getMessage().trim());
@@ -1543,6 +1547,7 @@ public class TestTutoringSystemService {
 				String courseCode = "ECSE321";
 				String subject = "SoftwareEng";
 				University university =  service.createUniversity(1,"McGill");
+				Boolean flag = true;
 				
 				try {
 					service.createCourse(courseCode, subject, university);
@@ -1562,7 +1567,7 @@ public class TestTutoringSystemService {
 				University newUniversity = service.createUniversity(1,"Concordia");
 				
 				try {
-					service.updateCourse(courseCode, newSubject, newUniversity);
+					service.updateCourse(courseCode, newSubject, newUniversity, flag);
 				} catch (IllegalArgumentException e) {
 					fail();
 				}
@@ -1573,6 +1578,7 @@ public class TestTutoringSystemService {
 				assertEquals(courseCode, allCourses.get(0).getCourseCode());	
 				assertEquals(newSubject, allCourses.get(0).getSubject());
 				assertEquals(newUniversity.getId(), allCourses.get(0).getUniversity().getId());
+				assertEquals(flag, allCourses.get(0).getIsRequested());
 				
 			}
 			@Test
@@ -1597,20 +1603,23 @@ public class TestTutoringSystemService {
 				
 				String newSubject = "";
 				University newUniversity = null;
+				Boolean flag = null;
 				
 				try {
-					service.updateCourse("", newSubject, newUniversity);
+					service.updateCourse("", newSubject, newUniversity, flag);
 					fail();
 				} catch (IllegalArgumentException e) {
-					assertEquals("Please provide a courseCode. Please provide a subject. University cannot be null. ", e.getMessage());
+					assertEquals("Please provide a courseCode. Please provide a subject. University cannot be null. Must be requested or not. ", e.getMessage());
 				}
 			}
+			
+			
 			
 			@Test
 			public void testUpdateCourseNonExistant() {
 				University u = service.createUniversity(1, "McGill");
 				try {
-					service.updateCourse("FakeCourse", "YeeHaw", u);
+					service.updateCourse("FakeCourse", "YeeHaw", u, true);
 					fail();
 				} catch(IllegalArgumentException e) {
 					assertEquals("The course does not exist. Please specify a valid Course Code", e.getMessage());
@@ -2030,7 +2039,7 @@ public class TestTutoringSystemService {
 			}
 			
 			@Test
-			public void testGetNullCorse() {
+			public void testGetNullCourse() {
 				try {
 					Course c = service.getCourse(null);
 					fail();
@@ -2089,16 +2098,6 @@ public class TestTutoringSystemService {
 //				}
 //				assertEquals(true,true);
 //			}
-			
-			@Test
-			public void testNotifyTutorNull() {
-				try {
-					service.notifyTutor(null, null);
-					fail();
-				}catch(IllegalArgumentException e) {
-					assertEquals(e.getMessage().trim(), "Need to have valid tutor. Need to have valid session.");
-				}
-			}
 			
 			@Test
 			public void testGetNullSession() {

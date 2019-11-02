@@ -77,7 +77,7 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
-	public Course updateCourse(String courseCode, String subject, University university) {
+	public Course updateCourse(String courseCode, String subject, University university, Boolean isRequested) {
 		String error = "";
 		if(courseCode == null || courseCode.trim().length() == 0){
 			error +="Please provide a courseCode. ";
@@ -87,6 +87,9 @@ public class TutoringSystemService {
 		}
 		if(university == null){
 			error +="University cannot be null. ";
+		}
+		if(isRequested == null) {
+			error +="Must be requested or not. ";
 		}
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
@@ -98,6 +101,7 @@ public class TutoringSystemService {
 
 		course.setSubject(subject);
 		course.setUniversity(university);
+		course.setIsRequested(isRequested);
 		courseRepository.save(course);
 		return course;
 	}
@@ -294,6 +298,34 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
+	public Room updateRoom(Integer roomNr, Boolean isLargeRoom, Set<Session> sessions, Set<RoomBooking> unavailability) {
+		String error = "";
+		if(roomNr < 0){
+			error +="Room number is invalid. ";
+		}
+		if(isLargeRoom == null){
+			error +="Room Type (isLarge = true || false) cannot be null. ";
+		}
+		if(sessions == null) {
+			error += "Sessions invalid ";
+		}
+		if(unavailability == null) {
+			error += "Unavailability invalid. ";
+		}
+		if(error.length() != 0){
+			throw new IllegalArgumentException(error);
+		}
+		
+		Room r = roomRepository.findById(roomNr).get();
+		
+		r.setSession(sessions);	
+		r.setUnavailability(unavailability);
+		r.setIsLargeRoom(isLargeRoom);
+		roomRepository.save(r);
+		return r; 
+	}
+	
+	@Transactional
 	public boolean deleteRoom(int roomNr) {
 		if(roomNr < 0){
 			throw new IllegalArgumentException("Room number is invalid");
@@ -487,6 +519,71 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
+	public Session updateSession(Integer id, Boolean isConfirmed, Time startTime, Time endTime, Date date, Boolean isGroupSession, Set <Student> tutee, Tutor tutor, Room room, Course course) {
+	
+		String error = "";
+		if(id == null || id < 0) {
+			error += "Id is invalid. ";
+		}
+		if(room == null){
+			error += "Room number is invalid. ";
+		}
+		if(isConfirmed == null){
+			error += "Is Confirmed is null. ";
+		}
+		if(startTime == null || startTime.before(Time.valueOf("09:00:00")) || startTime.after(Time.valueOf("21:00:00"))){
+			error +="Start time is invalid. ";
+		}
+		if(startTime != null) {
+			if(endTime == null || endTime.after(Time.valueOf("21:00:00")) || endTime.before(startTime)){
+				error +="End time is invalid. ";
+			}	
+		}
+		if(date == null){
+			error +="Date is null. ";
+		}
+		if(isGroupSession == null){
+			error +="Is group session is null. ";
+		}
+		for(Student s: tutee) {
+			if(s == null) {
+				error +="Tutee is null. ";
+			}
+		}
+		if(tutee.size() == 0) {
+			error += "Tutee is null. ";
+		}
+		if(tutor == null){
+			error +="Tutor is null. ";
+		}
+		if(room == null){
+			error +="Room is null. ";
+		}
+		if(course == null){
+			error +="Course is null. ";
+		}
+		
+		if(error.length() != 0){
+			throw new IllegalArgumentException(error);
+		}
+		
+
+		Session s = new Session();
+		s.setId(id);
+		s.setStartTime(startTime);
+		s.setEndTime(endTime);
+		s.setDate(date);
+		s.setIsGroupSession(isGroupSession);
+		s.setIsConfirmed(isConfirmed);
+		s.setStudent(tutee); //This causes a null pointer exception
+		s.setTutor(tutor);
+		s.setRoom(room);
+		s.setCourse(course);
+		sessionRepository.save(s);
+		return s;
+	}
+	
+	@Transactional
 	public Session updateSessionIsConfirmed(Integer id, Boolean isConfirmed) {
 				
 		Session s = sessionRepository.findById(id).get();
@@ -522,137 +619,21 @@ public class TutoringSystemService {
 		return toList(sessionRepository.findAll());
 	}
 	
+	
 	@Transactional
-	public Session randomlyAssignRoom(Session s) {
-		if (s == null) {
-			throw new IllegalArgumentException("Session must exist.");
+	public boolean deleteSession(Integer sessionId) {
+		if(sessionId == null){
+			throw new IllegalArgumentException("SessionId must be valid. ");
 		}
-		
-		Date sessionDate = s.getDate();
-		Time sessionStartTime = s.getStartTime();
-		Time sessionEndTime = s.getEndTime();
-		boolean isGroupSession = s.getIsGroupSession();
-		
-		Date roomDate;
-		Time roomStartTime;
-		Time roomEndTime;
-		boolean taken;
-		if (isGroupSession) {
-						
-			for(Room r : getAllLargeRooms()) {
-				Set<RoomBooking> bookings = r.getUnavailability();
-				if (bookings == null || bookings.size() == 0) {
-					s.setRoom(r);
-					r.getSession().add(s);
-					int id = s.hashCode() * r.hashCode();
-					RoomBooking booking = createRoomBooking(id, sessionStartTime, sessionEndTime, sessionDate);
-					bookings.add(booking);
-					r.setUnavailability(bookings);
-					
-					sessionRepository.save(s);
-					roomRepository.save(r);
-					roomBookingRepository.save(booking);
-					break;
-				}
-				
-				taken = false;
-				for (RoomBooking rm : bookings) {
-					if (rm.getDate() == sessionDate) {
-						taken = true;
-						break;
-					}
-					
-					//session starts before booking start and ends after booking start
-					if ((sessionStartTime.compareTo(rm.getStartTime()) <=0) && (sessionEndTime.compareTo(rm.getStartTime()) > 0)) {
-						taken = true;
-						break;
-					}
-					
-					//session starts after booking start but before booking end
-					if ((sessionStartTime.compareTo(rm.getStartTime())>= 0) && (sessionStartTime.compareTo(rm.getEndTime())<=0 )) {
-						taken = true;
-						break;
-					}
-				}
-				//there are no bookings during the session's time
-				if (!taken) {
-					s.setRoom(r);
-					r.getSession().add(s);
-					int id = s.hashCode() * r.hashCode();
-					RoomBooking booking = createRoomBooking(id, sessionStartTime, sessionEndTime, sessionDate);
-					bookings.add(booking);
-					r.setUnavailability(bookings);
-					
-					sessionRepository.save(s);
-					roomRepository.save(r);
-					roomBookingRepository.save(booking);
-					break;
-				}
-				
-			}
-			if (s.getRoom() == null) {
-				throw new RuntimeException("Could not find an available room.");
-			}
+		boolean done = false;
+		Session s = getSession(sessionId);
+		if (s != null) {
+			sessionRepository.delete(s);
+			done = true;
 		} else {
-			//when it's not a group session
-			
-			for(Room r : getAllSmallRooms()) {
-				Set<RoomBooking> bookings = r.getUnavailability();
-				if (bookings == null || bookings.size() == 0) {
-					s.setRoom(r);
-					r.getSession().add(s);
-					int id = s.hashCode() * r.hashCode();
-					RoomBooking booking = createRoomBooking(id, sessionStartTime, sessionEndTime, sessionDate);
-					bookings.add(booking);
-					r.setUnavailability(bookings);
-					
-					sessionRepository.save(s);
-					roomRepository.save(r);
-					roomBookingRepository.save(booking);
-					break;
-				}
-				
-				taken = false;
-				for (RoomBooking rm : bookings) {
-					if (rm.getDate() == sessionDate) {
-						taken = true;
-						break;
-					}
-					
-					//session starts before booking start and ends after booking start
-					if ((sessionStartTime.compareTo(rm.getStartTime()) <=0) && (sessionEndTime.compareTo(rm.getStartTime()) > 0)) {
-						taken = true;
-						break;
-					}
-					
-					//session starts after booking start but before booking end
-					if ((sessionStartTime.compareTo(rm.getStartTime())>= 0) && (sessionStartTime.compareTo(rm.getEndTime())<=0 )) {
-						taken = true;
-						break;
-					}
-				}
-				//there are no bookings during the session's time
-				if (!taken) {
-					s.setRoom(r);
-					r.getSession().add(s);
-					int id = s.hashCode() * r.hashCode();
-					RoomBooking booking = createRoomBooking(id, sessionStartTime, sessionEndTime, sessionDate);
-					bookings.add(booking);
-					r.setUnavailability(bookings);
-					
-					sessionRepository.save(s);
-					roomRepository.save(r);
-					roomBookingRepository.save(booking);
-					break;
-				}
-				
-			}
-			if (s.getRoom() == null) {
-				throw new RuntimeException("Could not find an available room.");
-			}
+			throw new IllegalArgumentException("Session must exist. ");
 		}
-		return s;
-		
+		return done;
 	}
 	
 	@Transactional
@@ -790,7 +771,7 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
-	public Tutor updateTutor(String username, String name, String password, double hourlyRate) {
+	public Tutor updateTutor(String username, String name, String password, double hourlyRate, Set<Session> pendingSessions, Set<Session> sessions) {
 		String error = "";
 		if(username == null || username.trim().length() == 0){
 			error +="Username can't be empty. ";
@@ -804,6 +785,12 @@ public class TutoringSystemService {
 		if(hourlyRate < 0) {
 			error +="Hourly rate is invalid. ";
 		}
+		if(sessions == null) {
+			error += "Sessions are invalid. ";
+		}
+		if(pendingSessions == null) {
+			error += "Pending sessions are invalid. ";
+		}
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
 		}
@@ -816,6 +803,8 @@ public class TutoringSystemService {
 		tutor.setName(name);
 		tutor.setPassword(password);
 		tutor.setHourlyRate(hourlyRate);
+		tutor.setSession(sessions);
+		tutor.setPendingSession(pendingSessions);
 		tutorRepository.save(tutor);
 		return tutor;
 	}
@@ -879,45 +868,6 @@ public class TutoringSystemService {
 		return university;
 	}
 
-	@Transactional
-	public void notifyTutor(Tutor t, Session s) {
-		String error = "";
-		if(t == null){
-			error += "Need to have valid tutor. ";
-		}		
-		if(s == null){
-			error += "Need to have valid session. ";
-		}
-		if(error.length() != 0){
-			throw new IllegalArgumentException(error);
-		}
 
-		t.getPendingSession().add(s);
-		tutorRepository.save(t);
-	}
-
-	public Course requestCourse(String courseCode, String subject, String universityName) {
-		if(courseCode == null || courseCode.trim().length() == 0){
-			throw new IllegalArgumentException("Course can't be empty.");
-		}
-		if(subject == null || subject.trim().length() == 0){
-			throw new IllegalArgumentException("Subject can't be empty.");
-		}
-		if(universityName == null || universityName.trim().length() == 0){
-			throw new IllegalArgumentException("University can't be empty.");
-		}
-		
-		Course c = courseRepository.findByCourseCode(courseCode);
-		if (c != null) {
-			throw new IllegalArgumentException("Course already exists.");
-		}
-		
-		University u = getUniversity(universityName);
-		Course course = createCourse(courseCode, subject, u);
-		course.setIsRequested(true);
-		courseRepository.save(course);
-		
-		return course;
-	}
 
 }
