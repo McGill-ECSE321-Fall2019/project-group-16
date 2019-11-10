@@ -1,6 +1,6 @@
-# tutoringsystem-frontend
+# tutorngsystem-frontend
 
-> vue.js description for Frontend Development
+> A Vue.js project
 
 ## Build Setup
 

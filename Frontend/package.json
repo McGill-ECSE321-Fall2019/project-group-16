@@ -1,8 +1,8 @@
 {
-  "name": "tutoringsystem-frontend",
+  "name": "tutorngsystem-frontend",
   "version": "1.0.0",
-  "description": "vue.js description for Frontend Development",
-  "author": "Mustafain Ali Khan <mustafain.khan@mail.mcgill.ca>",
+  "description": "A Vue.js project",
+  "author": "PaulHooley <paul.hooley@mail.mcgill.ca>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
@@ -12,13 +12,11 @@
     "test": "npm run e2e"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "vue": "^2.5.2",
+    "vue-router": "^3.0.1",
     "bootstrap": "^4.0.0-beta.2",
     "bootstrap-vue": "latest",
-    "jquery": "^3.4.1",
-    "popper.js": "^1.12.9",
-    "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "popper.js": "^1.12.9"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
