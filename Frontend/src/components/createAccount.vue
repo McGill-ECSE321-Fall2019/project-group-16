@@ -78,6 +78,9 @@
     export default {
         data(){
             return {
+                student: {
+                    type: Object
+                },
                 errorMsg: "",
                 showError: false,
                 pw: "",
