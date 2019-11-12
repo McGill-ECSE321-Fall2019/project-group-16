@@ -3,7 +3,7 @@
     <b-button pill
       v-on:click="goToHomePage()"
     >FakeLogin</b-button>
-    <span id="title" v-bind:style="{ color : textColor }">Student Login:</span>
+    <span id="title">Student Login:</span>
     <div v-if="showError">
       <div id="alert" class="alert alert-warning" role="alert">{{ errorMsg }}
       </div>

@@ -5,7 +5,7 @@
             v-on:click="returnToLogin()"
             class="btn button btn-secondary rtrn-btn"
         >Return</b-button>
-        <span id="title" v-bind:style="{ color : textColor }">Create Account:</span>
+        <span id="title">Create Account:</span>
         <div v-if="showError">
             <div id="alert" class="alert alert-warning" role="alert">{{ errorMsg }}</div>
         </div>
