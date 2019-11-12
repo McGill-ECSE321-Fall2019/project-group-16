@@ -1,41 +1,28 @@
 <template>
   <div id="login" class="card">
-    <b-button pill
-      v-on:click="goToHomePage()"
-    >FakeLogin</b-button>
-    <span id="title" v-bind:style="{ color : textColor }">Student Login:</span>
+    <span id="title" v-bind:style="{ color : textColor }">ipsum</span>
     <div v-if="showError">
       <div id="alert" class="alert alert-warning" role="alert">{{ errorMsg }}
       </div>
     </div>
     <b-container fluid>
-      <input
-        class="loginField"
-        type="text"
-        id="username"
-        v-model="userName"
-        placeholder="Enter Username"
-        v-on:keyup.enter="login(userName, pw)"
-      >
-      
-      <input
-        class="loginField"
-        type="password"
-        id="password"
-        v-model="pw"
-        placeholder="Enter password"
-        v-on:keyup.enter="login(userName, pw)"
-      >
-      <button
-        type="button"
-        v-on:click="login(userName, pw)"
-        class="btn btn-primary btn-lg loginField button"
-      >Login</button>
-      <button
-        type="button"
-        v-on:click="goToAccountPage()"
-        class="btn btn-primary btn-lg loginField button"
-      >Create an Account</button>
+        <div class="row">
+            <button
+                type="button"
+                v-on:click="search()"
+                class="btn btn-primary btn-lg loginField button"
+            >Search Course or University</button>
+            <button
+                type="button"
+                v-on:click="login(userName, pw)"
+                class="btn btn-primary btn-lg loginField button"
+            >Search Tutor</button>
+            <button
+                type="button"
+                v-on:click="login(userName, pw)"
+                class="btn btn-primary btn-lg loginField button"
+            >View Review sessions</button>
+        </div>
     </b-container>
   </div>
 </template>
@@ -89,18 +76,6 @@ export default {
           this.showError = true;
 
         });
-    },
-    goToHomePage: function() {
-      Router.push({
-        path: "/home",
-        name: "homePage"
-      });
-    },
-    goToAccountPage: function() {
-      Router.push({
-        path: "/account/",
-        name: "createAccount"
-      });
     },
   },
 };
