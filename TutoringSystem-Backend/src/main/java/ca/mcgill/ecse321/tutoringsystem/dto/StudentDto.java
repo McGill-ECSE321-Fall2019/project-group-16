@@ -13,6 +13,7 @@ public class StudentDto {
 	
 	public StudentDto() {
 	}
+	
 	public StudentDto(String username, String password, String name) {
 		this.username = username;
 		this.password = password;
@@ -23,10 +24,13 @@ public class StudentDto {
 		this.username = username;
 	}
 	public String getUsername() {
-	    return username;
+	    return this.username;
 	}
 	public String getName() {
-		return name;
+		return this.name;
+	}
+	public String getPassword() {
+		return this.password;
 	}
 	public void setName(String name) {
 		this.name = name;

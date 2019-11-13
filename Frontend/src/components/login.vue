@@ -73,9 +73,10 @@ export default {
   methods: {
     // Send GET request to find admin
     login: function(userName, pw) {
-      AXIOS.get(`/students/` + userName)
+      AXIOS.get(`/student/` + userName)
         .then(response => {
           this.student = response.data;
+          console.log(response.data);
           if (this.student.password === pw) {
             this.goToHomePage();
           } else {
