@@ -1,5 +1,11 @@
 <template>
-  <div id="login">
+    <div id="login">
+    <button 
+        class="btn btn-success logout" 
+        v-on:click="logout()"
+        type="button"
+    >Logout</button>
+
     <div class="row">
         <span id="title" class="textField">ipsum</span>
         <button class="btn btn-info dropdown-toggle buttonField" type="button" id="school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -90,23 +96,11 @@ export default {
 
   methods: {
     // Send GET request to find admin
-    login: function(userName, pw) {
-      AXIOS.get(`/students/` + userName)
-        .then(response => {
-          this.student = response.data;
-          if (this.student.password === pw) {
-            this.goToHomePage();
-          } else {
-            this.errorMsg = "Password Incorrect";
-            this.showError = true;
-          }
+    logout: function(){
+        Router.push({
+            path: '/',
+            name: 'login'
         })
-        .catch(e => {
-          console.log(e.message);
-          this.errorMsg = "Account does not exist";
-          this.showError = true;
-
-        });
     },
     search: function(tutor){
         AXIOS.get(`/tutors/` + tutor)
@@ -170,5 +164,8 @@ export default {
 }
 .button {
   color: white;
+}
+.logout {
+    
 }
 </style>

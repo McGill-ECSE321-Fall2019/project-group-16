@@ -1,8 +1,5 @@
 <template>
   <div id="login" class="card">
-    <b-button pill
-      v-on:click="goToHomePage()"
-    >FakeLogin</b-button>
     <span id="title">Student Login:</span>
     <div v-if="showError">
       <div id="alert" class="alert alert-warning" role="alert">{{ errorMsg }}
@@ -73,6 +70,8 @@ export default {
   methods: {
     // Send GET request to find admin
     login: function(userName, pw) {
+      this.errorMsg = "";
+      this.showError = false;
       AXIOS.get(`/student/` + userName)
         .then(response => {
           this.student = response.data;
