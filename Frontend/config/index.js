@@ -9,6 +9,12 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     productionSourceMap: true,
+    // backendPort: 443,
+    // backendHost: 'ecse321-project-group16.herokuapp.com',
+    backendHost: "127.0.0.1",
+    backendPort: 8080,
+    host: "localhost",
+    port: 8081,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
     // Before setting to `true`, make sure to:
@@ -23,7 +29,10 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
+    host: "127.0.0.1",
     port: 8081,
+    backendHost: "127.0.0.1",
+    backendPort: 8080,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',

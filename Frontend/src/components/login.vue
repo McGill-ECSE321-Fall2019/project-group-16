@@ -49,7 +49,7 @@ var config = require("../../config");
 // Axios config
 var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
 var backendUrl =
-  "https://" + config.build.backendHost + ":" + config.build.backendPort;
+  "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
 var AXIOS = axios.create({
   baseURL: backendUrl,

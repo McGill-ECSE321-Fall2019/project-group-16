@@ -38,8 +38,8 @@ import ca.mcgill.ecse321.tutoringsystem.model.TutorReview;
 import ca.mcgill.ecse321.tutoringsystem.model.University;
 import ca.mcgill.ecse321.tutoringsystem.service.TutoringSystemService;
 
-@RestController
 @CrossOrigin(origins = "*")
+@RestController
 public class TutoringSystemRestController {
 
 	@Autowired
@@ -58,6 +58,12 @@ public class TutoringSystemRestController {
 			studentDtos.add(convertToDto(s));
 		}
 		return studentDtos;
+	}
+
+	@GetMapping(value = { "/studnt/{username}"})
+	public StudentDto getStudent(@PathVariable("username") String username){
+		Student s = service.getStudent(username);
+		return convertToDto(s);
 	}
 // <-----Post Mappings------->
 

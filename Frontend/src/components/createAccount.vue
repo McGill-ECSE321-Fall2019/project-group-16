@@ -22,7 +22,7 @@
                 class="loginField"
                 type="FullName"
                 id="userName"
-                v-model="userNmae"
+                v-model="userName"
                 placeholder="Username"
                 v-on:keyup.enter="createAccount(userName, pw, fullName)"
             >
@@ -48,7 +48,7 @@
                 id="confirmPW"
                 v-model="confirmPW"
                 placeholder="Confirm password"
-                v-on:keyup.enter="createAccount(userNmae, pw, fullName)"
+                v-on:keyup.enter="createAccount(userName, pw, fullName)"
             >
             <button
                 type="button"
@@ -60,20 +60,20 @@
 </template>
 
 <script>
-    import axios from "axios";
-    import Router from "../router";
+import axios from "axios";
+import Router from "../router";
 
-    var config = require("../../config");
+var config = require("../../config");
 
-    // Axios config
-    var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
-    var backendUrl =
-      "https://" + config.build.backendHost + ":" + config.build.backendPort;
+// Axios config
+var frontendUrl = "http://" + config.build.host + ":" + config.build.port;
+var backendUrl =
+  "http://" + config.build.backendHost + ":" + config.build.backendPort;
 
-    var AXIOS = axios.create({
-      baseURL: backendUrl,
-      headers: { "Access-Control-Allow-Origin": frontendUrl }
-    });
+var AXIOS = axios.create({
+  baseURL: backendUrl,
+  headers: { "Access-Control-Allow-Origin": frontendUrl }
+});
 
     export default {
         data(){
@@ -87,7 +87,7 @@
                 email: "",
                 confirmPW: "",
                 fullName: "",
-                username: ""
+                userName: ""
             };
         },
         methods: {
@@ -97,30 +97,30 @@
                     name: "login"
                 });
             },
+            goToHomePage: function(){
+                Router.push({
+                    path: "/home",
+                    name: "homePage"
+                });
+            },
             createAccount: function(userName, pw, fullName) {
                 this.errorMsg = "";
                 this.showError = false;
-                AXIOS.get(`/students/` + userName)
-                    .then(response => {
-                        this.errorMsg = "Email is already in use";
-                        this.showError = true;
+                if(this.pw == this.confirmPW){
+                    AXIOS.post(`/student/` + userName + `/` + pw + `/` + fullName)
+                    .then(response =>{
+                        this.student = response.data
+                        this.goToHomePage();
                     })
                     .catch( e => {
-                        if(this.pw == this.confirmPW){
-                            AXIOS.put(`/students/` + userName + `/` + pw + `/` + fullName)
-                            .then(response =>{
-                                this.errorMsg = "Nice";
-                                this.showError = true;
-                            })
-                            .catch( e => {
-                                this.errorMsg = e;
-                                this.showError = true;
-                            });
-                        } else {
-                            this.errorMsg = "Passwords don't match";
-                            this.showError = true;
-                        }
+                        this.errorMsg = e;
+                        this.showError = true;
                     });
+                } else {
+                    this.errorMsg = "Passwords don't match";
+                    this.showError = true;
+                }
+
             }
         }
     }
