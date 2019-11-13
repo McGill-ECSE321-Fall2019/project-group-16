@@ -218,6 +218,32 @@ public class TutoringSystemRestController {
 
 	}
 
+	@GetMapping(value = {"/tutors/"})
+	public List<TutorDto> getTutors() {
+		List<TutorDto> tutorDtos = new ArrayList<>();
+		for(Tutor t: service.getAllTutors()){
+			tutorDtos.add(convertToDto(t));
+		}
+		return tutorDtos;
+	}
+	@GetMapping(value = {"/tutors/{name}"})
+	public List<TutorDto> getTutorsByName(@PathVariable("name") String name) {
+		List<TutorDto> tutorDtos = new ArrayList<>();
+		for(Tutor t: service.getAllTutors()){
+			if(t.getName().contains(name)){
+				tutorDtos.add(convertToDto(t));
+			}
+		}
+		return tutorDtos;
+	}
+
+	@PostMapping(value = {"/tutors/{tutorName}/{username}/{hourlyRate}"})
+	public TutorDto createTutor(@PathVariable("tutorName") String tutorName, @PathVariable("username") String username, @PathVariable("hourlyRate") Double hourlyRate){
+		Tutor t = service.createTutor(tutorName, username, "1", hourlyRate);
+		return convertToDto(t);
+	}
+
+
 	// <--------------- Manage Session ----------------->
 
 	//student review
