@@ -5,16 +5,17 @@
         v-on:click="logout()"
         type="button"
     >Logout</button>
-
     <div class="row">
-        <span id="title" class="textField">ipsum</span>
-        <button class="btn btn-info dropdown-toggle buttonField" type="button" id="school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span id="title" class="textField title">Welcome to the Tutoring System</span>
+        <button class="btn btn-info dropdown-toggle dropdownField" type="button" id="school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Select School
         </button>
-        <div class="dropdown-menu" aria-labelledby="school">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a> 
+          <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Separated link</a>
         </div>
     </div>
     <div v-if="showError">
@@ -42,9 +43,9 @@
             >
             <button
                 type="button"
-                v-on:click="search(tutorName)"
+                v-on:click="search(university)"
                 class="btn btn-primary btn-lg buttonField button"
-            >Search Tutor</button>
+            >Search University</button>
             <button
                 type="button"
                 v-on:click="login(userName, pw)"
@@ -80,7 +81,7 @@ export default {
       course: {
           type: Object
       },
-      tutor: {
+      university: {
           type: Object
       },
       error: "",
@@ -102,17 +103,21 @@ export default {
             name: 'login'
         })
     },
-    search: function(tutor){
-        AXIOS.get(`/tutors/` + tutor)
+    search: function(university){
+        this.showError = false;
+        AXIOS.get(`/courses/` + university)
             .then(response => {
                 this.tutor = response.data;
-                
+                if(this.university.name == university){
+                    console.log("F");
+                }
+                console.log(this.university.name);
             })
             .catch( e => {
-                this.errorMsg = "No tutors exist with that name";
+                this.errorMsg = e;
                 this.showError = true;
             });
-    }
+    },
   },
 };
 </script>
@@ -154,6 +159,11 @@ export default {
   margin: auto;
   margin-top: 15px;
 }
+.dropdownField{
+    margin-left: 67.5%;
+    width: 28.5%;
+    margin-bottom: 1%;
+}
 .textField {
   width: 65%;
   border-radius: 4px;
@@ -165,7 +175,7 @@ export default {
 .button {
   color: white;
 }
-.logout {
-    
+.title {
+    width: 100%;
 }
 </style>
