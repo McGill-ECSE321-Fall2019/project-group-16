@@ -169,7 +169,7 @@ var AXIOS = axios.create({
   color: white;
 }
 .rtrn-btn {
-    margin-left: 85%;
+    margin-left: 0;
     width: 15%;
 }
 .header {
