@@ -1,5 +1,6 @@
 <template>
     <div id="createAccount" class="card">
+        <span id="header" class="header">Tutoring System</span>
         <b-button pill 
             variant="outline-danger"
             v-on:click="returnToLogin()"
@@ -147,7 +148,7 @@ var AXIOS = axios.create({
 
 #createAccount {
   width: 30%;
-  max-height: 480px;
+  max-height: auto;
   min-width: 550px;
   margin: auto;
   margin-top: 15px;
@@ -170,5 +171,12 @@ var AXIOS = axios.create({
 .rtrn-btn {
     margin-left: 85%;
     width: 15%;
+}
+.header {
+    text-align: center;
+    font-size: 40px;
+    color: white;
+    background-color: #007bff;
+    border-radius: 5px;
 }
 </style>

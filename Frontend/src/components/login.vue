@@ -1,5 +1,6 @@
 <template>
   <div id="login" class="card">
+    <span id="header" class="header">Tutoring System</span>
     <span id="title">Student Login:</span>
     <div v-if="showError">
       <div id="alert" class="alert alert-warning" role="alert">{{ errorMsg }}
@@ -127,7 +128,7 @@ export default {
 
 #login {
   width: 30%;
-  max-height: 480px;
+  max-height: auto;
   min-width: 550px;
   margin: auto;
   margin-top: 15px;
@@ -147,4 +148,13 @@ export default {
 .button {
   color: white;
 }
+.header {
+    text-align: center;
+    font-size: 40px;
+    color: white;
+    background-color: #007bff;
+    border-radius: 5px;
+    margin-bottom: 4px;
+}
+
 </style>
