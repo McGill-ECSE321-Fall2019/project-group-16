@@ -11,46 +11,79 @@
             <div id="alert" class="alert alert-warning" role="alert">{{ errorMsg }}</div>
         </div>
         <b-container fluid>
-            <input
+            <b-form-input
                 class="loginField"
                 type="FullName"
                 id="fullName"
                 v-model="fullName"
                 placeholder="Full Name"
+                :state="fullNameState"
+                aria-describedby="fullname-live-feedback"
                 v-on:keyup.enter="createAccount(userName, pw, fullName)"
-            > 
-            <input
+            ></b-form-input>
+            <b-form-invalid-feedback id="fullname-live-feedback">
+                Can't be empty
+            </b-form-invalid-feedback>
+        </b-container>
+        <b-container fluid>
+            <b-form-input
                 class="loginField"
                 type="FullName"
                 id="userName"
                 v-model="userName"
                 placeholder="Username"
+                :state="usernameState"
+                aria-describedby="username-live-feedback"
                 v-on:keyup.enter="createAccount(userName, pw, fullName)"
-            >
-            <input
+            ></b-form-input>
+            <b-form-invalid-feedback id="username-live-feedback">
+                Can't be empty
+            </b-form-invalid-feedback>
+        </b-container>
+        <b-container fluid>
+            <b-form-input
                 class="loginField"
                 type="text"
-                id="username"
+                id="email"
                 v-model="email"
                 placeholder="Enter email"
+                :state="emailState"
                 v-on:keyup.enter="createAccount(userName, pw, fullName)"
-            >
-            <input
+            ></b-form-input>
+            <b-form-invalid-feedback id="email-live-feedback">
+                Can't be empty
+            </b-form-invalid-feedback>
+        </b-container>
+        <b-container fluid>
+            <b-form-input
                 class="loginField"
                 type="password"
                 id="password"
                 v-model="pw"
                 placeholder="Enter password"
+                :state="passwordState"
+                aria-describedby="pw-live-feedback"
                 v-on:keyup.enter="createAccount(userName, pw, fullName)"
-            >
-            <input
+            ></b-form-input>
+            <b-form-invalid-feedback id="pw-live-feedback">
+                Password must be at least 8 characters
+            </b-form-invalid-feedback>
+        </b-container>
+        <b-container fluid>
+            <b-form-input
                 class="loginField"
                 type="password"
                 id="confirmPW"
                 v-model="confirmPW"
                 placeholder="Confirm password"
+                :state="confirmPasswordState"
+                aria-describedby="confirmpw-live-feedback"
                 v-on:keyup.enter="createAccount(userName, pw, fullName)"
-            >
+            ></b-form-input>
+            <b-form-invalid-feedback id="confirmpw-live-feedback">
+                Passwords must match
+            </b-form-invalid-feedback>
+
             <button
                 type="button"
                 v-on:click="createAccount(userName, pw, fullName)"
@@ -77,6 +110,23 @@ var AXIOS = axios.create({
 });
 
     export default {
+        computed: {
+            fullNameState() {
+                return this.fullName.length > 0 ? true : false
+            },
+            usernameState() {
+                return this.userName.length > 0 ? true : false
+            },
+            emailState() {
+                return this.email.length > 0 ? true : false
+            },
+            passwordState() {
+                return this.pw.length > 7 ? true : false
+            },
+            confirmPasswordState() {
+                return this.pw === this.confirmPW ? true : false
+            }
+            },
         data(){
             return {
                 student: {
@@ -114,7 +164,7 @@ var AXIOS = axios.create({
                         this.goToHomePage();
                     })
                     .catch( e => {
-                        this.errorMsg = e;
+                        this.errorMsg = "All fields must be filled!";
                         this.showError = true;
                     });
                 } else {
@@ -169,6 +219,7 @@ var AXIOS = axios.create({
   color: white;
 }
 .rtrn-btn {
+    margin-top: 4px;
     margin-left: 0;
     width: 15%;
 }

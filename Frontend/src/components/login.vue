@@ -7,23 +7,35 @@
       </div>
     </div>
     <b-container fluid>
-      <input
+      <b-form-input
         class="loginField"
         type="text"
         id="username"
         v-model="userName"
         placeholder="Enter Username"
+        :state="usernameState"
+        aria-describedby="username-live-feedback"
         v-on:keyup.enter="login(userName, pw)"
-      >
-      
-      <input
+      ></b-form-input>
+      <b-form-invalid-feedback id="username-live-feedback">
+        Can't be empty
+      </b-form-invalid-feedback>
+    </b-container>
+    <b-container fluid>  
+      <b-form-input
         class="loginField"
         type="password"
         id="password"
         v-model="pw"
         placeholder="Enter password"
+        :state="pwState"
+        aria-describedby="pw-live-feedback"
         v-on:keyup.enter="login(userName, pw)"
-      >
+      ></b-form-input>
+      <b-form-invalid-feedback id="pw-live-feedback">
+        Can't be empty
+      </b-form-invalid-feedback>
+
       <button
         type="button"
         v-on:click="login(userName, pw)"
@@ -55,6 +67,14 @@ var AXIOS = axios.create({
 });
 
 export default {
+  computed: {
+    usernameState() {
+        return this.userName.length > 0 ? true : false
+    },
+    pwState() {
+        return this.pw.length > 0 ? true : false
+    },
+  },
   data() {
     return {
       student: {
