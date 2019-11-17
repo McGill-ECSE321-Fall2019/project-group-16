@@ -115,7 +115,7 @@ public class TutoringSystemRestController {
 	}
 
 	// search by courseCode
-	@GetMapping(value = { "/courses/{code}", "/courses/{code}/" })
+	@GetMapping(value = { "/course/{code}", "/course/{code}/" })
 	public CourseDto getCourseByCourseCode(@PathVariable("code") String code) {
 		Course c = service.getCourse(code);
 		if (c == null) {

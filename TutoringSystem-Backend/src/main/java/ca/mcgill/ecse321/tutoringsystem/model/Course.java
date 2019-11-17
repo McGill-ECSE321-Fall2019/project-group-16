@@ -65,7 +65,7 @@ public class Course {
 	
 	private Boolean isRequested = false;
 	
-	public void setIsRequested(boolean flag) {
+	public void setIsRequested(Boolean flag) {
 		isRequested = flag;
 	}
 	
