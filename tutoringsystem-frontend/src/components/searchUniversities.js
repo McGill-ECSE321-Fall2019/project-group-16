@@ -16,6 +16,10 @@ function UniversityDto(name) {
 function CoursesDto(courseCode){
     this.courseCode = courseCode
 }
+function TutorDto(tutorUsername, hourlyRate){
+  this.username = tutorUsername;
+  this.hourlyRate = hourlyRate;
+}
 
 export default{
     name: 'universities',
@@ -30,7 +34,13 @@ export default{
         newCourse: '',
         selectedCourse: '',
         errorCourse: '',
-        response: []
+        response: [],
+
+        tutors: [],
+        newTutor: '',
+        selectedTutor: '',
+        errorTutor: '',
+        response: [],
       }
     },
     methods : {
@@ -54,6 +64,15 @@ export default{
             })
             .catch(e => {
               this.errorCourse = e;
+            });
+          },
+          getTutors: function(){
+            AXIOS.get('/tutor')
+            .then(response => {
+              this.tutors = response.data
+            })
+            .catch(e => {
+              this.errorTutor = e.response.data.message;
             });
           }
   }

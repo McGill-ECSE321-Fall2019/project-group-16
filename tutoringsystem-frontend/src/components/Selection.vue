@@ -9,12 +9,14 @@
       <td>Step 2</td>
       <td>Step 3</td>
       <td>Step 4</td>
+      <td>Step 5</td>
     </tr>
     <tr>
       <td>Click on Get Universities button to view the universities we offer</td>
       <td>Select your university</td>
       <td>Select the course you want help with</td>
-      <td>Click on view tutors to view available tutors for the course!</td>
+      <td>The list of tutors is now updated! Select a tutor</td>
+      <td>Click view tutor profile to view tutor's profile</td>
     </tr>
   </table>
 </div>
@@ -51,16 +53,29 @@
         <img src="../assets/seo.svg" alt="" width="10%" height="10%">
     </div>
 <div id="selectCourse">
-  <select class="form-control"  v-model="selectedCourse" >
+  <select class="form-control"  v-model="selectedCourse"  @change="getTutors()">
     <option value="" selected disabled hidden>Choose here</option>
      <option v-for="course in courses" v-bind:value="{code : course.courseCode}" v-bind:key="course">{{course.courseCode}}</option>
   </select>
   </div>
 </div> 
 <div>
-    <h6>Click the button to view all available tutors for the selected course!</h6>
-    <b-button id = "tutorButton" variant="outline-info">View Tutors</b-button>
-</div>
+    <!-- <h6>Click the button to view all available tutors for the selected course!</h6> -->
+    <!-- <b-button id = "tutorButton" variant="outline-info" @click="getTutors()">View Tutors</b-button> -->
+  <h5>Select Tutor</h5>
+  <div>
+    <img src="../assets/teacher.svg" alt="" width="10%" height="10%">
+  </div>
+
+  <div id="selectTutor">
+  <select class="form-control"  v-model="selectedTutor" >
+    <option value="" selected disabled hidden>Choose here</option>
+     <option v-for="tutor in tutors" v-bind:value="{name : tutor.name , rate: tutor.hourlyRate}" v-bind:key="tutor">{{tutor.name}}</option>
+  </select>
+  </div>
+</div> 
+
+ <b-button id = "tutorProfileButton" variant="outline-info">View Tutor Profile</b-button>
 
 
 </span>
@@ -92,5 +107,15 @@
   padding: 10px;
   max-width: 100%;
   margin-bottom: 10px;
+}
+#selectTutor {
+  margin-right: 50px; 
+  margin-left: 50px;
+  padding: 10px;
+  max-width: 100%;
+  margin-bottom: 10px;
+}
+#tutorProfileButton {
+  margin: 10px;
 }
 </style>
