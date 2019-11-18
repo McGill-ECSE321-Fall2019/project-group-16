@@ -90,6 +90,10 @@ public class TutoringSystemRestController {
 			throw new IllegalArgumentException("Incorrect Password!");
 		}
 	}
+	@GetMapping(value = {"/student"})
+	public StudentDto getCurrentlyLoggedInStudent() {
+		return convertToDto(TutoringSystemApplication.getCurrentlyLoggedInStudent())
+	}
 
 	@PutMapping(value = { "/logout", "/logout/" })
 	public void logoutStudent() {
