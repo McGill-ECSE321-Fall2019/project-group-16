@@ -6,10 +6,12 @@ import Contact from '@/components/Contact'
 import Searchresult from '@/components/Searchresult'
 import Selection from '@/components/Selection'
 import WriteReview from '@/components/WriteReview'
+
+import TutorProfile from '@/components/TutorProfile'
+
 import CreateAccount from '@/components/CreateAccount'
 import Home from '@/components/Home'
 import Sesh from '@/components/Sesh'
-import TutorProfile from '@/components/TutorProfile'
 
 Vue.use(Router)
 
@@ -44,10 +46,17 @@ export default new Router({
       path: '/selection',
       name: 'Selection',
       component: Selection
-    },{
+    },
+    {
       path: '/writereview',
       name: 'Writereview',
       component: WriteReview
+    },
+    {
+      path: '/tutor/:username',
+      name: 'Tutorprofile',
+      props: true,
+      component: TutorProfile
     },
     {
       path: '/account',
@@ -58,10 +67,6 @@ export default new Router({
       path: '/viewsessions',
       name: 'Sesh',
       component: Sesh,
-    },{
-      path: '/tutorProfile',
-      name: 'tutorProfile',
-      component: TutorProfile,
     }
   ]
 })
