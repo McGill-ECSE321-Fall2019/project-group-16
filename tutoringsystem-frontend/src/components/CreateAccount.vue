@@ -101,10 +101,10 @@ var config = require("../../config");
 
 // Axios config
 var frontendUrl = "http://" + config.dev.host + ":" + config.dev.port;
-var backendUrl = 
-  "http://" + config.dev.backendHost + ":" + config.dev.port;
+var backendUrl =
+  "http://" + config.dev.backendHost + ":" + config.dev.backendPort;
 
-var AXIOS = axios.create({
+var AXIOS = axios.create({ 
   baseURL: backendUrl,
   headers: { "Access-Control-Allow-Origin": frontendUrl }
 });
@@ -150,8 +150,8 @@ var AXIOS = axios.create({
             },
             goToHomePage: function(){
                 Router.push({
-                    path: "/home",
-                    name: "homePage"
+                    path: "/Home",
+                    name: "home"
                 });
             },
             createAccount: function(userName, pw, fullName) {
@@ -160,12 +160,18 @@ var AXIOS = axios.create({
                 if(this.pw == this.confirmPW){
                     AXIOS.post(`/student/` + userName + `/` + pw + `/` + fullName)
                     .then(response =>{
-                        this.student = response.data
-                        this.goToHomePage();
+                        AXIOS.post(`/student/` + userName + "/" + pw)
+                            .then (response => {
+                                this.goToHomePage();
+                            })
+                            .catch(e => {
+                                console.log(e.message);
+                                this.errorMsg = "Account does not exist";
+                                this.showError = true;
+                            });
                     })
                     .catch( e => {
-                        // this.errorMsg = "All fields must be filled!";
-                        this.errorMsg = e;
+                        this.errorMsg = "Username is already in use";
                         this.showError = true;
                     });
                 } else {

@@ -30,6 +30,12 @@ export default{
         },
         gotosearch(){
             window.location.href = "/#/Selection"
-        }
+        },
+        gotoSessions(){
+            window.location.href ="/#/viewsessions"
+        },
+        gotoReview(){
+            window.location.href ="/#/writereview"
+        },
     }
 }

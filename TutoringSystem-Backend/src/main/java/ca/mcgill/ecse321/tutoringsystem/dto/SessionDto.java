@@ -17,23 +17,23 @@ public class SessionDto {
 	private Time endTime;
 	private Date date;
 	private Integer id;
-	private Set<Student> student;
+	private Set<String> studentName;
 	private Boolean isGroupSession;
-	private Tutor tutor;
-	private Room room;
-	private Course course;
+	private String tutorName;
+	private int roomNr;
+	private String courseCode;
 	
-	public SessionDto(Integer id, Boolean isConfirmed, Time startTime, Time endTime, Date date, Boolean isGroupSession, Set <Student> tutee, Tutor tutor, Room room, Course course) {
+	public SessionDto(Integer id, Set <String> studentName, String tutorName, int roomNr, String courseCode, Date date, Time startTime, Time endTime, Boolean isGroupSession, Boolean isConfirmed) {
 		this.id = id;
 		this.isConfirmed=isConfirmed;
 		this.startTime=startTime;
 		this.endTime=endTime;
 		this.date = date;
 		this.isGroupSession=isGroupSession;
-		this.student=tutee;
-		this.tutor=tutor;
-		this.room=room;
-		this.course=course;
+		this.studentName=studentName;
+		this.tutorName=tutorName;
+		this.roomNr=roomNr;
+		this.courseCode=courseCode;
 	}
 
 	public void setIsConfirmed(Boolean isConfirmed) {
@@ -56,24 +56,24 @@ public class SessionDto {
 		this.id = id;
 	}
 
-	public void setStudent(Set<Student> student) {
-		this.student = student;
+	public void setStudent(Set<String> studentName) {
+		this.studentName = studentName;
 	}
 
 	public void setIsGroupSession(Boolean isGroupSession) {
 		this.isGroupSession = isGroupSession;
 	}
 
-	public void setTutor(Tutor tutor) {
-		this.tutor = tutor;
+	public void setTutor(String tutorName) {
+		this.tutorName = tutorName;
 	}
 
-	public void setRoom(Room room) {
-		this.room = room;
+	public void setRoom(int roomNr) {
+		this.roomNr = roomNr;
 	}
 
-	public void setCourse(Course course) {
-		this.course = course;
+	public void setCourse(String courseCode) {
+		this.courseCode = courseCode;
 	}
 
 	public Boolean getIsConfirmed() {
@@ -96,24 +96,24 @@ public class SessionDto {
 		return id;
 	}
 
-	public Set<Student> getStudent() {
-		return student;
+	public Set<String> getStudent() {
+		return studentName;
 	}
 
 	public Boolean getIsGroupSession() {
 		return isGroupSession;
 	}
 
-	public Tutor getTutor() {
-		return tutor;
+	public String getTutor() {
+		return tutorName;
 	}
 
-	public Room getRoom() {
-		return room;
+	public int getRoom() {
+		return roomNr;
 	}
 
-	public Course getCourse() {
-		return course;
+	public String getCourse() {
+		return courseCode;
 	}
 	
 	   

@@ -17,6 +17,9 @@
          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
         </div>
         <b-button id="reviewButton" variant="outline-info">Submit Review</b-button>
+        <div>
+          Note : For this page to work, we need to integrate with the Tutor ViewPoint
+           </div>
     </div>
 </template>
 
