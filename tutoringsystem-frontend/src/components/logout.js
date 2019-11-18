@@ -34,5 +34,8 @@ export default{
         gotoSessions(){
             window.location.href ="/#/viewsessions"
         },
+        gotoReview(){
+            window.location.href ="/#/writereview"
+        },
     }
 }

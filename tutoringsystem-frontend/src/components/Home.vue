@@ -9,10 +9,13 @@
         <img id="booking" src="../assets/calendar.png" alt="">
         <br>
         <b-button v-on:click="gotosearch" variant="outline-info">Book New Session</b-button>
+         <b-button v-on:click="gotoReview" variant="outline-info">Review Tutor</b-button>
         </div>
+
         <div id='logout'>
            <b-button id="logoutButton" variant="outline-info" v-on:click="logout()">Logout</b-button> 
         </div>
+
 </span>
 </template>
 
@@ -25,6 +28,7 @@ export default {
         gotoSessions(){
         window.location.href ="/#/viewsessions"
         },
+        
 }
 }
 </script>
