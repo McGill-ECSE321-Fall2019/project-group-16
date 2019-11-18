@@ -4,7 +4,7 @@
         <h3>Welcome To Your DashBoard</h3>
         <img id="manage" src="../assets/network.png" alt="">
         <br>
-        <b-button variant="outline-info">Manage Sessions</b-button>
+        <b-button variant="outline-info" v-on:click="gotoSessions">Manage Sessions</b-button>
         <br>
         <img id="booking" src="../assets/calendar.png" alt="">
         <br>
@@ -22,9 +22,9 @@ export default {
         gotosearch(){
         window.location.href = "/#/Selection"
             },
-        logout : function () {
-            window.location.href="/#/"
-        }
+        gotoSessions(){
+        window.location.href ="/#/viewsessions"
+        },
 }
 }
 </script>

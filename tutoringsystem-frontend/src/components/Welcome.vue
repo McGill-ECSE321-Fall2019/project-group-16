@@ -60,9 +60,9 @@ import Router from "../router";
 var config = require("../../config");
 
 // Axios config
-var frontendUrl = "https://cors-anywhere.herokuapp.com/http://" + config.build.host + ":" + config.build.port;
+var frontendUrl = "http://" + config.dev.host + ":" + config.dev.port;
 var backendUrl =
-  "https://cors-anywhere.herokuapp.com/http://" + config.build.backendHost;
+  "http://" + config.dev.backendHost + ":" + config.dev.backendPort;
 
 var AXIOS = axios.create({
   baseURL: backendUrl,
@@ -96,17 +96,10 @@ export default {
     login: function(userName, pw) {
       this.errorMsg = "";
       this.showError = false;
-      AXIOS.get(`/student/` + userName)
-        .then(response => {
-          this.student = response.data;
-          console.log(response.data);
-          if (this.student.password === pw) {
+      AXIOS.post(`/student/` + userName + "/" + pw)
+          .then (response => {
             this.goToHomePage();
-          } else {
-            this.errorMsg = "Password Incorrect";
-            this.showError = true;
-          }
-        })
+          })
         .catch(e => {
           console.log(e.message);
           this.errorMsg = "Account does not exist";
@@ -116,8 +109,8 @@ export default {
     },
     goToHomePage: function() {
       Router.push({
-        path: "/home",
-        name: "homePage"
+        path: "/Home",
+        name: "home"
       });
     },
     goToAccountPage: function() {
