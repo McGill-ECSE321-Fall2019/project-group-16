@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h2>Tutoring Service</h2>
+    <div id="header">
+      <h2>Tutoring Service</h2>
+    </div>
     <nav>
       <router-link class="spacing" v-for="routes in links" 
       v-bind:key="routes.id"
@@ -18,7 +20,7 @@ export default {
         {
           id: 0,
           text: 'Home',
-          page:'/'
+          page:'/Home'
         },
         {
           id: 1,
@@ -39,6 +41,9 @@ export default {
 .spacing {
   margin-right: 10px;
   font-size: 20px;
+}
+#header {
+ background-color: rgb(12, 158, 158);
 }
 
 </style>

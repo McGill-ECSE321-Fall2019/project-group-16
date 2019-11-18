@@ -39,7 +39,7 @@ export default {
 },
 methods : {
         gotosearch(){
-        window.location.href = "/#/Selection"
+        window.location.href = "/#/Home"
             }
 }
 }
