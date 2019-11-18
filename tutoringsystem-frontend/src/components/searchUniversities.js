@@ -74,6 +74,9 @@ export default{
             .catch(e => {
               this.errorTutor = e.response.data.message;
             });
-          }
+          },
+          gotoProfile(){
+            window.location.href ="/#/tutorProfile"
+        },
   }
 }

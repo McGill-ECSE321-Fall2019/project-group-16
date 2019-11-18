@@ -9,7 +9,7 @@ import WriteReview from '@/components/WriteReview'
 import CreateAccount from '@/components/CreateAccount'
 import Home from '@/components/Home'
 import Sesh from '@/components/Sesh'
-
+import TutorProfile from '@/components/TutorProfile'
 
 Vue.use(Router)
 
@@ -58,6 +58,10 @@ export default new Router({
       path: '/viewsessions',
       name: 'Sesh',
       component: Sesh,
-    },
+    },{
+      path: '/tutorProfile',
+      name: 'tutorProfile',
+      component: TutorProfile,
+    }
   ]
 })
