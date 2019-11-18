@@ -6,6 +6,8 @@ import Contact from '@/components/Contact'
 import Searchresult from '@/components/Searchresult'
 import Selection from '@/components/Selection'
 import WriteReview from '@/components/WriteReview'
+import TutorProfile from '@/components/TutorProfile'
+import ViewSessions from '@/components/ViewSessions'
 
 Vue.use(Router)
 
@@ -35,10 +37,22 @@ export default new Router({
       path: '/selection',
       name: 'Selection',
       component: Selection
-    },{
+    },
+    {
       path: '/writereview',
       name: 'Writereview',
       component: WriteReview
+    },
+    {
+      path: '/tutor/:username',
+      name: 'Tutorprofile',
+      props: true,
+      component: TutorProfile
+    },
+    {
+      path: '/sessions',
+      name: 'ViewSessions',
+      component: ViewSessions
     }
   ]
 })
