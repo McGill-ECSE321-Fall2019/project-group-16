@@ -6,6 +6,8 @@ import Contact from '@/components/Contact'
 import Searchresult from '@/components/Searchresult'
 import Selection from '@/components/Selection'
 import WriteReview from '@/components/WriteReview'
+import CreateAccount from '@/components/CreateAccount'
+import Home from '@/compontents/Home'
 
 Vue.use(Router)
 
@@ -39,6 +41,17 @@ export default new Router({
       path: '/writereview',
       name: 'Writereview',
       component: WriteReview
+    },
+    {
+      path: '/account',
+      name: 'CreateAccount',
+      component: CreateAccount
+    },
+    {
+      path: '/Home',
+      name: 'Home',
+      component: Home
     }
+
   ]
 })
