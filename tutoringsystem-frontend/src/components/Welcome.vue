@@ -60,9 +60,9 @@ import Router from "../router";
 var config = require("../../config");
 
 // Axios config
-var frontendUrl = "https://cors-anywhere.herokuapp.com/http://" + config.build.host + ":" + config.build.port;
+var frontendUrl = "http://" + config.dev.host + ":" + config.dev.port;
 var backendUrl =
-  "https://cors-anywhere.herokuapp.com/http://" + config.build.backendHost;
+  "http://" + config.dev.backendHost + ":" + config.dev.backendPort;
 
 var AXIOS = axios.create({
   baseURL: backendUrl,
