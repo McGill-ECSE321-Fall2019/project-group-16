@@ -515,6 +515,31 @@ public class TutoringSystemRestController {
 		//c.setIsRequested(true);
 		return convertToDto(course);
 	}
+	
+	
+	//post tutor
+	
+	// createTutor
+		@PostMapping(value = { "/tutor/{username}/{password}/{name}/{hourlyrate}", "/tutor/{username}/{password}/{name}/{hourlyrate}/" })
+		public TutorDto registerTutor(@PathVariable("username") String username,
+				@PathVariable("password") String password, @PathVariable("name") String name, @PathVariable("hourlyrate") Double hourlyRate) {
+
+			Tutor t = service.createTutor(name, username, password, hourlyRate);
+			return convertToDto(t);
+		}
+	 //
+		@GetMapping(value= {"/tutor", "/tutor/"})
+		public List<TutorDto> getAllTutors(){
+			List<TutorDto> tutors = new ArrayList<>();
+			
+			for(Tutor tutor : service.getAllTutors()) {
+				TutorDto tDto = convertToDto(tutor);
+				tutors.add(tDto);
+			}
+			
+			return tutors;
+		}
+	
 	// <--------------------- DTOs ------------------>
 	private StudentDto convertToDto(Student s) {
 		if (s == null) {
