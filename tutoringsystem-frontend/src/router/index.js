@@ -7,7 +7,7 @@ import Searchresult from '@/components/Searchresult'
 import Selection from '@/components/Selection'
 import WriteReview from '@/components/WriteReview'
 import CreateAccount from '@/components/CreateAccount'
-import Home from '@/compontents/Home'
+// import Home from '@/compontents/Home'
 
 Vue.use(Router)
 
@@ -47,11 +47,11 @@ export default new Router({
       name: 'CreateAccount',
       component: CreateAccount
     },
-    {
-      path: '/Home',
-      name: 'Home',
-      component: Home
-    }
+    // {
+    //   path: '/Home',
+    //   name: 'Home',
+    //   component: Home
+    // }
 
   ]
 })
