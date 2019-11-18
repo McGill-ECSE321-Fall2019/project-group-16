@@ -59,6 +59,12 @@ public class TutoringSystemRestController {
 		}
 		return studentDtos;
 	}
+	
+	@GetMapping(value = { "/student/{username}"})
+	public StudentDto getStudent(@PathVariable("username") String username){
+		Student s = service.getStudent(username);
+		return convertToDto(s);
+	}
 // <-----Post Mappings------->
 
 //register new student
@@ -115,7 +121,7 @@ public class TutoringSystemRestController {
 	}
 
 	// search by courseCode
-	@GetMapping(value = { "/courses/{code}", "/courses/{code}/" })
+	@GetMapping(value = { "/course/{code}", "/course/{code}/" })
 	public CourseDto getCourseByCourseCode(@PathVariable("code") String code) {
 		Course c = service.getCourse(code);
 		if (c == null) {
@@ -515,6 +521,31 @@ public class TutoringSystemRestController {
 		//c.setIsRequested(true);
 		return convertToDto(course);
 	}
+	
+	
+	//post tutor
+	
+	// createTutor
+		@PostMapping(value = { "/tutor/{username}/{password}/{name}/{hourlyrate}", "/tutor/{username}/{password}/{name}/{hourlyrate}/" })
+		public TutorDto registerTutor(@PathVariable("username") String username,
+				@PathVariable("password") String password, @PathVariable("name") String name, @PathVariable("hourlyrate") Double hourlyRate) {
+
+			Tutor t = service.createTutor(name, username, password, hourlyRate);
+			return convertToDto(t);
+		}
+	 //
+		@GetMapping(value= {"/tutor", "/tutor/"})
+		public List<TutorDto> getAllTutors(){
+			List<TutorDto> tutors = new ArrayList<>();
+			
+			for(Tutor tutor : service.getAllTutors()) {
+				TutorDto tDto = convertToDto(tutor);
+				tutors.add(tDto);
+			}
+			
+			return tutors;
+		}
+	
 	// <--------------------- DTOs ------------------>
 	private StudentDto convertToDto(Student s) {
 		if (s == null) {
