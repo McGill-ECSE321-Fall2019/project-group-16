@@ -2,7 +2,7 @@
    <div class="review">
         <h5>Review Tutor</h5>
         <img id="reviewImg" src="../assets/review.svg" alt="">
-        <div class="rating">
+        <div class="rating"> 
         <label>Rating :</label>
         <select class="form-control" id="exampleFormControlSelect1">
           <option>1 : Poor</option>
