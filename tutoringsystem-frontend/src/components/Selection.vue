@@ -75,7 +75,7 @@
   </div>
 </div> 
 
- <b-button id = "tutorProfileButton" variant="outline-info">View Tutor Profile</b-button>
+ <b-button id = "tutorProfileButton" variant="outline-info" v-on:click="gotoProfile">View Tutor Profile</b-button>
 
 
 </span>

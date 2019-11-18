@@ -39,8 +39,23 @@ Group 16 is working on the student viewpoint of the application. The viewpoint m
 
 | Name | Roles/Tasks | Time Spent (Hours) | 
 | :---         |     :---:      |          ---: |
-| Erdong Luo   |                |               |
+| Erdong Luo   |   Business Methods for Requirements 12,13,14 Unit Testing for Business Methods using Mockito ,document             |       12        |
 | Mustafain Ali Khan |  Business Methods for Requirements 1,2,3,4, Unit Testing for Business Methods using Mockito, Improving Code Coverage, Documentation    |  25   |
 | Paul Hooley        |    Fix database from deliverable 1, Code coverage for backend, Requirements 8,9, Documentation      |  25  |
 | Talha Riaz         | Business Methods for Requirements 5,6 & 15, Unit Testing for Business Methods using Mockito, Documentation     |  12  |
-| Zheng Cui          |       |    |
+| Zheng Cui          |  Business Methods for Requirements 7, 10, 11, 12, Documentation     |  8  |
+
+## Sprint 3 (Due Sun, Nov 17)
+
+#### *Sprint 3 is complete. Project Report is now available!*
+
+#### -> Access [Sprint 3 Project Report](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki/Project-Report-(Sprint-3))
+
+### Member Roles & Time Spent
+| Name | Roles/Tasks | Time Spent (Hours) | 
+| :---         |     :---:      |          ---: |
+| Erdong Luo         |      |    |
+| Mustafain Ali Khan |      |    |
+| Paul Hooley        |      |    |
+| Talha Riaz         |      |    |
+| Zheng Cui          |      |    |

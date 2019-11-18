@@ -6,8 +6,12 @@ import Contact from '@/components/Contact'
 import Searchresult from '@/components/Searchresult'
 import Selection from '@/components/Selection'
 import WriteReview from '@/components/WriteReview'
+
 import TutorProfile from '@/components/TutorProfile'
-import ViewSessions from '@/components/ViewSessions'
+
+import CreateAccount from '@/components/CreateAccount'
+import Home from '@/components/Home'
+import Sesh from '@/components/Sesh'
 
 Vue.use(Router)
 
@@ -34,6 +38,11 @@ export default new Router({
       component: Searchresult
     },
     {
+      path: '/home',
+      name: 'home',
+      component: Home
+    },
+    {
       path: '/selection',
       name: 'Selection',
       component: Selection
@@ -50,9 +59,14 @@ export default new Router({
       component: TutorProfile
     },
     {
-      path: '/sessions',
-      name: 'ViewSessions',
-      component: ViewSessions
+      path: '/account',
+      name: 'CreateAccount',
+      component: CreateAccount
+    },
+    {
+      path: '/viewsessions',
+      name: 'Sesh',
+      component: Sesh,
     }
   ]
 })
