@@ -59,6 +59,12 @@ public class TutoringSystemRestController {
 		}
 		return studentDtos;
 	}
+	
+	@GetMapping(value = { "/student/{username}"})
+	public StudentDto getStudent(@PathVariable("username") String username){
+		Student s = service.getStudent(username);
+		return convertToDto(s);
+	}
 // <-----Post Mappings------->
 
 //register new student
