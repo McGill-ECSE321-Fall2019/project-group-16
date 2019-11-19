@@ -98,7 +98,7 @@ public class TutoringSystemRestController {
 	}
 	@GetMapping(value = {"/student"})
 	public StudentDto getCurrentlyLoggedInStudent() {
-		return convertToDto(TutoringSystemApplication.getCurrentlyLoggedInStudent())
+		return convertToDto(TutoringSystemApplication.getCurrentlyLoggedInStudent());
 	}
 
 	@PutMapping(value = { "/logout", "/logout/" })
