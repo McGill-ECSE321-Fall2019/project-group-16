@@ -127,8 +127,8 @@ export default {
         },
         goToViewSession: function() {
             Router.push({
-                path:"/sessions",
-                name: "ViewSessions"
+                path:"/viewsessions",
+                name: "Sesh"
             });
         }
 

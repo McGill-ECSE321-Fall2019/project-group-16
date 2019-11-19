@@ -8,6 +8,7 @@ import Selection from '@/components/Selection'
 import WriteReview from '@/components/WriteReview'
 import TutorProfile from '@/components/TutorProfile'
 import ViewSessions from '@/components/ViewSessions'
+import Tutor from '@/components/Tutor'
 
 Vue.use(Router)
 
@@ -53,6 +54,12 @@ export default new Router({
       path: '/sessions',
       name: 'ViewSessions',
       component: ViewSessions
+    },
+    {
+      path: '/tutorprofile/:username',
+      name: 'tutor',
+      props: true,
+      component: Tutor
     }
   ]
 })
