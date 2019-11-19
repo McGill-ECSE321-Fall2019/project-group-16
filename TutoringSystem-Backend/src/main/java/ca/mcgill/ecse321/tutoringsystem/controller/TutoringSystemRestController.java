@@ -59,6 +59,12 @@ public class TutoringSystemRestController {
 		}
 		return studentDtos;
 	}
+	
+	@GetMapping(value = { "/student/{username}"})
+	public StudentDto getStudent(@PathVariable("username") String username){
+		Student s = service.getStudent(username);
+		return convertToDto(s);
+	}
 // <-----Post Mappings------->
 
 //register new student
@@ -273,7 +279,7 @@ public class TutoringSystemRestController {
 		return convertToDto(s);
 	}
 
-	// creating a solo session and notifying the tutor
+/*	// creating a solo session and notifying the tutor
 	@PostMapping(value = {
 			"/session/{sessionId}/{tutorName}/{studentName}/{startTime}/{endTime}/{date}/{roomNr}/{courseCode}",
 			"/session/{sessionId}/{tutorName}/{studentName}/{startTime}/{endTime}/{date}/{roomNr}/{courseCode}/" })
@@ -297,8 +303,42 @@ public class TutoringSystemRestController {
 		
 		service.updateTutor(t.getUsername(), t.getName(), t.getPassword(), t.getHourlyRate(), pendingSessions, t.getSession());
 		return convertToDto(ss);
-	}
+	}	*/
+	
+	// creating a solo session and notifying the tutor
+		@PostMapping(value = {
+				"/session/{sessionId}/{tutorName}/{studentName}/{startTime}/{endTime}/{date}/{roomNr}/{courseCode}",
+				"/session/{sessionId}/{tutorName}/{studentName}/{startTime}/{endTime}/{date}/{roomNr}/{courseCode}/" })
+		public SessionDto enterSession(@PathVariable("sessionId") int sessionId,
+				@PathVariable("tutorName") String tutorUsername, @PathVariable("studentName") String studentUsername,
+				@PathVariable("startTime") String startTimeString, @PathVariable("endTime") String endTimeString,
+				@PathVariable("date") String dateString, @PathVariable("roomNr") int roomNr,
+				@PathVariable("courseCode") String courseCode) {
+			
+			
+			
+			Time startTime = Time.valueOf(startTimeString);
+			Time endTime = Time.valueOf(endTimeString);
+			Date date = Date.valueOf(dateString);
+			
+			
+			Tutor t = service.getTutor(tutorUsername);
+			Student s = service.getStudent(studentUsername);
+			Set<Student> studentSet = new HashSet<>();
+			studentSet.add(s);
+			Room r = service.getRoom(roomNr);
+			Course c = service.getCourse(courseCode);
+			
 
+			Session ss = service.createSession(sessionId, false, startTime, endTime, date, false, studentSet, t, r, c);
+			Set <Session> pendingSessions = t.getPendingSession();
+			pendingSessions.add(ss);
+			
+			service.updateTutor(t.getUsername(), t.getName(), t.getPassword(), t.getHourlyRate(), pendingSessions, t.getSession());
+			return convertToDto(ss);
+		}
+
+	
 	// confirm or decline session
 	@PostMapping(value = { "/session/{sessionId}/{iscConfirmed}", "/notify/{sessionId}/{isConfirmed}/" })
 	public SessionDto confirmSession(@PathVariable("sessionId") int sessionId,
@@ -577,12 +617,28 @@ public class TutoringSystemRestController {
 		return tDto;
 	}
 
-	private SessionDto convertToDto(Session s) {
+/*	private SessionDto convertToDto(Session s) {
 		if (s == null) {
 			throw new IllegalArgumentException("There is no such session!");
 		}
 		SessionDto sDto = new SessionDto(s.getId(), s.getIsConfirmed(), s.getStartTime(), s.getEndTime(), s.getDate(),
 				s.getIsGroupSession(), s.getStudent(), s.getTutor(), s.getRoom(), s.getCourse());
+		return sDto;
+	} */
+	
+	private SessionDto convertToDto(Session s) {
+		if (s == null) {
+			throw new IllegalArgumentException("There is no such session!");
+		}
+		Set<Student> studentSet = s.getStudent();
+		Set<String> studentNames = new HashSet<>();
+		
+		for (Student temp : studentSet) {
+			studentNames.add(temp.getName());
+		}
+		
+		
+		SessionDto sDto = new SessionDto(s.getId(), studentNames, s.getTutor().getName(), s.getRoom().getRoomNr(), s.getCourse().getCourseCode(), s.getDate(), s.getStartTime(), s.getEndTime(), s.getIsGroupSession(), s.getIsConfirmed() );
 		return sDto;
 	}
 
@@ -617,5 +673,28 @@ public class TutoringSystemRestController {
 		RoomBookingDto rbDto = new RoomBookingDto(rb.getId(), rb.getDate(), rb.getStartTime(), rb.getEndTime());
 		return rbDto;
 	}
+	
+	// get all sessions
+			@GetMapping(value = { "/currentsesh", "/currentsesh/" })
+			public List<SessionDto> getAllCurrentSessions() {
+				
+				Student currentStudent = TutoringSystemApplication.getCurrentlyLoggedInStudent();
+				
+				List<SessionDto> sessionDtoList = new ArrayList<>();
+				boolean contains = false;
+				
+				for (Session s : service.getAllSessions()) {		
+					
+					for(Student std : s.getStudent()) {
+						if(std.getUsername().equals(currentStudent.getUsername())){
+							contains = true;
+						}
+					}
+					if (contains) {
+						sessionDtoList.add(convertToDto(s));
+					}
+				}
+				return sessionDtoList;
+			}
 
 }
