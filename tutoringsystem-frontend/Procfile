@@ -1,0 +1,2 @@
+web: java -jar 
+tutoringsystem-frontend/build/libs/tutoringsystem-frontend-0.0.1-SNAPSHOT.jar
