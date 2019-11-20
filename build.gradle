@@ -30,4 +30,5 @@ dependencies {
    }
 task stage () {
     dependsOn ':TutoringSystem-Backend:assemble'
+    dependsOn ':tutoringsystem-frontend:assemble'
 }

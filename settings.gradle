@@ -9,3 +9,4 @@
 
 rootProject.name = 'project-group-16'
 include ':TutoringSystem-Backend'
+include ':tutoringsystem-frontend'
