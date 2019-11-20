@@ -50,12 +50,11 @@ Group 16 is working on the student viewpoint of the application. The viewpoint m
 #### *Sprint 3 is complete. Project Report is now available!*
 
 #### -> Access [Sprint 3 Project Report](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki/Project-Report-(Sprint-3))
-
-### Member Roles & Time Spent
+### Roles and Time Spent:
 | Name | Roles/Tasks | Time Spent (Hours) | 
 | :---         |     :---:      |          ---: |
-| Erdong Luo         |      |    |
-| Mustafain Ali Khan |      |    |
-| Paul Hooley        |      |    |
-| Talha Riaz         |      |    |
-| Zheng Cui          |      |    |
+| Erdong Luo         |  Project Wiki, Tutor List  | 10   |
+| Mustafain Ali Khan |  Architecture Model, Frontend(Home Page, Navigation Bar, Search Page, Review Page, Logout), Integration of Backend with Frontend (searchUniversities.js, logout.js)  |   20 |
+| Paul Hooley        |  Login And Register Frontend and Integration with Backend    | 15   |
+| Talha Riaz         |  Frontend(Manage Sessions), Modification of Backend for Integration, Integration of Backend with Frontend (getSessions.js), Documentation   |  15  |
+| Zheng Cui          |    Backlog, Tutor Profile  |  10  |
