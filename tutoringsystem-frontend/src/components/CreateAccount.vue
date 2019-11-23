@@ -124,7 +124,11 @@ var AXIOS = axios.create({
                 return this.pw.length > 7 ? true : false
             },
             confirmPasswordState() {
-                return this.pw === this.confirmPW ? true : false
+                if(this.pw.length === 0){
+                    return null
+                } else {
+                    return this.pw === this.confirmPW ? true : false
+                }
             }
             },
         data(){
