@@ -2,8 +2,6 @@
     <div id="requestCourse" class="card head">
         <span id="header" class="header">Course Requests</span>
         <b-container fluid>
-            <b-button @click="getUniversities()" variant="outline-info">Get Universities</b-button>
-             <br><br>
             <div class="form-group">
               <h5>Select University</h5>
               <div id="selectUni">
@@ -66,6 +64,9 @@ export default {
             showError: false,
             requestError: ""
         }
+    },
+    beforeMount(){
+      this.getUniversities();
     },
     methods: {
         getUniversities: function () {
