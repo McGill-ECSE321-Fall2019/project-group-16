@@ -303,10 +303,10 @@ public class TutoringSystemRestController {
 	
 	// creating a solo session and notifying the tutor
 		@PostMapping(value = {
-				"/session/{sessionId}/{tutorName}/{studentName}/{startTime}/{endTime}/{date}/{roomNr}/{courseCode}",
-				"/session/{sessionId}/{tutorName}/{studentName}/{startTime}/{endTime}/{date}/{roomNr}/{courseCode}/" })
+				"/session/{sessionId}/{tutorName}/{startTime}/{endTime}/{date}/{roomNr}/{courseCode}",
+				"/session/{sessionId}/{tutorName}/{startTime}/{endTime}/{date}/{roomNr}/{courseCode}/" })
 		public SessionDto enterSession(@PathVariable("sessionId") int sessionId,
-				@PathVariable("tutorName") String tutorUsername, @PathVariable("studentName") String studentUsername,
+				@PathVariable("tutorName") String tutorUsername,
 				@PathVariable("startTime") String startTimeString, @PathVariable("endTime") String endTimeString,
 				@PathVariable("date") String dateString, @PathVariable("roomNr") int roomNr,
 				@PathVariable("courseCode") String courseCode) {
@@ -319,7 +319,7 @@ public class TutoringSystemRestController {
 			
 			
 			Tutor t = service.getTutor(tutorUsername);
-			Student s = service.getStudent(studentUsername);
+			Student s = TutoringSystemApplication.getCurrentlyLoggedInStudent();
 			Set<Student> studentSet = new HashSet<>();
 			studentSet.add(s);
 			Room r = service.getRoom(roomNr);
@@ -609,7 +609,7 @@ public class TutoringSystemRestController {
 		if (t == null) {
 			throw new IllegalArgumentException("There is no such tutor!");
 		}
-		TutorDto tDto = new TutorDto(t.getName(), t.getHourlyRate(), t.getStudentReview(), t.getCourse());
+		TutorDto tDto = new TutorDto(t.getUsername(), t.getName(), t.getHourlyRate(), t.getStudentReview(), t.getCourse());
 		return tDto;
 	}
 
