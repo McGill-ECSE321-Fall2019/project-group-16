@@ -126,6 +126,7 @@ export default {
     height: 45px;
     outline-style: auto;
     margin-bottom: 15px;
+    
 }
 .dropdown {
     width: 40%;

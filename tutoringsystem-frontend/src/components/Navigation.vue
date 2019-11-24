@@ -31,6 +31,11 @@ export default {
           id: 2,
           text: 'Contact',
           page:'/Contact'
+        },
+        {
+          id: 3,
+          text: 'Update Account',
+          page: '/updateAccount'
         }
       ]
     }

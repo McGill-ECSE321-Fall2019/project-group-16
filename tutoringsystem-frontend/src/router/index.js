@@ -7,7 +7,7 @@ import Searchresult from '@/components/Searchresult'
 import Selection from '@/components/Selection'
 import WriteReview from '@/components/WriteReview'
 import RequestCourse from '@/components/RequestCourse'
-
+import UpdateAccount from '@/components/UpdateAccount'
 import TutorProfile from '@/components/TutorProfile'
 
 import CreateAccount from '@/components/CreateAccount'
@@ -73,6 +73,11 @@ export default new Router({
       path: '/requestCourse',
       name: 'CourseRequest',
       component: RequestCourse
+    },
+    {
+      path: '/updateAccount',
+      name: 'UpdateAccount',
+      component: UpdateAccount
     }
   ]
 })

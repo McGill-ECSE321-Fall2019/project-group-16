@@ -102,7 +102,7 @@ export default {
           })
         .catch(e => {
           console.log(e.message);
-          this.errorMsg = "Account does not exist";
+          this.errorMsg = "Account does not exist or password is incorrect";
           this.showError = true;
 
         });
