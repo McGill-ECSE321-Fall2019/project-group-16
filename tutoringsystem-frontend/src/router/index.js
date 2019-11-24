@@ -6,6 +6,7 @@ import Contact from '@/components/Contact'
 import Searchresult from '@/components/Searchresult'
 import Selection from '@/components/Selection'
 import WriteReview from '@/components/WriteReview'
+import RequestCourse from '@/components/RequestCourse'
 
 import TutorProfile from '@/components/TutorProfile'
 
@@ -66,7 +67,12 @@ export default new Router({
     {
       path: '/viewsessions',
       name: 'Sesh',
-      component: Sesh,
+      component: Sesh
+    },
+    {
+      path: '/requestCourse',
+      name: 'CourseRequest',
+      component: RequestCourse
     }
   ]
 })

@@ -9,7 +9,8 @@
         <img id="booking" src="../assets/calendar.png" alt="">
         <br>
         <b-button v-on:click="gotosearch" variant="outline-info">Book New Session</b-button>
-         <b-button v-on:click="gotoReview" variant="outline-info">Review Tutor</b-button>
+        <b-button v-on:click="gotoReview" variant="outline-info">Review Tutor</b-button>
+        <b-button v-on:click="gotoCourseRequest" variant="outline-info">Request a New Course</b-button>
         </div>
 
         <div id='logout'>
@@ -23,13 +24,15 @@
 export default {
     methods : {
         gotosearch(){
-        window.location.href = "/#/Selection"
-            },
-        gotoSessions(){
-        window.location.href ="/#/viewsessions"
+            window.location.href = "/#/Selection"
         },
-        
-}
+        gotoSessions(){
+            window.location.href ="/#/viewsessions"
+        },
+        gotoCourseRequest(){
+            window.location.href = "/#/requestCourse"
+        },        
+    }
 }
 </script>
 
