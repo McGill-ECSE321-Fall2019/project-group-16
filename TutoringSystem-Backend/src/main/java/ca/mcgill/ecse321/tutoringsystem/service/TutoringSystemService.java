@@ -661,7 +661,7 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
-	public Student updateStudent(String username, String password, String name) {
+	public Student updateStudent(String username, String password, String name, Set <Session> sessions) {
 		String error = "";
 		if(username == null || username.trim().length() == 0){
 			error +="Username can't be empty. ";
@@ -672,8 +672,12 @@ public class TutoringSystemService {
 		if(name == null || name.trim().length() == 0){
 			error +="New name can't be empty. ";
 		}
+		if(sessions == null){
+			error += "Sessions can't be null. ";
+		}
 		if(error.length() != 0){
-			throw new IllegalArgumentException(error);
+			throw new 
+			IllegalArgumentException(error);
 		}
 
 		Student student = studentRepository.findStudentByUsername(username);
@@ -681,6 +685,7 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException("Please input a valid student.");
 		student.setPassword(password);
 		student.setName(name);
+		student.setSession(sessions);
 		studentRepository.save(student);
 		return student;
 	}
