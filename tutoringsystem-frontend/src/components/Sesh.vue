@@ -18,7 +18,7 @@
     </tr>
    <tr v-for="session in sessions" v-bind:key="session">
       <td>{{ session.id }}</td>
-      <td>{{ session.student }}</td>
+      <td>{{ session.student[0] }}</td>
       <td>{{ session.tutor }}</td>
       <td>{{ session.room }}</td>
       <td>{{ session.course }}</td>

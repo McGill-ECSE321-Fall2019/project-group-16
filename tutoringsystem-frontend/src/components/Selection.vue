@@ -70,17 +70,32 @@
   <div id="selectTutor">
   <select class="form-control"  v-model="selectedTutor" >
     <option value="" selected disabled hidden>Choose here</option>
-     <option v-for="tutor in tutors" v-bind:value="{name : tutor.name , rate: tutor.hourlyRate}" v-bind:key="tutor">{{tutor.name}}</option>
+     <option v-for="tutor in tutors" v-bind:value="{username: tutor.username, name : tutor.name , rate: tutor.hourlyRate}" v-bind:key="tutor">{{tutor.name}}</option>
   </select>
   </div>
 </div> 
 
- <b-button id = "tutorProfileButton" variant="outline-info" v-on:click="gotoProfile">View Tutor Profile</b-button>
+ <!-- <b-button id = "tutorProfileButton" variant="outline-info" v-on:click="gotoProfile">View Tutor Profile</b-button> -->
 
-
+<div>
+  <h5>Select Date & Time for Session</h5>
+  <div id= "timeInputs" class="form-group">  
+    <label for="date">Date:</label>
+<input class="form-control" type="date" v-model="mydate" />
+ <label for="time">Start Time:</label>
+<input class="form-control" type="time" v-model="startTime" />
+ <label for="date">End Time:</label>
+<input class="form-control" type="time" v-model="endTime" />
+  </div>
+<div id="sessionInputs"  class="form-group">
+ <input class="form-control" v-model="roomNr" placeholder="Room Number">
+ <input class="form-control" v-model="sessionID" placeholder="SessionID">
+  </div>
+ <br>
+<b-button id="bookSessionButton" variant="outline-info" v-on:click="bookSession(sessionID,selectedTutor.username,startTime,endTime,mydate,roomNr,selectedCourse.code)">Book Session</b-button>
+</div>
 </span>
 
-  
 </template>
 
 <script src="./searchUniversities.js">
@@ -117,5 +132,15 @@
 }
 #tutorProfileButton {
   margin: 10px;
+}
+#sessionInputs {
+  margin-right: 50px; 
+  margin-left: 50px;
+}
+#timeInputs {
+  margin-left: 500px;
+  margin-right: 500px;
+ position: center;
+ 
 }
 </style>

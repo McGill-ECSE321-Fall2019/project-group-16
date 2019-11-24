@@ -41,6 +41,12 @@ export default{
         selectedTutor: '',
         errorTutor: '',
         response: [],
+
+        session: '',
+        newSession: '',
+        selectedSessions: '',
+        errorSession: '',
+
       }
     },
     methods : {
@@ -75,8 +81,17 @@ export default{
               this.errorTutor = e.response.data.message;
             });
           },
+          bookSession: function(sessionID,username,startTime,endTime,mydate,roomNr,code){
+            AXIOS.post('/session/' + sessionID + '/' + username + '/' + startTime+':00' + '/' + endTime+':00' + '/' + mydate + '/' + roomNr + '/' + code)
+            .then(response => {
+              this.session = response.data
+            })
+            .catch(e => {
+              this.errorSession = e.response.data;
+            });
+          },
           gotoProfile(){
-            window.location.href ="/#/tutorProfile"
+            window.location.href ="/#/tutor/bobby"
         },
   }
 }
