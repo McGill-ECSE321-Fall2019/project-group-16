@@ -81,8 +81,17 @@ export default{
               this.errorTutor = e.response.data.message;
             });
           },
-          bookSession: function(sessionID,username,startTime,endTime,mydate,roomNr,code){
-            AXIOS.post('/session/' + sessionID + '/' + username + '/' + startTime+':00' + '/' + endTime+':00' + '/' + mydate + '/' + roomNr + '/' + code)
+          // bookSession: function(sessionID,username,startTime,endTime,mydate,roomNr,code){
+          //   AXIOS.post('/session/' + sessionID + '/' + username + '/' + startTime+':00' + '/' + endTime+':00' + '/' + mydate + '/' + roomNr + '/' + code)
+          //   .then(response => {
+          //     this.session = response.data
+          //   })
+          //   .catch(e => {
+          //     this.errorSession = e.response.data;
+          //   });
+          // },
+          bookSession: function(username,startTime,endTime,mydate,code){
+            AXIOS.post('/session/' + username + '/' + startTime+':00' + '/' + endTime+':00' + '/' + mydate + '/' + code + '/' + isGroupSession)
             .then(response => {
               this.session = response.data
             })

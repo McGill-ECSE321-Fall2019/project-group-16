@@ -87,6 +87,10 @@
  <label for="date">End Time:</label>
 <input class="form-control" type="time" v-model="endTime" />
   </div>
+<div id="GroupSession" class="form-group">
+  <input type="checkbox" id="checkbox" v-model="isGroupSession">
+  <label for="checkbox">Group Session</label>
+</div>
 <div id="sessionInputs"  class="form-group">
  <input class="form-control" v-model="roomNr" placeholder="Room Number">
  <input class="form-control" v-model="sessionID" placeholder="SessionID">
