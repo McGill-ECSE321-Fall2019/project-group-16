@@ -108,6 +108,16 @@ public class TutoringSystemRestController {
 		TutoringSystemApplication.setCurrentlyLoggedInStudent(null);
 	}
 
+	@PostMapping(value = ( "/studentUpdate/{username}/{password}/{name}"))
+	public void updateStudent(@PathVariable("username") String username,
+		@PathVariable("password") String password, @PathVariable("name") String name){
+			Student s = service.getStudent(username);
+			if (s == null)
+				throw new IllegalArgumentException("There is no such student!");
+			else{
+				service.updateStudent(username, password, name);
+			}
+	}
 	// <-----------------------------Searching for Courses
 	// ------------------------------>
 
