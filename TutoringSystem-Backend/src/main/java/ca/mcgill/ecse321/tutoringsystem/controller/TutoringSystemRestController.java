@@ -328,7 +328,7 @@ public class TutoringSystemRestController {
 
 			boolean taken;
 
-			int sessionId = student.hashCode() * date.hashCode();
+			int sessionId = date.hashCode();
 			Session session = null;
 
 			if (isGroupSession) {
@@ -338,7 +338,7 @@ public class TutoringSystemRestController {
 					if (bookings == null || bookings.size() == 0) {
 						
 						Set<Session> roomSessions = r.getSession();
-						int id = sessionId * r.hashCode();
+						int id = sessionId;
 						RoomBooking booking = service.createRoomBooking(id, startTime, endTime, date);
 						bookings.add(booking);
 
@@ -373,7 +373,7 @@ public class TutoringSystemRestController {
 					if (!taken) {
 						
 						Set<Session> roomSessions = r.getSession();
-						int id = sessionId * r.hashCode();
+						int id = sessionId;
 						RoomBooking booking = service.createRoomBooking(id, startTime, endTime, date);
 						bookings.add(booking);
 
@@ -397,7 +397,7 @@ public class TutoringSystemRestController {
 					if (bookings == null || bookings.size() == 0) {
 						
 						Set<Session> roomSessions = r.getSession();
-						int id = sessionId * r.hashCode();
+						int id = sessionId;
 						RoomBooking booking = service.createRoomBooking(id, startTime, endTime, date);
 						bookings.add(booking);
 
@@ -432,7 +432,7 @@ public class TutoringSystemRestController {
 					if (!taken) {
 						
 						Set<Session> roomSessions = r.getSession();
-						int id = sessionId * r.hashCode();
+						int id = sessionId;
 						RoomBooking booking = service.createRoomBooking(id, startTime, endTime, date);
 						bookings.add(booking);
 
