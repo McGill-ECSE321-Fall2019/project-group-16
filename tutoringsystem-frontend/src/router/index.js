@@ -7,7 +7,7 @@ import Searchresult from '@/components/Searchresult'
 import Selection from '@/components/Selection'
 import WriteReview from '@/components/WriteReview'
 
-import TutorProfile from '@/components/TutorProfile'
+import TutorProfile from '@/components/tutorProfile.vue'
 import Tutor from '@/components/Tutor'
 
 import CreateAccount from '@/components/CreateAccount'
