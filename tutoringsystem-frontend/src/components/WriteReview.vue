@@ -2,7 +2,19 @@
    <div class="review">
         <h5>Review Tutor</h5>
         <img id="reviewImg" src="../assets/review.svg" alt="">
-        <div class="rating"> 
+        <div class="selectTutor">  
+        <label>Select Tutor :</label>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b-button id="refreshButton" variant="outline-info">Get Tutor</b-button>
+        <select class="form-control" id="exampleFormControlSelect1">
+          <option>1 : Tom</option>
+          <option>2 : Jerry</option>
+          <option>3 : C</option>
+          <option>4 : D</option>
+          <option>5 : E</option>
+        </select>
+        </div>
+        <div class="rating">
         <label>Rating :</label>
         <select class="form-control" id="exampleFormControlSelect1">
           <option>1 : Poor</option>
@@ -36,9 +48,15 @@
   margin: 10px;
   float: right;
 }
+#refreshButton {
+  margin: 10px;
+  float: middle;
+}
 #reviewImg {
   margin: 20px;
   width: 200px;
   height: 200px;
 }
 </style>
+
+
