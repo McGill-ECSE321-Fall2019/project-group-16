@@ -222,11 +222,25 @@ public class TutoringSystemRestController {
 
 	}
 
+	@GetMapping(value = { "/courses/tutor/{tutorUsername}", "/courses/tutor/{tutorUsername}/" })
+	public List<CourseDto> getCoursesForTutor(@PathVariable("tutorUsername") String tutorUsername) {
+
+		List<CourseDto> courseDtos = new ArrayList<>();
+		Tutor t = service.getTutor(tutorUsername);
+
+		for (Course c : t.getCourse()) {
+			courseDtos.add(convertToDto(c));
+		}
+
+		return courseDtos;
+
+	}
+
 	// <--------------- Manage Session ----------------->
 
 	//student review
 		@PostMapping(value = {"/studentReview/{id}/{review}/{reviewerId}/{revieweeId}", "studentReview/{id}/{review}/{reviewerId}/{revieweeId}/"})
-		public StudentReviewDto enterCourse(@PathVariable("id") int id, @PathVariable("review") String review, @PathVariable("reviewerId") String reviewerId, @PathVariable("revieweeId") String revieweeId) {
+		public StudentReviewDto createStudentReview(@PathVariable("id") int id, @PathVariable("review") String review, @PathVariable("reviewerId") String reviewerId, @PathVariable("revieweeId") String revieweeId) {
 			
 			Tutor t = service.getTutor(reviewerId);
 			
@@ -253,6 +267,20 @@ public class TutoringSystemRestController {
 
 		  TutorReview tr = service.createTutorReview(id, review, t, rating, s);
 		  return convertToDto(tr);
+		}
+		
+		//get tutor review
+		@GetMapping(value = {"/tutorReview/tutor/{tutorUsername}","/tutorReview/tutor/{tutorUsername}/"})
+		public List<TutorReviewDto> getAllTutorReviewsFromTutor(@PathVariable("tutorUsername") String tutorUsername) {
+			
+			List<TutorReviewDto> reviewsDtoList = new ArrayList<>();
+			Tutor t = service.getTutor(tutorUsername);
+
+
+			for (TutorReview tr : t.getTutorReview()) {
+				reviewsDtoList.add(convertToDto(tr));
+			}
+			return reviewsDtoList;
 		}
 	
 	// <--------------------- Sessions ------------------>

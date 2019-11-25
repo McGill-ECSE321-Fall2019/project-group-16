@@ -60,47 +60,55 @@ export default {
             errorPerson: '',
             response: [],
             id: 132,
+
+            reviews: [],
+            newReview: '',
+            selectedReviews: '',
+            errorReview: '',
+
+            courses: [],
+            newCourse: '',
+            selectedCourses: '',
+            errorCourse: '',
         }
     },
     created: function() {
         this.name = this.username
-        const p1 = new PersonDto('John')
-        const p2 = new PersonDto('Jill')
-        this.people = [p1, p2]
 
-        // AXIOS.get(`/tutors/`)
-        // .then(response => {
-        //     this.tutors = response.data
-        // })
-        // .catch(e => {
-        //     this.errorTutor = e;
-        // });
-        const t1 = new TutorDto('Bob', 14)
-
-        const r1 = new ReviewDto(1, 'good', 4)
-        // this.tutors[0].reviews.push(r1)
-        //this.t1.reviews.push(r1)
-        const r2 = new ReviewDto(2, 'mediocre', 5)
-        // this.t1.reviews.push(r2)
-        const r3 = new ReviewDto(3, 'meh', 3)
-        // this.t1.reviews.push(r3)
-        this.reviews = [r1, r2, r3]
-
-        const c1 = new CourseDto('Math141', 'math', 'Mcgill')
-        // this.t1.courses.push(c1)
-        const c2 = new CourseDto('Math263', 'ode', 'Mcgill')
-        // this.t1.courses.push(c2)
-        this.courses = [c1, c2]
-
-        this.tutors.push(t1)
-        //getting currently logged in student
-        AXIOS.get(`/student`)
+        AXIOS.get('/tutorReview/tutor/' + username)
         .then(response => {
-            this.student = reponse.data;
+            this.reviews = response.data
+            this.errorReview = ''
         })
         .catch(e => {
-            console.log(e.message);
-        });
+            this.errorReview = e.response.data.message;
+        })
+
+        AXIOS.get('/courses/tutor/' + username)
+        .then(response => {
+            this.courses = response.data
+            this.errorCourse = ''
+        })
+        .catch(e => {
+            this.errorCourse = e.response.data.message;
+        })
+
+        // const p1 = new PersonDto('John')
+        // const p2 = new PersonDto('Jill')
+        // this.people = [p1, p2]
+
+        // const t1 = new TutorDto('Bob', 14)
+
+        // const r1 = new ReviewDto(1, 'good', 4)
+        // const r2 = new ReviewDto(2, 'mediocre', 5)
+        // const r3 = new ReviewDto(3, 'meh', 3)
+        // this.reviews = [r1, r2, r3]
+
+        // const c1 = new CourseDto('Math141', 'math', 'Mcgill')
+        // const c2 = new CourseDto('Math263', 'ode', 'Mcgill')
+        // this.courses = [c1, c2]
+
+        // this.tutors.push(t1)
     },
     methods: {
         createTutor: function() {
