@@ -328,7 +328,7 @@ public class TutoringSystemRestController {
 
 			boolean taken;
 
-			int sessionId = date.hashCode();
+			int sessionId = Math.abs(date.hashCode());
 			Session session = null;
 
 			if (isGroupSession) {
@@ -705,5 +705,7 @@ public class TutoringSystemRestController {
 				}
 				return sessionDtoList;
 			}
+			
+			
 
 }

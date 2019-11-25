@@ -90,7 +90,7 @@ export default{
           //     this.errorSession = e.response.data;
           //   });
           // },
-          bookSession: function(username,startTime,endTime,mydate,code){
+          bookSession: function(username,startTime,endTime,mydate,code,isGroupSession){
             AXIOS.post('/session/' + username + '/' + startTime+':00' + '/' + endTime+':00' + '/' + mydate + '/' + code + '/' + isGroupSession)
             .then(response => {
               this.session = response.data

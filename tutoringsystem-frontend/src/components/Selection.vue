@@ -96,7 +96,7 @@
  <input class="form-control" v-model="sessionID" placeholder="SessionID">
   </div>
  <br>
-<b-button id="bookSessionButton" variant="outline-info" v-on:click="bookSession(sessionID,selectedTutor.username,startTime,endTime,mydate,roomNr,selectedCourse.code)">Book Session</b-button>
+<b-button id="bookSessionButton" variant="outline-info" v-on:click="bookSession(selectedTutor.username,startTime,endTime,mydate,selectedCourse.code,isGroupSession)">Book Session</b-button>
 </div>
 </span>
 
