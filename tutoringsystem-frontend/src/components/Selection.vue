@@ -89,12 +89,8 @@
   </div>
 <div id="GroupSession" class="form-group">
   <input type="checkbox" id="checkbox" v-model="isGroupSession">
-  <label for="checkbox">Group Session</label>
+  <label for="checkbox">This is a group session</label>
 </div>
-<div id="sessionInputs"  class="form-group">
- <input class="form-control" v-model="roomNr" placeholder="Room Number">
- <input class="form-control" v-model="sessionID" placeholder="SessionID">
-  </div>
  <br>
 <b-button id="bookSessionButton" variant="outline-info" v-on:click="bookSession(selectedTutor.username,startTime,endTime,mydate,selectedCourse.code,isGroupSession)">Book Session</b-button>
 </div>
