@@ -41,12 +41,12 @@
 
 <b-button @click="getSessions()" variant="outline-info">Update Sessions</b-button>
  <br><br>
- <h5>Delete a Session</h5>
+ <h5>Cancel a Session</h5>
    <div id="subImg">
         <img src="../assets/delete.png" alt="" width="10%" height="10%">
     </div>
  
-<h7>Choose a session to delete from the list below</h7>
+<h7>Choose a session to cancel from the list below</h7>
    <div id="selectSession">
   <select class="form-control" v-model="selectedSession" @change="getSessions()">
     <option value="" selected disabled hidden>Choose here</option>
@@ -57,7 +57,7 @@
   </div>
   
 
-<b-button @click="deleteSession(selectedSession.name)" variant="danger">Delete Session</b-button>
+<b-button @click="deleteSession(selectedSession.name)" variant="danger">Cancel Session</b-button>
  <br><br>
 
 </span>
