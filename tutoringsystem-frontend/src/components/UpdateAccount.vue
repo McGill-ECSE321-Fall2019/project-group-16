@@ -134,7 +134,6 @@ export default {
                 type: Object
             },
             userName: "",
-            newFullName: "",
         }
     },
     beforeMount(){
@@ -149,7 +148,7 @@ export default {
             .then(response =>{
                 this.showAlert = true;
                 this.requestAlert = "Your details have been updated!";
-                this.newFullName = fullName;
+                localStorage.setItem('newFullName', fullName);
             })
             .catch(e => {
                 this.showError = true;
@@ -160,7 +159,7 @@ export default {
         getStudent: function(){
             this.showAlert = false;
             this.showError = false;
-            if(this.newFullName.length === 0){
+            if(localStorage.getItem('newFullName') === null){
                 AXIOS.get(`/student`)
                 .then(response => {
                         this.student = response.data;
@@ -172,7 +171,7 @@ export default {
                     this.requestError = "There was an error :(";
                 });
             }else{
-                this.fullName = this.newFullName;
+                this.fullName = localStorage.getItem('newFullName');
             }
 
 
