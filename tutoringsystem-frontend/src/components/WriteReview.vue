@@ -5,15 +5,21 @@
         <div class="selectTutor">  
         <label>Select Tutor :</label>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <b-button id="refreshButton" variant="outline-info">Get Tutor</b-button>
-        <select class="form-control" id="exampleFormControlSelect1">
-          <option>1 : Tom</option>
-          <option>2 : Jerry</option>
-          <option>3 : C</option>
-          <option>4 : D</option>
-          <option>5 : E</option>
+        <b-button @click="getTutors()" variant="outline-info">Get Tutors</b-button>
+        <br><br>
+      <div class="form-group">
+
+      <div id="selectTut">
+      <select class="form-control" v-model="selectedTutor" @change="getTutors(selectedTutor.username)">
+      <option value="" selected disabled hidden>Choose here</option>
+      <option v-for="tutor in tutors" v-bind:value="{name : tutor.username}" v-bind:key="tutor">
+      {{ tutor.username }}
+          </option>
         </select>
+      </div>
         </div>
+        </div>
+
         <div class="rating">
         <label>Rating :</label>
         <select class="form-control" id="exampleFormControlSelect1">
