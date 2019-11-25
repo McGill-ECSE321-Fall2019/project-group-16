@@ -91,7 +91,11 @@ export default{
           //   });
           // },
           bookSession: function(username,startTime,endTime,mydate,code,isGroupSession){
+            if(typeof isGroupSession == "undefined"){
+                isGroupSession=false;
+            }
             AXIOS.post('/session/' + username + '/' + startTime+':00' + '/' + endTime+':00' + '/' + mydate + '/' + code + '/' + isGroupSession)
+            //AXIOS.post('/session/' + 'rijulsaini' + '/' + '13:13'+':00' + '/' + '14:13'+':00' + '/' + '2020-03-03' + '/' + 'ECSE326' + '/' + 'false')
             .then(response => {
               this.session = response.data
             })
@@ -102,5 +106,17 @@ export default{
           gotoProfile(){
             window.location.href ="/#/tutor/bobby"
         },
+
+        // deleteAllSessions: function(){
+        //   AXIOS.post('/sessions/delete')
+        //   .then(response => {
+        //     this.session = response.data
+        //   })
+        //   .catch(e => {
+        //     this.errorSession = e.response.data;
+        //   });
+        // },
+
+
   }
 }

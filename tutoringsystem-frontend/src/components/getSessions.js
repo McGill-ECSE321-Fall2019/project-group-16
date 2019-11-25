@@ -37,6 +37,18 @@ export default{
                   this.errorSession = e.response.data.message;
                 });
         },
+        deleteSession(id){
+              AXIOS.post('/session/delete/'+ id)
+              .then(response => {
+                // JSON responses are automatically parsed.
+                this.sessions = response.data
+                this.errorSession =''
+              })
+              .catch(e => {
+                this.errorSession = e.response.data.message;
+              });
+
+        },
         
 }
 

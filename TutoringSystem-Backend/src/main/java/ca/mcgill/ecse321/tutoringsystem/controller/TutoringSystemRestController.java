@@ -622,7 +622,7 @@ public class TutoringSystemRestController {
 		if (t == null) {
 			throw new IllegalArgumentException("There is no such tutor!");
 		}
-		TutorDto tDto = new TutorDto(t.getName(), t.getHourlyRate(), t.getStudentReview(), t.getCourse());
+		TutorDto tDto = new TutorDto(t.getUsername(), t.getName(), t.getHourlyRate(), t.getStudentReview(), t.getCourse());
 		return tDto;
 	}
 
@@ -705,6 +705,37 @@ public class TutoringSystemRestController {
 				}
 				return sessionDtoList;
 			}
+			
+			@PostMapping({"/session/delete/{id}", "/session/delete/{id}/"})
+			public List<SessionDto> deleteSession(@PathVariable("id") int id){
+				
+				Student currentStudent = TutoringSystemApplication.getCurrentlyLoggedInStudent();
+				
+				List<SessionDto> sessionDtoList = new ArrayList<>();
+				
+				service.deleteSession(id);
+				
+				boolean contains = false;
+				
+				
+				for (Session s : service.getAllSessions()) {		
+					
+					for(Student std : s.getStudent()) {
+						if(std.getUsername().equals(currentStudent.getUsername())){
+							contains = true;
+						}
+					}
+					if (contains) {
+						sessionDtoList.add(convertToDto(s));
+					}
+				}
+				
+				return sessionDtoList;
+				
+			}
+			
+			
+			
 			
 			
 

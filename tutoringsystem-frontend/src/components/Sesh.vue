@@ -1,8 +1,13 @@
 <template>
 <span class="container">
+
+
    
 <div id="table">
-  <h6>All Current Sessions</h6>
+  <h5>All Current & Pending Sessions</h5>
+  <div id="subImg">
+        <img src="../assets/session.png" alt="" width="10%" height="10%">
+    </div>
   <table class="table table-bordered">
    <tr>
       <th>Session ID</th>
@@ -36,6 +41,24 @@
 
 <b-button @click="getSessions()" variant="outline-info">Update Sessions</b-button>
  <br><br>
+ <h5>Delete a Session</h5>
+   <div id="subImg">
+        <img src="../assets/delete.png" alt="" width="10%" height="10%">
+    </div>
+ 
+<h7>Choose a session to delete from the list below</h7>
+   <div id="selectSession">
+  <select class="form-control" v-model="selectedSession" @change="getSessions()">
+    <option value="" selected disabled hidden>Choose here</option>
+    <option v-for="session in sessions" v-bind:value="{name : session.id}" v-bind:key="session">
+      {{ session.id }}
+    </option>
+  </select>
+  </div>
+  
+
+<b-button @click="deleteSession(selectedSession.name)" variant="danger">Delete Session</b-button>
+ <br><br>
 
 </span>
 </template>
@@ -51,12 +74,13 @@
   margin-right: 20px;
   position: center;
 }
-#selectUni {
+#selectSession {
   margin-right: 50px; 
   margin-left: 50px;
   padding: 10px;
   max-width: 100%;
   margin-bottom: 10px;
 }
+
 
 </style>
