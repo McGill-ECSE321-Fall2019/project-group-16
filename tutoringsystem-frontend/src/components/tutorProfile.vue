@@ -21,7 +21,7 @@
             <div id="review" class=card>
             <td>CourseCode: {{course.courseCode}}</td>
             <td>Subject: {{course.subject}}</td>
-            <td>University: {{course.university}}</td>
+            <td>University: {{course.universityName}}</td>
             <td><b-button
             type="button"
             variant="outline-info"

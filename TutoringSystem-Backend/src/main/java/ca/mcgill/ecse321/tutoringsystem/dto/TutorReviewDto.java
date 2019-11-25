@@ -20,6 +20,7 @@ public class TutorReviewDto {
 		this.review = review;
 		this.authorName = author.getName();
 		this.revieweeName = reviewee.getName();	
+		this.rating = rating;
 	}
 	
 	public void setReview(String review) {
