@@ -6,14 +6,9 @@ import Contact from '@/components/Contact'
 import Searchresult from '@/components/Searchresult'
 import Selection from '@/components/Selection'
 import WriteReview from '@/components/WriteReview'
-<<<<<<< HEAD
-
-import TutorProfile from '@/components/tutorProfile.vue'
-=======
 import RequestCourse from '@/components/RequestCourse'
 import UpdateAccount from '@/components/UpdateAccount'
 import TutorProfile from '@/components/TutorProfile'
->>>>>>> a57dbff01790f9f6e6f93ae48a7f261eb60237bb
 
 import CreateAccount from '@/components/CreateAccount'
 import Home from '@/components/Home'
