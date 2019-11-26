@@ -9,14 +9,12 @@
         <br><br>
       <div class="form-group">
 
-      <div id="selectTut">
-      <select class="form-control" v-model="selectedTutor" @change="getTutors(selectedTutor.username)">
-      <option value="" selected disabled hidden>Choose here</option>
-      <option v-for="tutor in tutors" v-bind:value="{name : tutor.username}" v-bind:key="tutor">
-      {{ tutor.username }}
-          </option>
+        <div id="selectTutor">
+        <select class="form-control"  v-model="selectedTutor" >
+          <option value="" selected disabled hidden>Choose here</option>
+           <option v-for="tutor in tutors" v-bind:value="{name : tutor.name , rate: tutor.hourlyRate}" v-bind:key="tutor">{{tutor.name}}</option>
         </select>
-      </div>
+        </div>
         </div>
         </div>
 
@@ -40,6 +38,12 @@
            </div>
     </div>
 </template>
+
+<script src="./searchUniversities.js">
+export default {
+  
+}
+</script>
 
 <style scoped>
 .review {
