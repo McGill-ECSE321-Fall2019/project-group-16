@@ -673,7 +673,7 @@ public class TutoringSystemRestController {
 		if (c == null) {
 			throw new IllegalArgumentException("There is no such course!");
 		}
-		CourseDto cDto = new CourseDto(c.getCourseCode(), c.getSubject(), c.getUniversity());
+		CourseDto cDto = new CourseDto(c.getCourseCode(), c.getSubject(), c.getUniversity().getName());
 		return cDto;
 	}
 

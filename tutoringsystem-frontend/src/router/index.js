@@ -8,7 +8,7 @@ import Selection from '@/components/Selection'
 import WriteReview from '@/components/WriteReview'
 import RequestCourse from '@/components/RequestCourse'
 import UpdateAccount from '@/components/UpdateAccount'
-import TutorProfile from '@/components/TutorProfile'
+import Tutor from '@/components/Tutor'
 import BookSession from '@/components/BookSession'
 
 import CreateAccount from '@/components/CreateAccount'
@@ -56,9 +56,9 @@ export default new Router({
     },
     {
       path: '/tutor/:username',
-      name: 'Tutorprofile',
+      name: 'Tutor',
       props: true,
-      component: TutorProfile
+      component: Tutor
     },
     {
       path: '/account',

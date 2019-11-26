@@ -102,34 +102,6 @@ export default {
                 this.errorCourse = e.response.data.message;
             })
         },
-        createTutor: function() {
-            AXIOS.post(`/tutors/bob/bobuser/14.4`, {}, {})
-            .then(response => {
-                this.tutor = reponse.data
-                this.name = "worked"
-            })
-            .catch(e => {
-                var errorMsg = e.message
-                console.log(errorMsg)
-                this.name = "failed"
-            });
-            this.name = "trolls"
-        },
-        createPerson: function() {
-            var p = new PersonDto("hallo")
-            this.people.push(p)
-            this.newPerson
-        },
-        bookSession: function(courseCode){
-            this.goToViewSession()            
-            //AXIOS.post(`/session/` + id + '/' + username + '/' + student.username + '')
-        },
-        goToViewSession: function() {
-            Router.push({
-                path:"/viewsessions",
-                name: "Sesh"
-            });
-        }
 
     }
 }

@@ -16,11 +16,10 @@ public class CourseDto {
     
     public CourseDto() {
     }
-    public CourseDto(String code, String sub, University u) {
+    public CourseDto(String code, String sub, String universityName) {
     		this.courseCode = code;
     		this.subject = sub;
-    		this.universityID = u.getId();
-    		this.universityName = u.getName();
+    		this.universityName = universityName;
     }
     
     public String getCourseCode() {

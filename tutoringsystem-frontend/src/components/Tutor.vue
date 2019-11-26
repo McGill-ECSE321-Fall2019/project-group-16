@@ -1,10 +1,12 @@
 <template>
     <div>
         <br>
-            <h1>
-            Tutor's name: {{username}}
-            </h1>
-            
+            <h1>Tutor's name: {{ tutor.name }}</h1>
+            <div id="tutor" class=card>
+                Username: {{ username }}<br>
+                Name: {{ tutor.name }}<br>
+                Hourly Rate: {{ tutor.hourlyRate }}
+            </div>
         <br>
         <h3>Reviews:</h3>
             <li v-for="review in reviews" v-bind:key="review">
@@ -20,12 +22,7 @@
             <div id="review" class=card>
             <td>CourseCode: {{course.courseCode}}</td>
             <td>Subject: {{course.subject}}</td>
-            <td>University: {{course.university}}</td>
-            <td><b-button
-            type="button"
-            variant="outline-info"
-            v-on:click="bookSession(course.CourseCode)"
-            >Book Session</b-button></td>
+            <td>University: {{course.universityName}}</td>
             </div>
         </li>
     </div>

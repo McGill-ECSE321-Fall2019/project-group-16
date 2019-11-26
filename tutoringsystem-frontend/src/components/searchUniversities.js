@@ -75,14 +75,17 @@ export default{
               this.errorCourse = e;
             });
           },
-          getTutors: function(){
-            AXIOS.get('/tutor')
+          getTutors: function(code){
+            AXIOS.get('/courses/tutors/' + code)
             .then(response => {
               this.tutors = response.data
             })
             .catch(e => {
               this.errorTutor = e.response.data.message;
             });
+          },
+          gotoTutorProfile: function(username){
+            window.location.href ="/#/tutor/" + username
           },
           // bookSession: function(sessionID,username,startTime,endTime,mydate,roomNr,code){
           //   AXIOS.post('/session/' + sessionID + '/' + username + '/' + startTime+':00' + '/' + endTime+':00' + '/' + mydate + '/' + roomNr + '/' + code)

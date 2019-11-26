@@ -52,30 +52,31 @@
   <div id="img">
         <img src="../assets/seo.svg" alt="" width="10%" height="10%">
     </div>
-<div id="selectCourse">
-  <select class="form-control"  v-model="selectedCourse"  @change="getTutors()">
+  <div id="selectCourse">
+  <select class="form-control"  v-model="selectedCourse"  @change="getTutors(selectedCourse.code)">
     <option value="" selected disabled hidden>Choose here</option>
-     <option v-for="course in courses" v-bind:value="{code : course.courseCode}" v-bind:key="course">{{course.courseCode}}</option>
+    <option v-for="course in courses" v-bind:value="{code : course.courseCode}" v-bind:key="course">{{course.courseCode}}</option>
   </select>
   </div>
-</div> 
-<div>
-    <!-- <h6>Click the button to view all available tutors for the selected course!</h6> -->
-    <!-- <b-button id = "tutorButton" variant="outline-info" @click="getTutors()">View Tutors</b-button> -->
+  <div>
   <h5>Select Tutor</h5>
   <div>
     <img src="../assets/teacher.svg" alt="" width="10%" height="10%">
   </div>
-
   <div id="selectTutor">
   <select class="form-control"  v-model="selectedTutor" >
     <option value="" selected disabled hidden>Choose here</option>
      <option v-for="tutor in tutors" v-bind:value="{username: tutor.username, name : tutor.name , rate: tutor.hourlyRate}" v-bind:key="tutor">{{tutor.name}}</option>
   </select>
   </div>
+  </div> 
 </div> 
 
+
  <!-- <b-button id = "tutorProfileButton" variant="outline-info" v-on:click="gotoProfile">View Tutor Profile</b-button> -->
+<b-button id="ViewTutorProfileButton" variant="outline-info" v-on:click="gotoTutorProfile(selectedTutor.username)">Check Tutor Profile</b-button>
+<br>
+<br>
 
 <div>
   <h5>Select Date & Time for Session</h5>
