@@ -14,7 +14,14 @@
       <img id="booking" src="../assets/calendar.png" alt="" class="img">
         <br>
         <b-button v-on:click="gotosearch" variant="outline-info">Book New Session</b-button>
+<<<<<<< HEAD
         <br>
+=======
+        <b-button v-on:click="gotoReview" variant="outline-info">Review Tutor</b-button>
+        <b-button v-on:click="gotoCourseRequest" variant="outline-info">Request a New Course</b-button>
+        </div>
+
+>>>>>>> d8c668f25e2a443b5a89ffa178bb5858e0aebafb
         <div id='logout'>
            <b-button id="logoutButton" variant="outline-info" v-on:click="logout()">Logout</b-button> 
         </div>
@@ -61,6 +68,17 @@ export default {
     //     gotoSessions(){
     //     window.location.href ="/#/viewsessions"
     //     },
+    methods : {
+        gotosearch(){
+            window.location.href = "/#/Selection"
+        },
+        gotoSessions(){
+            window.location.href ="/#/viewsessions"
+        },
+        gotoCourseRequest(){
+            window.location.href = "/#/requestCourse"
+        },        
+    }
 }
 
 </script>

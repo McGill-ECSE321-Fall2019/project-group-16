@@ -11,17 +11,18 @@ public class TutorDto {
 	
 	private String name;
 	private Double hourlyRate;
-	private Set<StudentReview> studentReview;
-	private Set<Session> session;
-	private Set<Course> course;
 	private String username;	
+	private Set<TutorReviewDto> tutorReview;
+	private Set<SessionDto> session;
+	private Set<CourseDto> course;
 	
 	
-	public TutorDto (String username, String name, Double hourlyRate, Set<StudentReview> studentReview, Set<Course> course) {
-		this.username=username;		
+	
+	public TutorDto (String username, String name, Double hourlyRate, Set<TutorReviewDto> tutorReview, Set<CourseDto> course) {
+		this.username = username;
 		this.name=name;
 		this.hourlyRate=hourlyRate;
-		this.studentReview=studentReview;
+		this.tutorReview=tutorReview;
 		this.course=course;
 	}
 	
@@ -33,15 +34,15 @@ public class TutorDto {
 		this.hourlyRate = hourlyRate;
 	}
 
-	public void setStudentReview(Set<StudentReview> studentReview) {
-		this.studentReview = studentReview;
+	public void setTutorReview(Set<TutorReviewDto> tutorReview) {
+		this.tutorReview = tutorReview;
 	}
 
-	public void setSession(Set<Session> session) {
+	public void setSession(Set<SessionDto> session) {
 		this.session = session;
 	}
 
-	public void setCourse(Set<Course> course) {
+	public void setCourse(Set<CourseDto> course) {
 		this.course = course;
 	}
 	
@@ -55,13 +56,13 @@ public class TutorDto {
 	public Double getHourlyRate() {
 		return hourlyRate;
 	}
-	public Set<StudentReview> getStudentReviews (){
-		return studentReview;
+	public Set<TutorReviewDto> getTutorReviews (){
+		return tutorReview;
 	}
-	public Set<Session> getAllSessions(){
+	public Set<SessionDto> getAllSessions(){
 		return session;
 	}
-	public Set<Course> getAllCourses (){
+	public Set<CourseDto> getAllCourses (){
 		return course;
 	}
 	public String getUsername() {

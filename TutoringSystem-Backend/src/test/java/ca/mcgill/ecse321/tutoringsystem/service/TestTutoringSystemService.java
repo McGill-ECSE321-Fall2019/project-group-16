@@ -364,6 +364,7 @@ public class TestTutoringSystemService {
 		
 		Set<Session> sessions = new HashSet<Session>();
 		Set<Session> pendingSessions = new HashSet<Session>();
+		Set<Course> courses = new HashSet<>();
 
 		try {
 			service.createTutor(name, username, password,rate);
@@ -381,7 +382,7 @@ public class TestTutoringSystemService {
 		rate  = 14;
 		
 		try {
-			service.updateTutor(username, name, password, rate, pendingSessions, sessions);
+			service.updateTutor(username, name, password, rate, pendingSessions, sessions, courses);
 		} catch (IllegalArgumentException e) {
 			
 			fail();
@@ -405,6 +406,9 @@ public class TestTutoringSystemService {
 
 		Set<Session> sessions = new HashSet<Session>();
 		Set<Session> pendingSessions = new HashSet<Session>();
+		
+		Set<Course> courses = new HashSet<>();
+		
 
 		try {
 			service.createTutor(name, username, password,rate);
@@ -424,7 +428,7 @@ public class TestTutoringSystemService {
 		username = null;
 		
 		try {
-			service.updateTutor(username, name, password, rate, pendingSessions, sessions);
+			service.updateTutor(username, name, password, rate, pendingSessions, sessions, courses);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Username can't be empty. Password can't be empty. New name can't be empty. Hourly rate is invalid.", e.getMessage().trim());
@@ -1571,9 +1575,11 @@ public class TestTutoringSystemService {
 				
 				String newSubject = "Science";
 				University newUniversity = service.createUniversity(1,"Concordia");
+
+				Set<Tutor> tutors = new HashSet<>();
 				
 				try {
-					service.updateCourse(courseCode, newSubject, newUniversity, flag);
+					service.updateCourse(courseCode, newSubject, newUniversity, flag, tutors);
 				} catch (IllegalArgumentException e) {
 					fail();
 				}
@@ -1611,8 +1617,10 @@ public class TestTutoringSystemService {
 				University newUniversity = null;
 				Boolean flag = null;
 				
+				
+				Set<Tutor> tutors = new HashSet<>();
 				try {
-					service.updateCourse("", newSubject, newUniversity, flag);
+					service.updateCourse("", newSubject, newUniversity, flag, tutors);
 					fail();
 				} catch (IllegalArgumentException e) {
 					assertEquals("Please provide a courseCode. Please provide a subject. University cannot be null. Must be requested or not. ", e.getMessage());
@@ -1624,8 +1632,10 @@ public class TestTutoringSystemService {
 			@Test
 			public void testUpdateCourseNonExistant() {
 				University u = service.createUniversity(1, "McGill");
+				
+				Set<Tutor> tutors = new HashSet<>();
 				try {
-					service.updateCourse("FakeCourse", "YeeHaw", u, true);
+					service.updateCourse("FakeCourse", "YeeHaw", u, true, tutors);
 					fail();
 				} catch(IllegalArgumentException e) {
 					assertEquals("The course does not exist. Please specify a valid Course Code", e.getMessage());
