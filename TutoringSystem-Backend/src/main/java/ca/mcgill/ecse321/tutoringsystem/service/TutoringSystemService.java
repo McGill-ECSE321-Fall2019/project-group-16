@@ -77,7 +77,7 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
-	public Course updateCourse(String courseCode, String subject, University university, Boolean isRequested) {
+	public Course updateCourse(String courseCode, String subject, University university, Boolean isRequested, Set<Tutor> tutors) {
 		String error = "";
 		if(courseCode == null || courseCode.trim().length() == 0){
 			error +="Please provide a courseCode. ";
@@ -91,6 +91,7 @@ public class TutoringSystemService {
 		if(isRequested == null) {
 			error +="Must be requested or not. ";
 		}
+		//ERROR CHECKING FOR TUTORS
 		if(error.length() != 0){
 			throw new IllegalArgumentException(error);
 		}
@@ -102,6 +103,8 @@ public class TutoringSystemService {
 		course.setSubject(subject);
 		course.setUniversity(university);
 		course.setIsRequested(isRequested);
+		course.setTutor(tutors);
+
 		courseRepository.save(course);
 		return course;
 	}
@@ -771,7 +774,7 @@ public class TutoringSystemService {
 	}
 	
 	@Transactional
-	public Tutor updateTutor(String username, String name, String password, double hourlyRate, Set<Session> pendingSessions, Set<Session> sessions) {
+	public Tutor updateTutor(String username, String name, String password, double hourlyRate, Set<Session> pendingSessions, Set<Session> sessions, Set<Course> courses) {
 		String error = "";
 		if(username == null || username.trim().length() == 0){
 			error +="Username can't be empty. ";
@@ -805,6 +808,7 @@ public class TutoringSystemService {
 		tutor.setHourlyRate(hourlyRate);
 		tutor.setSession(sessions);
 		tutor.setPendingSession(pendingSessions);
+		tutor.setCourse(courses);
 		tutorRepository.save(tutor);
 		return tutor;
 	}

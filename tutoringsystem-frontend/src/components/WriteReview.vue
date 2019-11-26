@@ -2,25 +2,15 @@
    <div class="review">
         <h5>Review Tutor</h5>
         <img id="reviewImg" src="../assets/review.svg" alt="">
-        <div class="selectTutor">  
-        <label>Select Tutor :</label>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <b-button @click="getTutors()" variant="outline-info">Get Tutors</b-button>
-        <br><br>
-      <div class="form-group">
-
         <div id="selectTutor">
         <select class="form-control"  v-model="selectedTutor" >
           <option value="" selected disabled hidden>Choose here</option>
-           <option v-for="tutor in tutors" v-bind:value="{name : tutor.name , rate: tutor.hourlyRate}" v-bind:key="tutor">{{tutor.name}}</option>
+          <option v-for="tutor in tutors" v-bind:value="{name : tutor.name , rate: tutor.hourlyRate}" v-bind:key="tutor">{{tutor.name}}</option>
         </select>
         </div>
-        </div>
-        </div>
-
-        <div class="rating">
+        <div class="rating"> 
         <label>Rating :</label>
-        <select class="form-control" id="exampleFormControlSelect1">
+        <select class="form-control" id="exampleFormControlSelect1" v-model="selectedRating">
           <option>1 : Poor</option>
           <option>2 : Below Average</option>
           <option>3 : Average</option>
@@ -30,21 +20,91 @@
         </div>
         <div class="comments">
           <label for="">Comments: </label>
-         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="comments"></textarea>
         </div>
-        <b-button id="reviewButton" variant="outline-info">Submit Review</b-button>
+        <b-button id="reviewButton" variant="outline-info" v-on:click="submitReview(selectedTutor.username, selectedRating,comments)">Submit Review</b-button>
         <div>
           Note : For this page to work, we need to integrate with the Tutor ViewPoint
            </div>
     </div>
 </template>
+<script>
+import axios from 'axios'
+var config = require('../../config')
 
+var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+
+var AXIOS = axios.create({
+  baseURL: backendUrl,
+  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+})
+export default {
+    data () {
+      return {
+        tutors: [],
+        newTutor: '',
+        selectedTutor: '',
+        errorTutor: '',
+        response: [],
+
+<<<<<<< HEAD
+        student: {
+          type: Object
+        },
+        errorStudent: '',
+
+        submitReviewMsg: {
+          type:Object
+        },
+        errorReviewMsg: '',
+      }
+    },
+    beforeMount() {
+      this.getTutors()
+      this.getStudent()
+    },
+    methods : {
+          getTutors: function(){
+            AXIOS.get('/tutor')
+            .then(response => {
+              this.tutors = response.data
+            })
+            .catch(e => {
+              this.errorTutor = e.response.data.message;
+            });
+          },
+          getStudent: function(){
+            AXIOS.get('/student')
+            .then(response => {
+              this.student = reponse.data
+            })
+            .catch(e => {
+              this.errorStudent = e.response.data.message;
+            })
+          },
+          submitReview: function(username, rating, comment){
+            AXIOS.post('/tutorReview/' + comment + '/' + username + '/' + rating + '/' + this.student.username)
+            .then(response => {
+              this.submitReviewMsg = response.data
+              window.location.href = "/#/tutor/" + username
+            })
+            .catch (e => {
+              this.errorReviewMsg = e.response.data.message;
+            })
+
+          }
+  }
+}
+</script>
+=======
 <script src="./searchUniversities.js">
 export default {
   
 }
 </script>
 
+>>>>>>> a57dbff01790f9f6e6f93ae48a7f261eb60237bb
 <style scoped>
 .review {
   margin-right: 30px;

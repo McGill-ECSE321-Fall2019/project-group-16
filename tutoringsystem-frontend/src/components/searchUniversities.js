@@ -43,6 +43,7 @@ export default{
         response: [],
       }
     },
+
     methods : {
         getUniversities: function () {
                 // Initializing people from backend

@@ -1,13 +1,10 @@
 <template>
     <div>
-        
         <br>
-        
-            <li v-for="tutor in tutors" v-bind:key="tutor">
-                <h1>
-                Tutor's name: {{tutor.name}}
-                </h1>
-            </li>
+            <h1>
+            Tutor's name: {{username}}
+            </h1>
+            
         <br>
         <h3>Reviews:</h3>
             <li v-for="review in reviews" v-bind:key="review">
