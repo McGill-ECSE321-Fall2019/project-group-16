@@ -9,6 +9,7 @@ import WriteReview from '@/components/WriteReview'
 import RequestCourse from '@/components/RequestCourse'
 import UpdateAccount from '@/components/UpdateAccount'
 import TutorProfile from '@/components/TutorProfile'
+import BookSession from '@/components/BookSession'
 
 import CreateAccount from '@/components/CreateAccount'
 import Home from '@/components/Home'
@@ -78,6 +79,11 @@ export default new Router({
       path: '/updateAccount',
       name: 'UpdateAccount',
       component: UpdateAccount
+    },
+    {
+      path: '/bookSession',
+      name: 'BookSession',
+      component: BookSession
     }
   ]
 })

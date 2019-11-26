@@ -29,7 +29,7 @@ export default{
               });
         },
         gotosearch(){
-            window.location.href = "/#/Selection"
+            window.location.href = "/#/bookSession"
         },
         gotoSessions(){
             window.location.href ="/#/viewsessions"
