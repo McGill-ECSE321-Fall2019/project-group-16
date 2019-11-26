@@ -1,19 +1,44 @@
 <template>
 <span>
         <div>
-        <h3>Welcome To Your DashBoard</h3>
-        <img id="manage" src="../assets/network.png" alt="">
+        <h3>Welcome to your DashBoard</h3>
+
+ <div class="flex-container">
+  <div> 
+      <img id="manage" src="../assets/network.png" alt="" class="img">
+        <br>
+        <b-button variant="outline-info" v-on:click="gotoSessions">Manage Sessions</b-button>
+        <br>
+</div>
+  <div>
+      <img id="booking" src="../assets/calendar.png" alt="" class="img">
+        <br>
+        <b-button v-on:click="gotosearch" variant="outline-info">Book New Session</b-button>
+        <br>
+        <div id='logout'>
+           <b-button id="logoutButton" variant="outline-info" v-on:click="logout()">Logout</b-button> 
+        </div>
+</div>
+  <div>
+      <img src="../assets/review.png" alt="" class="img">
+      <br>
+       <b-button v-on:click="gotoReview" variant="outline-info">Review Tutor</b-button>
+  </div>
+  
+</div>
+        <!-- <img id="manage" src="../assets/network.png" alt="">
         <br>
         <b-button variant="outline-info" v-on:click="gotoSessions">Manage Sessions</b-button>
         <br>
         <img id="booking" src="../assets/calendar.png" alt="">
         <br>
         <b-button v-on:click="gotosearch" variant="outline-info">Book New Session</b-button>
-         <b-button v-on:click="gotoReview" variant="outline-info">Review Tutor</b-button>
-        </div>
+        <br>
+        <br>
+         -->
+         
 
-        <div id='logout'>
-           <b-button id="logoutButton" variant="outline-info" v-on:click="logout()">Logout</b-button> 
+         
         </div>
 
 </span>
@@ -21,26 +46,32 @@
 
 <script src="./logout.js">
 export default {
-    methods : {
-        gotosearch(){
-        window.location.href = "/#/Selection"
-            },
+    data(){
+        return{
+            name: ""
+        }
+    },
+    // beforeMount(){
+    //      student = getLoggedStudent()
+    // },
+    // methods : {
+    //     gotosearch(){
+    //     window.location.href = "/#/Selection"
+    //         },
+    //     gotoSessions(){
+    //     window.location.href ="/#/viewsessions"
+    //     },
+}
 
-        
-}
-}
 </script>
 
 <style scoped>
-#booking{
-    margin: 10px;
-    width: 10%;
-    height: 10%;
+.flex-container {
+  display: flex;
+  justify-content: center;
 }
-#manage{
-    margin: 10px;
-    width: 10%;
-    height: 10%;
+.img { 
+  object-fit: contain;
 }
 
 #logout{
@@ -49,6 +80,11 @@ export default {
 
 #logoutButton {
     width: 50%;
+}
+
+.img {
+    height: 40%;
+    margin: 20px;
 }
 
 </style>

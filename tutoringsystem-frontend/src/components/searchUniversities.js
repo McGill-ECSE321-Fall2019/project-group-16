@@ -49,6 +49,9 @@ export default{
 
       }
     },
+    beforeMount(){
+      this.getUniversities();
+    },
     methods : {
         getUniversities: function () {
                 // Initializing people from backend
@@ -97,14 +100,14 @@ export default{
             AXIOS.post('/session/' + username + '/' + startTime+':00' + '/' + endTime+':00' + '/' + mydate + '/' + code + '/' + isGroupSession)
             //AXIOS.post('/session/' + 'rijulsaini' + '/' + '13:13'+':00' + '/' + '14:13'+':00' + '/' + '2020-03-03' + '/' + 'ECSE326' + '/' + 'false')
             .then(response => {
-              this.session = response.data
+              this.session = response.data;
             })
             .catch(e => {
               this.errorSession = e.response.data;
             });
           },
-          gotoProfile(){
-            window.location.href ="/#/tutor/bobby"
+          gotoSessions(){
+            window.location.href ="/#/viewsessions"
         },
 
         // deleteAllSessions: function(){

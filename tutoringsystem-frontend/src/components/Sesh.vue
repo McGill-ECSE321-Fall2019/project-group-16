@@ -36,11 +36,6 @@
 <!-- ... -->
 </table>
 </div>
-
-<h6>Make sure to update the session list!</h6>
-
-<b-button @click="getSessions()" variant="outline-info">Update Sessions</b-button>
- <br><br>
  <h5>Cancel a Session</h5>
    <div id="subImg">
         <img src="../assets/delete.png" alt="" width="10%" height="10%">

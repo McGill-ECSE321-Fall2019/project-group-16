@@ -12,11 +12,11 @@
       <td>Step 5</td>
     </tr>
     <tr>
-      <td>Click on Get Universities button to view the universities we offer</td>
       <td>Select your university</td>
       <td>Select the course you want help with</td>
       <td>The list of tutors is now updated! Select a tutor</td>
-      <td>Click view tutor profile to view tutor's profile</td>
+      <td>Select Date & Time for the session</td>
+      <td>Book Session!</td>
     </tr>
   </table>
 </div>
@@ -31,8 +31,8 @@
     </div>
 </div> -->
 
-<b-button @click="getUniversities()" variant="outline-info">Get Universities</b-button>
- <br><br>
+<!-- <b-button @click="getUniversities()" variant="outline-info">Get Universities</b-button> -->
+ <!-- <br><br> -->
 
 <div class="form-group">
   <h5>Select University</h5>
@@ -92,7 +92,7 @@
   <label for="checkbox">This is a group session</label>
 </div>
  <br>
-<b-button id="bookSessionButton" variant="outline-info" v-on:click="bookSession(selectedTutor.username,startTime,endTime,mydate,selectedCourse.code,isGroupSession)">Book Session</b-button>
+<b-button id="bookSessionButton" variant="outline-info" v-on:click="bookSession(selectedTutor.username,startTime,endTime,mydate,selectedCourse.code,isGroupSession), gotoSessions()">Book Session</b-button>
 </div>
 </span>
 

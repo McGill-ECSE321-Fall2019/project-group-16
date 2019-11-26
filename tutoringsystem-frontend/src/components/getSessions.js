@@ -24,6 +24,9 @@ export default{
       errorSession: '',
     }
   },
+  beforeMount(){
+    this.getSessions();
+  },
   methods : {
       getSessions: function () {
               // Initializing people from backend
@@ -49,6 +52,9 @@ export default{
               });
 
         },
+        // gotoSessions(){
+        //   window.location.href ="/#/viewsessions"
+        //   },
         
 }
 
