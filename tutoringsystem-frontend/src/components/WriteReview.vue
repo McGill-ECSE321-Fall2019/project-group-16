@@ -48,7 +48,6 @@ export default {
         errorTutor: '',
         response: [],
 
-<<<<<<< HEAD
         student: {
           type: Object
         },
@@ -97,14 +96,6 @@ export default {
   }
 }
 </script>
-=======
-<script src="./searchUniversities.js">
-export default {
-  
-}
-</script>
-
->>>>>>> a57dbff01790f9f6e6f93ae48a7f261eb60237bb
 <style scoped>
 .review {
   margin-right: 30px;
