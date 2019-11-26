@@ -148,6 +148,7 @@ export default {
             .then(response =>{
                 this.showAlert = true;
                 this.requestAlert = "Your details have been updated!";
+                localStorage.removeItem('newFullName');
                 localStorage.setItem('newFullName', fullName);
             })
             .catch(e => {
