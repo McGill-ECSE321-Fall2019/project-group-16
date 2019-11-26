@@ -682,12 +682,16 @@ public class TutoringSystemRestController {
 			throw new IllegalArgumentException("There is no such tutor!");
 		}
 		Set<TutorReviewDto> trs = new HashSet<>();
-		for(TutorReview tr : t.getTutorReview()){
-			trs.add(convertToDto(tr));
+		if(t.getTutorReview() != null){
+			for(TutorReview tr : t.getTutorReview()){
+				trs.add(convertToDto(tr));
+			}	
 		}
 		Set<CourseDto> cs = new HashSet<>();
-		for(Course c : t.getCourse()){
-			cs.add(convertToDto(c));
+		if(t.getCourse() != null){
+			for(Course c : t.getCourse()){
+				cs.add(convertToDto(c));
+			}	
 		}
 		TutorDto tDto = new TutorDto(t.getUsername(), t.getName(), t.getHourlyRate(), trs, cs);
 		return tDto;
