@@ -95,6 +95,10 @@ public class TutoringSystemRestController {
 			throw new IllegalArgumentException("Incorrect Password!");
 		}
 	}
+	@GetMapping(value = {"/student"})
+	public StudentDto getCurrentlyLoggedInStudent() {
+		return convertToDto(TutoringSystemApplication.getCurrentlyLoggedInStudent());
+	}
 
 	@PutMapping(value = { "/logout", "/logout/" })
 	public void logoutStudent() {
@@ -242,12 +246,40 @@ public class TutoringSystemRestController {
 		return convertToDto(t);
 	}
 
+	@GetMapping(value = { "/courses/tutor/{tutorUsername}", "/courses/tutor/{tutorUsername}/" })
+	public List<CourseDto> getCoursesForTutor(@PathVariable("tutorUsername") String tutorUsername) {
+
+		List<CourseDto> courseDtos = new ArrayList<>();
+		Tutor t = service.getTutor(tutorUsername);
+
+		for (Course c : t.getCourse()) {
+			courseDtos.add(convertToDto(c));
+		}
+
+		return courseDtos;
+
+	}
+
+	@PostMapping(value = {"/course/addtutor/{courseCode}/{tutorUsername}", "/course/addtutor/{courseCode}/{tutorUsername}/"})
+	public CourseDto addTutorToCourse(@PathVariable("courseCode") String courseCode, @PathVariable("tutorUsername") String tutorUsername) {
+		Course c = service.getCourse(courseCode);
+		Tutor t = service.getTutor(tutorUsername);
+
+		Set<Tutor> tutors = c.getTutor();
+		tutors.add(t);
+		service.updateCourse(c.getCourseCode(), c.getSubject(), c.getUniversity(), c.getIsRequested(), tutors);
+
+		Set<Course> courses = t.getCourse();
+		courses.add(c);
+		service.updateTutor(t.getUsername(), t.getName(), t.getPassword(), t.getHourlyRate(), t.getPendingSession(), t.getSession(), courses);
+		return convertToDto(c);
+	}
 
 	// <--------------- Manage Session ----------------->
 
 	//student review
 		@PostMapping(value = {"/studentReview/{id}/{review}/{reviewerId}/{revieweeId}", "studentReview/{id}/{review}/{reviewerId}/{revieweeId}/"})
-		public StudentReviewDto enterCourse(@PathVariable("id") int id, @PathVariable("review") String review, @PathVariable("reviewerId") String reviewerId, @PathVariable("revieweeId") String revieweeId) {
+		public StudentReviewDto createStudentReview(@PathVariable("id") int id, @PathVariable("review") String review, @PathVariable("reviewerId") String reviewerId, @PathVariable("revieweeId") String revieweeId) {
 			
 			Tutor t = service.getTutor(reviewerId);
 			
@@ -261,10 +293,10 @@ public class TutoringSystemRestController {
 		}
 		
 		//create tutor review
-		@PostMapping(value = {"/tutorReview/{id}/{review}/{revieweeId}/{rating}/{reviewerId}", "/tutorReview/{id}/{review}/{revieweeId}/{rating}/{reviewerId}/"})
-		public TutorReviewDto createTutorReview(@PathVariable("id") int id, @PathVariable("review") String review, @PathVariable("reviewerId") String revieweeId, @PathVariable("rating") int rating,@PathVariable("revieweeId") String reviewerId) {
+		@PostMapping(value = {"/tutorReview/{review}/{revieweeId}/{rating}/{reviewerId}", "/tutorReview/{id}/{review}/{revieweeId}/{rating}/{reviewerId}/"})
+		public TutorReviewDto createTutorReview(@PathVariable("review") String review, @PathVariable("reviewerId") String revieweeId, @PathVariable("rating") int rating,@PathVariable("revieweeId") String reviewerId) {
 
-
+		  int id = Math.abs(review.hashCode());
 		  Tutor t = service.getTutor(reviewerId);
 		  Student s = service.getStudent(revieweeId);
 
@@ -274,6 +306,20 @@ public class TutoringSystemRestController {
 
 		  TutorReview tr = service.createTutorReview(id, review, t, rating, s);
 		  return convertToDto(tr);
+		}
+		
+		//get tutor review
+		@GetMapping(value = {"/tutorReview/tutor/{tutorUsername}","/tutorReview/tutor/{tutorUsername}/"})
+		public List<TutorReviewDto> getAllTutorReviewsFromTutor(@PathVariable("tutorUsername") String tutorUsername) {
+			
+			List<TutorReviewDto> reviewsDtoList = new ArrayList<>();
+			Tutor t = service.getTutor(tutorUsername);
+
+
+			for (TutorReview tr : t.getTutorReview()) {
+				reviewsDtoList.add(convertToDto(tr));
+			}
+			return reviewsDtoList;
 		}
 	
 	// <--------------------- Sessions ------------------>
@@ -355,7 +401,7 @@ public class TutoringSystemRestController {
 			Set <Session> pendingSessions = t.getPendingSession();
 			pendingSessions.add(ss);
 			
-			service.updateTutor(t.getUsername(), t.getName(), t.getPassword(), t.getHourlyRate(), pendingSessions, t.getSession());
+			service.updateTutor(t.getUsername(), t.getName(), t.getPassword(), t.getHourlyRate(), pendingSessions, t.getSession(), t.getCourse());
 			return convertToDto(ss);
 		}
 
@@ -575,7 +621,7 @@ public class TutoringSystemRestController {
 		University u = service.getUniversity(universityName);
 		
 		Course course = service.createCourse(courseCode, subject, u);
-		course = service.updateCourse(courseCode, subject, u, true);
+		course = service.updateCourse(courseCode, subject, u, true, course.getTutor());
 		
 		//c.setIsRequested(true);
 		return convertToDto(course);
@@ -603,6 +649,11 @@ public class TutoringSystemRestController {
 			}
 			
 			return tutors;
+		}
+
+		@GetMapping(value = {"/tutor/{username}", "/tutor/{username}/"})
+		public TutorDto getTutor(@PathVariable("username") String username) {
+			return convertToDto(service.getTutor(username));
 		}
 	
 	// <--------------------- DTOs ------------------>
@@ -634,7 +685,15 @@ public class TutoringSystemRestController {
 		if (t == null) {
 			throw new IllegalArgumentException("There is no such tutor!");
 		}
-		TutorDto tDto = new TutorDto(t.getName(), t.getHourlyRate(), t.getStudentReview(), t.getCourse());
+		Set<TutorReviewDto> trs = new HashSet<>();
+		for(TutorReview tr : t.getTutorReview()){
+			trs.add(convertToDto(tr));
+		}
+		Set<CourseDto> cs = new HashSet<>();
+		for(Course c : t.getCourse()){
+			cs.add(convertToDto(c));
+		}
+		TutorDto tDto = new TutorDto(t.getName(), t.getHourlyRate(), trs, cs);
 		return tDto;
 	}
 
@@ -683,7 +742,7 @@ public class TutoringSystemRestController {
  		if(tr == null) {
  			throw new IllegalArgumentException("There is no such Tutor review!");
  		}
- 		TutorReviewDto trDto = new TutorReviewDto(tr.getId(), tr.getReview(), tr.getReviewee(), tr.getRating(), tr.getAuthor());
+ 		TutorReviewDto trDto = new TutorReviewDto(tr.getId(), tr.getReview(), tr.getReviewee().getName(), tr.getRating(), tr.getAuthor().getName());
  		return trDto;
  	}
 

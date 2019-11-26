@@ -43,6 +43,7 @@ export default{
         response: [],
       }
     },
+
     methods : {
         getUniversities: function () {
                 // Initializing people from backend
@@ -74,6 +75,9 @@ export default{
             .catch(e => {
               this.errorTutor = e.response.data.message;
             });
-          }
+          },
+          gotoProfile(){
+            window.location.href ="/#/tutorProfile"
+        },
   }
 }

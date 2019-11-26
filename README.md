@@ -52,3 +52,10 @@ Group 16 is working on the student viewpoint of the application. The viewpoint m
 #### -> Access [Sprint 3 Project Report](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki/Project-Report-(Sprint-3))
 
 ### Member Roles & Time Spent
+| Name | Roles/Tasks | Time Spent (Hours) | 
+| :---         |     :---:      |          ---: |
+| Erdong Luo         |      |    |
+| Mustafain Ali Khan |      |    |
+| Paul Hooley        |      |    |
+| Talha Riaz         |      |    |
+| Zheng Cui          |      |    |
