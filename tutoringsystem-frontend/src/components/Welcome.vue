@@ -94,6 +94,7 @@ export default {
   methods: {
     // Send GET request to find admin
     login: function(userName, pw) {
+      localStorage.removeItem('newFullName');
       this.errorMsg = "";
       this.showError = false;
       AXIOS.post(`/student/` + userName + "/" + pw)
@@ -102,7 +103,7 @@ export default {
           })
         .catch(e => {
           console.log(e.message);
-          this.errorMsg = "Account does not exist";
+          this.errorMsg = "Account does not exist or password is incorrect";
           this.showError = true;
 
         });

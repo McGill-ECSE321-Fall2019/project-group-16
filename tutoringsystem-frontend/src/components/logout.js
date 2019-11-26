@@ -37,5 +37,8 @@ export default{
         gotoReview(){
             window.location.href ="/#/writereview"
         },
+        gotoCourseRequest(){
+            window.location.href = "/#/requestCourse"
+        },
     }
 }

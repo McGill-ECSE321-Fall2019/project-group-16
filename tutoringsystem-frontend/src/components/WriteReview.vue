@@ -48,6 +48,7 @@ export default {
         errorTutor: '',
         response: [],
 
+<<<<<<< HEAD
         student: {
           type: Object
         },
@@ -96,6 +97,14 @@ export default {
   }
 }
 </script>
+=======
+<script src="./searchUniversities.js">
+export default {
+  
+}
+</script>
+
+>>>>>>> a57dbff01790f9f6e6f93ae48a7f261eb60237bb
 <style scoped>
 .review {
   margin-right: 30px;
@@ -109,9 +118,15 @@ export default {
   margin: 10px;
   float: right;
 }
+#refreshButton {
+  margin: 10px;
+  float: middle;
+}
 #reviewImg {
   margin: 20px;
   width: 200px;
   height: 200px;
 }
 </style>
+
+
