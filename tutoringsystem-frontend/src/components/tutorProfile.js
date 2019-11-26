@@ -44,7 +44,7 @@ export default {
     ],
     data() {
         return {
-            name: "hi",
+            name: "",
             tutor: "bonjour",
             student: {
                 type: Object
@@ -53,6 +53,8 @@ export default {
                 type: Object
             },
             errorTutor: '',
+            showAlert: false,
+            showError: false,
 
             reviews: [],
             newReview: '',
@@ -65,53 +67,41 @@ export default {
             errorCourse: '',
         }
     },
-    created: function() {
-        this.name = this.username
-
-        AXIOS.get('/tutorReview/tutor/' + username)
-        .then(response => {
-            this.reviews = response.data
-            this.errorReview = ''
-        })
-        .catch(e => {
-            this.errorReview = e.response.data.message;
-        })
-
-        AXIOS.get('/courses/tutor/' + username)
-        .then(response => {
-            this.courses = response.data
-            this.errorCourse = ''
-        })
-        .catch(e => {
-            this.errorCourse = e.response.data.message;
-        })
-
-        AXIOS.get('/tutor/' + username)
-        .then(response => {
-            this.tutor = response.data
-            this.errorTutor = ''
-        })
-        .catch(e => {
-            this.errorTutor = e.response.data.message;
-        })
-        // const p1 = new PersonDto('John')
-        // const p2 = new PersonDto('Jill')
-        // this.people = [p1, p2]
-
-        // const t1 = new TutorDto('Bob', 14)
-
-        // const r1 = new ReviewDto(1, 'good', 4)
-        // const r2 = new ReviewDto(2, 'mediocre', 5)
-        // const r3 = new ReviewDto(3, 'meh', 3)
-        // this.reviews = [r1, r2, r3]
-
-        // const c1 = new CourseDto('Math141', 'math', 'Mcgill')
-        // const c2 = new CourseDto('Math263', 'ode', 'Mcgill')
-        // this.courses = [c1, c2]
-
-        // this.tutors.push(t1)
+    beforeMount() {
+        this.initialize()
     },
     methods: {
+        initialize: function() {
+            this.name = this.username
+            
+            AXIOS.get('/tutor/' + this.username)
+            .then(response => {
+                this.tutor = response.data
+                this.name = this.tutor.name
+                this.errorTutor = ''
+            })
+            .catch(e => {
+                this.errorTutor = e.response.data.message;
+            })
+
+            AXIOS.get('/tutorReview/tutor/' + this.username)
+            .then(response => {
+                this.reviews = response.data
+                this.errorReview = ''
+            })
+            .catch(e => {
+                this.errorReview = e.response.data.message;
+            })
+    
+            AXIOS.get('/courses/tutor/' + this.username)
+            .then(response => {
+                this.courses = response.data
+                this.errorCourse = ''
+            })
+            .catch(e => {
+                this.errorCourse = e.response.data.message;
+            })
+        },
         createTutor: function() {
             AXIOS.post(`/tutors/bob/bobuser/14.4`, {}, {})
             .then(response => {
