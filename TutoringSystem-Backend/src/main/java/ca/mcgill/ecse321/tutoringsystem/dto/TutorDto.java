@@ -11,16 +11,15 @@ public class TutorDto {
 	
 	private String name;
 	private Double hourlyRate;
+	private String username;	
 	private Set<TutorReviewDto> tutorReview;
 	private Set<SessionDto> session;
 	private Set<CourseDto> course;
 	
-	//private String username;
-	//private String password;
-	//private Set<TutorReview> tutorReview;
 	
 	
-	public TutorDto (String name, Double hourlyRate, Set<TutorReviewDto> tutorReview, Set<CourseDto> course) {
+	public TutorDto (String username, String name, Double hourlyRate, Set<TutorReviewDto> tutorReview, Set<CourseDto> course) {
+		this.username = username;
 		this.name=name;
 		this.hourlyRate=hourlyRate;
 		this.tutorReview=tutorReview;
@@ -46,6 +45,10 @@ public class TutorDto {
 	public void setCourse(Set<CourseDto> course) {
 		this.course = course;
 	}
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
 	public String getName () {
 		return name;
@@ -61,6 +64,10 @@ public class TutorDto {
 	}
 	public Set<CourseDto> getAllCourses (){
 		return course;
-	}	
-
+	}
+	public String getUsername() {
+		return username;
+		
+	}
+ 
 }

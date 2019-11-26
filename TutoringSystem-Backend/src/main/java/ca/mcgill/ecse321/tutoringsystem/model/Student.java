@@ -5,12 +5,13 @@ import java.util.Set;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Id;
+import javax.persistence.FetchType;
 
 @Entity
 public class Student{
    private Set<Session> session;
    
-   @ManyToMany(mappedBy="student" )
+   @ManyToMany(mappedBy="student", fetch = FetchType.EAGER )
    public Set<Session> getSession() {
       return this.session;
    }

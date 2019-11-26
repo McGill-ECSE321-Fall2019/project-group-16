@@ -41,9 +41,17 @@ export default{
         selectedTutor: '',
         errorTutor: '',
         response: [],
+
+        session: '',
+        newSession: '',
+        selectedSessions: '',
+        errorSession: '',
+
       }
     },
-
+    beforeMount(){
+      this.getUniversities();
+    },
     methods : {
         getUniversities: function () {
                 // Initializing people from backend
@@ -76,8 +84,42 @@ export default{
               this.errorTutor = e.response.data.message;
             });
           },
-          gotoProfile(){
-            window.location.href ="/#/tutorProfile"
+          // bookSession: function(sessionID,username,startTime,endTime,mydate,roomNr,code){
+          //   AXIOS.post('/session/' + sessionID + '/' + username + '/' + startTime+':00' + '/' + endTime+':00' + '/' + mydate + '/' + roomNr + '/' + code)
+          //   .then(response => {
+          //     this.session = response.data
+          //   })
+          //   .catch(e => {
+          //     this.errorSession = e.response.data;
+          //   });
+          // },
+          bookSession: function(username,startTime,endTime,mydate,code,isGroupSession){
+            if(typeof isGroupSession == "undefined"){
+                isGroupSession=false;
+            }
+            AXIOS.post('/session/' + username + '/' + startTime+':00' + '/' + endTime+':00' + '/' + mydate + '/' + code + '/' + isGroupSession)
+            //AXIOS.post('/session/' + 'rijulsaini' + '/' + '13:13'+':00' + '/' + '14:13'+':00' + '/' + '2020-03-03' + '/' + 'ECSE326' + '/' + 'false')
+            .then(response => {
+              this.session = response.data;
+            })
+            .catch(e => {
+              this.errorSession = e.response.data;
+            });
+          },
+          gotoSessions(){
+            window.location.href ="/#/viewsessions"
         },
+
+        // deleteAllSessions: function(){
+        //   AXIOS.post('/sessions/delete')
+        //   .then(response => {
+        //     this.session = response.data
+        //   })
+        //   .catch(e => {
+        //     this.errorSession = e.response.data;
+        //   });
+        // },
+
+
   }
 }

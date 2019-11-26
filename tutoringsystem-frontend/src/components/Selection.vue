@@ -12,11 +12,11 @@
       <td>Step 5</td>
     </tr>
     <tr>
-      <td>Click on Get Universities button to view the universities we offer</td>
       <td>Select your university</td>
       <td>Select the course you want help with</td>
       <td>The list of tutors is now updated! Select a tutor</td>
-      <td>Click view tutor profile to view tutor's profile</td>
+      <td>Select Date & Time for the session</td>
+      <td>Book Session!</td>
     </tr>
   </table>
 </div>
@@ -31,8 +31,8 @@
     </div>
 </div> -->
 
-<b-button @click="getUniversities()" variant="outline-info">Get Universities</b-button>
- <br><br>
+<!-- <b-button @click="getUniversities()" variant="outline-info">Get Universities</b-button> -->
+ <!-- <br><br> -->
 
 <div class="form-group">
   <h5>Select University</h5>
@@ -70,17 +70,32 @@
   <div id="selectTutor">
   <select class="form-control"  v-model="selectedTutor" >
     <option value="" selected disabled hidden>Choose here</option>
-     <option v-for="tutor in tutors" v-bind:value="{name : tutor.name , rate: tutor.hourlyRate}" v-bind:key="tutor">{{tutor.name}}</option>
+     <option v-for="tutor in tutors" v-bind:value="{username: tutor.username, name : tutor.name , rate: tutor.hourlyRate}" v-bind:key="tutor">{{tutor.name}}</option>
   </select>
   </div>
 </div> 
 
- <b-button id = "tutorProfileButton" variant="outline-info" v-on:click="gotoProfile">View Tutor Profile</b-button>
+ <!-- <b-button id = "tutorProfileButton" variant="outline-info" v-on:click="gotoProfile">View Tutor Profile</b-button> -->
 
-
+<div>
+  <h5>Select Date & Time for Session</h5>
+  <div id= "timeInputs" class="form-group">  
+    <label for="date">Date:</label>
+<input class="form-control" type="date" v-model="mydate" />
+ <label for="time">Start Time:</label>
+<input class="form-control" type="time" v-model="startTime" />
+ <label for="date">End Time:</label>
+<input class="form-control" type="time" v-model="endTime" />
+  </div>
+<div id="GroupSession" class="form-group">
+  <input type="checkbox" id="checkbox" v-model="isGroupSession">
+  <label for="checkbox">This is a group session</label>
+</div>
+ <br>
+<b-button id="bookSessionButton" variant="outline-info" v-on:click="bookSession(selectedTutor.username,startTime,endTime,mydate,selectedCourse.code,isGroupSession), gotoSessions()">Book Session</b-button>
+</div>
 </span>
 
-  
 </template>
 
 <script src="./searchUniversities.js">
@@ -117,5 +132,15 @@
 }
 #tutorProfileButton {
   margin: 10px;
+}
+#sessionInputs {
+  margin-right: 50px; 
+  margin-left: 50px;
+}
+#timeInputs {
+  margin-left: 500px;
+  margin-right: 500px;
+ position: center;
+ 
 }
 </style>

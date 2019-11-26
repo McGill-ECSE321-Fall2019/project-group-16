@@ -60,6 +60,7 @@ public class TutoringSystemRestController {
 		return studentDtos;
 	}
 	
+	
 	@GetMapping(value = { "/student/{username}"})
 	public StudentDto getStudent(@PathVariable("username") String username){
 		Student s = service.getStudent(username);
@@ -360,15 +361,12 @@ public class TutoringSystemRestController {
 	
 	// creating a solo session and notifying the tutor
 		@PostMapping(value = {
-				"/session/{sessionId}/{tutorName}/{studentName}/{startTime}/{endTime}/{date}/{roomNr}/{courseCode}",
-				"/session/{sessionId}/{tutorName}/{studentName}/{startTime}/{endTime}/{date}/{roomNr}/{courseCode}/" })
-		public SessionDto enterSession(@PathVariable("sessionId") int sessionId,
-				@PathVariable("tutorName") String tutorUsername, @PathVariable("studentName") String studentUsername,
+				"/session/{tutorName}/{startTime}/{endTime}/{date}/{courseCode}/{isGroupSession}",
+				"/session/{tutorName}/{startTime}/{endTime}/{date}/{courseCode}/{isGroupSession}/" })
+		public SessionDto enterSession(@PathVariable("tutorName") String tutorUsername,
 				@PathVariable("startTime") String startTimeString, @PathVariable("endTime") String endTimeString,
-				@PathVariable("date") String dateString, @PathVariable("roomNr") int roomNr,
-				@PathVariable("courseCode") String courseCode) {
-			
-			
+				@PathVariable("date") String dateString, @PathVariable("courseCode") String courseCode, 
+				@PathVariable("isGroupSession") Boolean isGroupSession) {
 			
 			Time startTime = Time.valueOf(startTimeString);
 			Time endTime = Time.valueOf(endTimeString);
@@ -376,19 +374,146 @@ public class TutoringSystemRestController {
 			
 			
 			Tutor t = service.getTutor(tutorUsername);
-			Student s = service.getStudent(studentUsername);
+			Student student = TutoringSystemApplication.getCurrentlyLoggedInStudent();
 			Set<Student> studentSet = new HashSet<>();
-			studentSet.add(s);
-			Room r = service.getRoom(roomNr);
-			Course c = service.getCourse(courseCode);
+			studentSet.add(student);
 			
+			Course c = service.getCourse(courseCode);
 
-			Session ss = service.createSession(sessionId, false, startTime, endTime, date, false, studentSet, t, r, c);
+			boolean taken;
+
+			int sessionId = Math.abs(date.hashCode());
+			Session session = null;
+
+			if (isGroupSession) {
+							
+				for(Room r : service.getAllLargeRooms()) {
+					Set<RoomBooking> bookings = r.getUnavailability();
+					if (bookings == null || bookings.size() == 0) {
+						
+						Set<Session> roomSessions = r.getSession();
+						int id = sessionId;
+						RoomBooking booking = service.createRoomBooking(id, startTime, endTime, date);
+						bookings.add(booking);
+
+						session = service.createSession(sessionId, false, startTime, endTime, date, true, studentSet, t, r, c);
+						roomSessions.add(session);
+
+						service.updateRoom(r.getRoomNr(), r.getIsLargeRoom(), roomSessions, bookings);
+						
+						break;
+					}
+					
+					taken = false;
+					for (RoomBooking rm : bookings) {
+						if (rm.getDate() == date) {
+							taken = true;
+							break;
+						}
+						
+						//session starts before booking start and ends after booking start
+						if ((startTime.compareTo(rm.getStartTime()) <=0) && (endTime.compareTo(rm.getStartTime()) > 0)) {
+							taken = true;
+							break;
+						}
+						
+						//session starts after booking start but before booking end
+						if ((startTime.compareTo(rm.getStartTime())>= 0) && (startTime.compareTo(rm.getEndTime())<=0 )) {
+							taken = true;
+							break;
+						}
+					}
+					//there are no bookings during the session's time
+					if (!taken) {
+						
+						Set<Session> roomSessions = r.getSession();
+						int id = sessionId;
+						RoomBooking booking = service.createRoomBooking(id, startTime, endTime, date);
+						bookings.add(booking);
+
+						session = service.createSession(sessionId, false, startTime, endTime, date, true, studentSet, t, r, c);
+						roomSessions.add(session);
+
+						service.updateRoom(r.getRoomNr(), r.getIsLargeRoom(), roomSessions, bookings);
+						
+						break;
+					}
+					
+				}
+				if (session == null) {
+					throw new RuntimeException("Could not find an available room.");
+				}
+			} else {
+				//when it's not a group session
+				
+				for(Room r : service.getAllSmallRooms()) {
+					Set<RoomBooking> bookings = r.getUnavailability();
+					if (bookings == null || bookings.size() == 0) {
+						
+						Set<Session> roomSessions = r.getSession();
+						int id = sessionId;
+						RoomBooking booking = service.createRoomBooking(id, startTime, endTime, date);
+						bookings.add(booking);
+
+						session = service.createSession(sessionId, false, startTime, endTime, date, false, studentSet, t, r, c);
+						roomSessions.add(session);
+
+						service.updateRoom(r.getRoomNr(), r.getIsLargeRoom(), roomSessions, bookings);
+						
+						break;
+					}
+					
+					taken = false;
+					for (RoomBooking rm : bookings) {
+						if (rm.getDate() == date) {
+							taken = true;
+							break;
+						}
+						
+						//session starts before booking start and ends after booking start
+						if ((startTime.compareTo(rm.getStartTime()) <=0) && (endTime.compareTo(rm.getStartTime()) > 0)) {
+							taken = true;
+							break;
+						}
+						
+						//session starts after booking start but before booking end
+						if ((startTime.compareTo(rm.getStartTime())>= 0) && (startTime.compareTo(rm.getEndTime())<=0 )) {
+							taken = true;
+							break;
+						}
+					}
+					//there are no bookings during the session's time
+					if (!taken) {
+						
+						Set<Session> roomSessions = r.getSession();
+						int id = sessionId;
+						RoomBooking booking = service.createRoomBooking(id, startTime, endTime, date);
+						bookings.add(booking);
+
+						session = service.createSession(sessionId, false, startTime, endTime, date, true, studentSet, t, r, c);
+						roomSessions.add(session);
+
+						service.updateRoom(r.getRoomNr(), r.getIsLargeRoom(), roomSessions, bookings);
+						
+						break;
+					}
+					
+				}
+				if (session == null) {
+					throw new RuntimeException("Could not find an available room.");
+				}
+			}
+			
 			Set <Session> pendingSessions = t.getPendingSession();
-			pendingSessions.add(ss);
+			pendingSessions.add(session);
 			
 			service.updateTutor(t.getUsername(), t.getName(), t.getPassword(), t.getHourlyRate(), pendingSessions, t.getSession(), t.getCourse());
-			return convertToDto(ss);
+
+			Set <Session> studentSessions = student.getSession();
+			studentSessions.add(session);
+			service.updateStudent(student.getUsername(), student.getPassword(), student.getName(), studentSessions);
+			
+			return convertToDto(session);
 		}
 
 	
@@ -429,122 +554,7 @@ public class TutoringSystemRestController {
 	public SessionDto assignRoomToSession(@PathVariable("sessionId") int sessionId) {
 		Session s = service.getSession(sessionId);
 		
-		Date sessionDate = s.getDate();
-		Time sessionStartTime = s.getStartTime();
-		Time sessionEndTime = s.getEndTime();
-		boolean isGroupSession = s.getIsGroupSession();
 		
-		Date roomDate;
-		Time roomStartTime;
-		Time roomEndTime;
-		boolean taken;
-		if (isGroupSession) {
-						
-			for(Room r : service.getAllLargeRooms()) {
-				Set<RoomBooking> bookings = r.getUnavailability();
-				if (bookings == null || bookings.size() == 0) {
-					
-					Set<Session> roomSessions = r.getSession();
-					roomSessions.add(s);
-					int id = s.hashCode() * r.hashCode();
-					RoomBooking booking = service.createRoomBooking(id, sessionStartTime, sessionEndTime, sessionDate);
-					bookings.add(booking);
-					
-					service.updateRoom(r.getRoomNr(), r.getIsLargeRoom(), roomSessions, bookings);
-					service.updateSession(id, s.getIsConfirmed(), s.getStartTime(), s.getEndTime(), s.getDate(), s.getIsGroupSession(), s.getStudent(), s.getTutor(), r, s.getCourse());
-					break;
-				}
-				
-				taken = false;
-				for (RoomBooking rm : bookings) {
-					if (rm.getDate() == sessionDate) {
-						taken = true;
-						break;
-					}
-					
-					//session starts before booking start and ends after booking start
-					if ((sessionStartTime.compareTo(rm.getStartTime()) <=0) && (sessionEndTime.compareTo(rm.getStartTime()) > 0)) {
-						taken = true;
-						break;
-					}
-					
-					//session starts after booking start but before booking end
-					if ((sessionStartTime.compareTo(rm.getStartTime())>= 0) && (sessionStartTime.compareTo(rm.getEndTime())<=0 )) {
-						taken = true;
-						break;
-					}
-				}
-				//there are no bookings during the session's time
-				if (!taken) {
-					Set<Session> roomSessions = r.getSession();
-					roomSessions.add(s);
-					int id = s.hashCode() * r.hashCode();
-					RoomBooking booking = service.createRoomBooking(id, sessionStartTime, sessionEndTime, sessionDate);
-					bookings.add(booking);
-					
-					service.updateRoom(r.getRoomNr(), r.getIsLargeRoom(), roomSessions, bookings);
-					service.updateSession(id, s.getIsConfirmed(), s.getStartTime(), s.getEndTime(), s.getDate(), s.getIsGroupSession(), s.getStudent(), s.getTutor(), r, s.getCourse());
-					break;
-				}
-				
-			}
-			if (s.getRoom() == null) {
-				throw new RuntimeException("Could not find an available room.");
-			}
-		} else {
-			//when it's not a group session
-			
-			for(Room r : service.getAllSmallRooms()) {
-				Set<RoomBooking> bookings = r.getUnavailability();
-				if (bookings == null || bookings.size() == 0) {
-					Set<Session> roomSessions = r.getSession();
-					roomSessions.add(s);
-					int id = s.hashCode() * r.hashCode();
-					RoomBooking booking = service.createRoomBooking(id, sessionStartTime, sessionEndTime, sessionDate);
-					bookings.add(booking);
-					
-					service.updateRoom(r.getRoomNr(), r.getIsLargeRoom(), roomSessions, bookings);
-					service.updateSession(id, s.getIsConfirmed(), s.getStartTime(), s.getEndTime(), s.getDate(), s.getIsGroupSession(), s.getStudent(), s.getTutor(), r, s.getCourse());
-					break;
-				}
-				
-				taken = false;
-				for (RoomBooking rm : bookings) {
-					if (rm.getDate() == sessionDate) {
-						taken = true;
-						break;
-					}
-					
-					//session starts before booking start and ends after booking start
-					if ((sessionStartTime.compareTo(rm.getStartTime()) <=0) && (sessionEndTime.compareTo(rm.getStartTime()) > 0)) {
-						taken = true;
-						break;
-					}
-					
-					//session starts after booking start but before booking end
-					if ((sessionStartTime.compareTo(rm.getStartTime())>= 0) && (sessionStartTime.compareTo(rm.getEndTime())<=0 )) {
-						taken = true;
-						break;
-					}
-				}
-				//there are no bookings during the session's time
-				if (!taken) {
-					Set<Session> roomSessions = r.getSession();
-					roomSessions.add(s);
-					int id = s.hashCode() * r.hashCode();
-					RoomBooking booking = service.createRoomBooking(id, sessionStartTime, sessionEndTime, sessionDate);
-					bookings.add(booking);
-					
-					service.updateRoom(r.getRoomNr(), r.getIsLargeRoom(), roomSessions, bookings);
-					service.updateSession(id, s.getIsConfirmed(), s.getStartTime(), s.getEndTime(), s.getDate(), s.getIsGroupSession(), s.getStudent(), s.getTutor(), r, s.getCourse());
-					break;
-				}
-				
-			}
-			if (s.getRoom() == null) {
-				throw new RuntimeException("Could not find an available room.");
-			}
-		}
 		
 		return convertToDto(s);
 	}
@@ -679,7 +689,7 @@ public class TutoringSystemRestController {
 		for(Course c : t.getCourse()){
 			cs.add(convertToDto(c));
 		}
-		TutorDto tDto = new TutorDto(t.getName(), t.getHourlyRate(), trs, cs);
+		TutorDto tDto = new TutorDto(t.getUsername(), t.getName(), t.getHourlyRate(), trs, cs);
 		return tDto;
 	}
 
@@ -762,5 +772,38 @@ public class TutoringSystemRestController {
 				}
 				return sessionDtoList;
 			}
+			
+			@PostMapping({"/session/delete/{id}", "/session/delete/{id}/"})
+			public List<SessionDto> deleteSession(@PathVariable("id") int id){
+				
+				Student currentStudent = TutoringSystemApplication.getCurrentlyLoggedInStudent();
+				
+				List<SessionDto> sessionDtoList = new ArrayList<>();
+				
+				service.deleteSession(id);
+				
+				boolean contains = false;
+				
+				
+				for (Session s : service.getAllSessions()) {		
+					
+					for(Student std : s.getStudent()) {
+						if(std.getUsername().equals(currentStudent.getUsername())){
+							contains = true;
+						}
+					}
+					if (contains) {
+						sessionDtoList.add(convertToDto(s));
+					}
+				}
+				
+				return sessionDtoList;
+				
+			}
+			
+			
+			
+			
+			
 
 }
