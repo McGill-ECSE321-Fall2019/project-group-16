@@ -116,7 +116,7 @@ public class TutoringSystemRestController {
 			if (s == null)
 				throw new IllegalArgumentException("There is no such student!");
 			else{
-				service.updateStudent(username, password, name);
+				service.updateStudent(username, password, name, s.getSession());
 			}
 	}
 	// <-----------------------------Searching for Courses
