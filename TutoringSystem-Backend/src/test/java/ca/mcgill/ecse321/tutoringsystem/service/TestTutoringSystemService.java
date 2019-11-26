@@ -132,8 +132,9 @@ public class TestTutoringSystemService {
 		
 		password = "newStudentPassword";
 		name = "Jeff";
+		Set<Session> set = service.getStudent(username).getSession();
 		try {
-			service.updateStudent(username, password, name);
+			service.updateStudent(username, password, name, set);
 		} catch (IllegalArgumentException e) {
 			
 			fail();
@@ -192,9 +193,11 @@ public class TestTutoringSystemService {
 		name = null;
 		username = null;
 		password = null;
+		Set<Session> set = service.getStudent(username).getSession();
+		
 		
 		try {
-			service.updateStudent(username, password, name);
+			service.updateStudent(username, password, name, set);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Username can't be empty. Password can't be empty. New name can't be empty.", e.getMessage().trim());
@@ -222,8 +225,10 @@ public class TestTutoringSystemService {
 		username = "YeeHaw";
 		password = "Nice";
 		
+		Set<Session> set = service.getStudent(username).getSession();
+		
 		try {
-			service.updateStudent(username, password, name);
+			service.updateStudent(username, password, name, set);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Please input a valid student.", e.getMessage().trim());
