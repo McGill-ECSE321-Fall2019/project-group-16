@@ -1,5 +1,4 @@
 import axios from 'axios'
-import Router from "../router";
 var config = require('../../config')
 
 
@@ -50,16 +49,10 @@ export default {
             student: {
                 type: Object
             },
-            tutors: [],
-            reviews: [],
+            tutor: {
+                type: Object
+            },
             errorTutor: '',
-            courses: [],
-
-            people: [],
-            newPerson: '',
-            errorPerson: '',
-            response: [],
-            id: 132,
 
             reviews: [],
             newReview: '',
@@ -93,6 +86,14 @@ export default {
             this.errorCourse = e.response.data.message;
         })
 
+        AXIOS.get('/tutor/' + username)
+        .then(response => {
+            this.tutor = response.data
+            this.errorTutor = ''
+        })
+        .catch(e => {
+            this.errorTutor = e.response.data.message;
+        })
         // const p1 = new PersonDto('John')
         // const p2 = new PersonDto('Jill')
         // this.people = [p1, p2]

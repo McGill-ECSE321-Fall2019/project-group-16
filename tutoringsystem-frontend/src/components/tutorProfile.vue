@@ -1,11 +1,12 @@
 <template>
     <div>
         <br>
-            <li v-for="tutor in tutors" v-bind:key="tutor">
-                <h1>
-                Tutor's name: {{tutor.name}}
-                </h1>
-            </li>
+            <h1>Tutor's name: {{ tutor.name }}</h1>
+            <div id="tutor" class=card>
+                Username: {{ username }}<br>
+                Name: {{ tutor.name }}<br>
+                Hourly Rate: {{ tutor.hourlyRate }}
+            </div>
         <br>
         <h3>Reviews:</h3>
             <li v-for="review in reviews" v-bind:key="review">

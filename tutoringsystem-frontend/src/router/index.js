@@ -8,7 +8,6 @@ import Selection from '@/components/Selection'
 import WriteReview from '@/components/WriteReview'
 
 import TutorProfile from '@/components/tutorProfile.vue'
-import Tutor from '@/components/Tutor'
 
 import CreateAccount from '@/components/CreateAccount'
 import Home from '@/components/Home'
@@ -58,12 +57,6 @@ export default new Router({
       name: 'Tutorprofile',
       props: true,
       component: TutorProfile
-    },
-    {
-      path: '/tutorprofile/:username',
-      name: 'tutor',
-      props: true,
-      component: Tutor
     },
     {
       path: '/account',
