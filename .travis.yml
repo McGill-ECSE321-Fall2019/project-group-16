@@ -5,10 +5,3 @@ matrix:
       script:
         - gradle build
 
-    - stage: deploy to backend app
-      script: skip
-      deploy:
-        provider: heroku
-        api_key: 4ca2ef83-5c3e-461e-bd7d-00bc527577ee
-        app: ecse321-project-group16
-
