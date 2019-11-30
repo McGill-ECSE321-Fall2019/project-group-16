@@ -81,8 +81,8 @@ public class TestTutoringSystemService {
 		sessionRepository.deleteAll();
 		studentReviewRepository.deleteAll();
 		tutorReviewRepository.deleteAll();
-		roomBookingRepository.deleteAll();
 		roomRepository.deleteAll();
+		roomBookingRepository.deleteAll();
 		courseRepository.deleteAll();
 		universityRepository.deleteAll();
 		studentRepository.deleteAll();
@@ -189,11 +189,12 @@ public class TestTutoringSystemService {
 		List<Student> allStudents = service.getAllStudents();
 
 		assertEquals(1, allStudents.size());
+		Set<Session> set = service.getStudent(username).getSession();
+
 		
 		name = null;
 		username = null;
 		password = null;
-		Set<Session> set = service.getStudent(username).getSession();
 		
 		
 		try {
@@ -221,11 +222,12 @@ public class TestTutoringSystemService {
 
 		assertEquals(1, allStudents.size());
 		
+		Set<Session> set = service.getStudent(username).getSession();
+
 		name = "This";
 		username = "YeeHaw";
 		password = "Nice";
 		
-		Set<Session> set = service.getStudent(username).getSession();
 		
 		try {
 			service.updateStudent(username, password, name, set);
