@@ -1,6 +1,14 @@
 <resources>
-    <string name="app_name">TutoringSystem</string>
+    <string name="app_name">TutoringSystem-Android</string>
     <string name="action_settings">Settings</string>
-    <string name="newstudent_hint">Who?</string>
-    <string name="newstudent_button">Register</string>
+    <string name="bookSessionButton">Book Session</string>
+    <string name="selectUniText">Select University</string>
+    <string name="selectCourseText">Select Course</string>
+    <string name="selectTutorText">Select Tutor</string>
+    <string name="session_date_label">Session Date: </string>
+    <string name="session_date_first">Date: </string>
+    <string name="starttime_label">Start Time: </string>
+    <string name="starttime_first">Start Time: </string>
+    <string name="endtime_label">End Time: </string>
+    <string name="endtime_first">End Time:</string>
 </resources>
