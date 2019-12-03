@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -12,8 +14,15 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity {
+    public String error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +63,63 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void gotoSession(View view){
-        Intent intent = new Intent(this, BookSessionActivity.class);
+
+    public void gotoRegistration(View view) {
+        Intent intent = new Intent(this, Registration.class);
         startActivity(intent);
     }
-
-    public void gotoManageSession(View view){
-        Intent intent = new Intent(this, ManageSessionActivity.class);
+    public void gotoDashboard(View view) {
+        Intent intent = new Intent(this, Dashboard.class);
         startActivity(intent);
     }
+    private void refreshErrorMessage(){
+        TextView tvError = (TextView) findViewById(R.id.error);
+        tvError.setText(error);
 
+        if (error == null || error.length() == 0) {
+            tvError.setVisibility(View.GONE);
+        } else {
+            tvError.setVisibility(View.VISIBLE);
+        }
+    }
 
+    public void login(View v) {
+        error = "";
+        final TextView usernameTV = (TextView) findViewById(R.id.username);
+        final TextView passwordTV = (TextView) findViewById(R.id.password);
+        final View view = v;
+
+        String username = usernameTV.getText().toString();
+        String password = passwordTV.getText().toString();
+
+        if (username.trim().length() == 0){
+            error += "Username can't be empty.\n";
+        }
+        if (password.trim().length() == 0) {
+            error += "Password can't be empty.\n";
+        }
+
+        if(error.length() != 0 ){
+            refreshErrorMessage();
+            return;
+        }
+
+        HttpUtils.post("/student/" + username + "/" + password, new RequestParams(), new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                gotoDashboard(view);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                try {
+                    error+= errorResponse.get("message").toString();
+
+                } catch (JSONException e) {
+                    error += e.getMessage();
+                }
+                refreshErrorMessage();
+            }
+        });
+    }
 }

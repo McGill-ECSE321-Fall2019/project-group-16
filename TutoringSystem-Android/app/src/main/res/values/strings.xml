@@ -8,11 +8,21 @@
     <string name="session_date_label">Session Date: </string>
     <string name="session_date_first">Date: </string>
     <string name="starttime_label">Start Time: </string>
-    <string name="starttime_first">Start Time: </string>
+    <string name="starttime_first">Select Time </string>
     <string name="endtime_label">End Time: </string>
-    <string name="endtime_first">End Time:</string>
+    <string name="endtime_first">Select Time</string>
     <string name="selectSeshText">Select a Session</string>
     <string name="manageSessionButton">Manage Sessions</string>
+    <string name="registrationButton">Register</string>
+    <string name="newstudent_namehint">Name</string>
+    <string name="newstudent_RegisterButton">Register</string>
+    <string name="newstudent_emailhint">Email</string>
+    <string name="newstudent_usernamehint">Username</string>
+    <string name="newstudent_passwordhint">Password must be at least 8 characters long</string>
+    <string name="newstudent_confirmedpasswordhint">Confirm Password</string>
+    <string name="loginButton">Login</string>
+    <string name="logoutButton">Logout</string>
+    <string name="welcome">Welcome to Dashboard!</string>
 
 
 </resources>

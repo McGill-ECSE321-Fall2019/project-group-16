@@ -187,7 +187,7 @@ public class BookSessionActivity extends AppCompatActivity {
     public void createSession(View v){
 
         // make sure that all items are selected
-
+        final View view = v;
 
         //start time
 
@@ -229,7 +229,7 @@ public class BookSessionActivity extends AppCompatActivity {
                     selectedTutor = "";
                     courseString = "";
                     selectedUni = "";
-                    goToMain();
+                    gotoDashboard(view);
                 }
 
                 @Override
@@ -245,8 +245,8 @@ public class BookSessionActivity extends AppCompatActivity {
         }
     }
 
-    public void goToMain() {
-        Intent intent = new Intent(this, MainActivity.class);
+    public void gotoDashboard(View view) {
+        Intent intent = new Intent(this, Dashboard.class);
         startActivity(intent);
     }
     //Date & Time helpers

@@ -99,7 +99,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:onClick="showDatePickerDialog"
-                android:text="@string/session_date_first" />
+                android:text="01-02-2020" />
         </LinearLayout>
 
         <LinearLayout
