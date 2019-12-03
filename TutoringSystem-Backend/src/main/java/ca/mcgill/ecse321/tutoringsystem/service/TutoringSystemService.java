@@ -53,6 +53,14 @@ public class TutoringSystemService {
 	TutorRepository tutorRepository;
 	
 	@Transactional
+	
+	/**
+	 * This is a method to create a new course
+	 * @param courseCode the couse code
+	 * @param subject the subject that the course belongs to
+	 * @param university the univerty that the course belongs to
+	 * @return a course if we all the inputs are correct
+	 */
 	public Course createCourse(String courseCode, String subject, University university) {
 		String error = "";
 		if(courseCode == null || courseCode.trim().length() == 0){
@@ -76,6 +84,15 @@ public class TutoringSystemService {
 		return c;
 	}
 	
+	/**
+	 * This is a method to update the status of a course
+	 * @param courseCode the couse code
+	 * @param subject the subject that the course belongs to
+	 * @param university the univerty that the course belongs to
+	 * @param isRequested a boolean that denotes if the course is being requested
+	 * @param tutors a tutor set that store the tutors who are teaching this course
+	 * @return a course if we all the inputs are correct
+	 */
 	@Transactional
 	public Course updateCourse(String courseCode, String subject, University university, Boolean isRequested, Set<Tutor> tutors) {
 		String error = "";
@@ -108,7 +125,11 @@ public class TutoringSystemService {
 		courseRepository.save(course);
 		return course;
 	}
-	
+	/**
+	 * This is a method get the target with course code
+	 * @param courseCode the course code
+	 * @return a course with the input course code if it exits
+	 */
 	@Transactional
 	public Course getCourse(String courseCode) {
 		if(courseCode == null || courseCode.trim().length() == 0){
@@ -120,12 +141,22 @@ public class TutoringSystemService {
 
 		return course;
 	}
-	
+	/**
+	 * This is a method to get all the courses in the backend 
+	 * @return a list of courses 
+	 */
 	@Transactional
 	public List<Course> getAllCourses() {
 		return toList(courseRepository.findAll());
 	}
-	
+	/**
+	 * This is a method to create a new student review
+	 * @param id the review id
+	 * @param comments	
+	 * @param reviewee the student that is being reviewed
+	 * @param reviewer the tutor that writes the review
+	 * @return a student review if every input is valid
+	 */
 	@Transactional
 	public StudentReview createStudentReview(Integer id, String comments, Student reviewee, Tutor reviewer) {
 		String error = "";
@@ -153,6 +184,14 @@ public class TutoringSystemService {
 		studentReviewRepository.save(sr);
 		return sr;
 	}
+	
+	/**
+	 * This is a method to update the review of a target student
+	 * @param id the review id
+	 * @param comments	
+	 * @param reviewee the student that is being reviewed
+	 * @return a student review if every input is valid
+	 */
 	
 	@Transactional
 	public StudentReview updateStudentReview(int id, String comments, Student reviewee) {
@@ -182,6 +221,16 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException("Please enter a valid Review to update.");
 		}
 	}
+	
+	/**
+	 * This is a method to create a new tutor review
+	 * @param id the review id
+	 * @param comments	
+	 * @param reviewee the tutor that is being reviewed
+	 * @param rating numerical rating of the tutor
+	 * @param reviewer the student that writes the review
+	 * @return a student review if every input is valid
+	 */
 	@Transactional
 	public TutorReview createTutorReview(Integer id, String comments, Tutor reviewee, Integer rating, Student reviewer) {
 		String error = "";		
@@ -213,7 +262,11 @@ public class TutoringSystemService {
 		tutorReviewRepository.save(tr);
 		return tr;
 	}
-
+	/**
+	 * This is a method to get a student review by id
+	 * @param id the review id
+	 * @return a student review 
+	 */
 	@Transactional
 	public StudentReview getStudentReview(Integer id) {
 		if(id < 0){
@@ -222,7 +275,11 @@ public class TutoringSystemService {
 		StudentReview r = studentReviewRepository.findById(id).get();
 		return r;
 	}
-	
+	/**
+	 * This is a method to get a tutor review by id
+	 * @param id the review id
+	 * @return a tutor review 
+	 */
 	@Transactional
 	public TutorReview getTutorReview(Integer id) {
 		if(id < 0){
@@ -231,17 +288,28 @@ public class TutoringSystemService {
 		TutorReview r = tutorReviewRepository.findById(id).get();
 		return r;
 	}
-	
+	/**
+	 * This is a method to get all student reviews
+	 * @return a list of all student reviews 
+	 */
 	@Transactional
 	public List<StudentReview> getAllStudentReviews() {
 		return toList(studentReviewRepository.findAll());
 	}
-	
+	/**
+	 * This is a method to get all tutor reviews
+	 * @return a list of all tutor reviews 
+	 */
 	@Transactional
 	public List<TutorReview> getAllTutorReviews() {
 		return toList(tutorReviewRepository.findAll());
 	}
-	
+	/**
+	 * This is a method to create a new room
+	 * @param roomNr room number
+	 * @param isLargeRoom true if a room is a large room, false if a room is a small room	
+	 * @return a room if every input is valid
+	 */
 	@Transactional
 	public Room createRoom(Integer roomNr, Boolean isLargeRoom) {
 		String error = "";
@@ -261,7 +329,11 @@ public class TutoringSystemService {
 		roomRepository.save(r);
 		return r;
 	}
-	
+	/**
+	 * This is a method to get a room by room number
+	 * @param id the review id
+	 * @return a room with the input id
+	 */
 	@Transactional
 	public Room getRoom(Integer roomNr) {
 		if(roomNr < 0){
@@ -270,12 +342,18 @@ public class TutoringSystemService {
 		Room r = roomRepository.findById(roomNr).get();
 		return r;
 	}
-	
+	/**
+	 * This is a method to get all rooms
+	 * @return a list of all the rooms in the backend 
+	 */
 	@Transactional
 	public List<Room> getAllRooms() {
 		return toList(roomRepository.findAll());
 	}
-	
+	/**
+	 * This is a method to get all large rooms
+	 * @return a list of all the large rooms in the backend 
+	 */
 	@Transactional
 	public List<Room> getAllLargeRooms(){
 		List<Room> largeRooms = new ArrayList<Room>();
@@ -287,7 +365,10 @@ public class TutoringSystemService {
 		
 		return largeRooms;
 	}
-	
+	/**
+	 * This is a method to get all small rooms
+	 * @return a list of all the small rooms in the backend 
+	 */
 	@Transactional
 	public List<Room> getAllSmallRooms(){
 		List<Room> smallRooms = new ArrayList<Room>();
@@ -299,7 +380,14 @@ public class TutoringSystemService {
 		
 		return smallRooms;
 	}
-	
+	/**
+	 * This is a method to set the room with sessions
+	 * @param roomNr room number
+	 * @param isLargeRoom true if a room is a large room, false if a room is a small room
+	 * @param sessions a list of session 
+	 * @param unavailability a list of roomBooking
+	 * @return a room if every input is valid
+	 */
 	@Transactional
 	public Room updateRoom(Integer roomNr, Boolean isLargeRoom, Set<Session> sessions, Set<RoomBooking> unavailability) {
 		String error = "";
@@ -327,7 +415,11 @@ public class TutoringSystemService {
 		roomRepository.save(r);
 		return r; 
 	}
-	
+	/**
+	 * This is a method delete a room with room number
+	 * @param roomNr the room number of the room you want to delete
+	 * @return true if the room is successfully deleted
+	 */
 	@Transactional
 	public boolean deleteRoom(int roomNr) {
 		if(roomNr < 0){
@@ -343,26 +435,14 @@ public class TutoringSystemService {
 		}
 		return done;
 	}
-	//This can't work as room number is the primary key
-	@Transactional
-	public Room updateRoomSize(int roomNumber, Boolean isLarge) {
-
-		String error = "";
-		if(roomNumber < 0){
-			error +="Room number is invalid. ";
-		}
-		if(isLarge == null){
-			error +="Room Type (isLarge = true || false) cannot be null. ";
-		}
-		if(error.length() != 0){
-			throw new IllegalArgumentException(error);
-		}
-		Room room = roomRepository.findById(roomNumber).get();
-		
-		room.setIsLargeRoom(isLarge);
-		roomRepository.save(room);
-		return room;
-	}
+	/**
+	 * This is a method to create a room booking
+	 * @param id the id of room booking stored in the backend 
+	 * @param startTime start time
+	 * @param endTime endtime
+	 * @param date
+	 * @return a room booling if all the inputs are valid
+	 */
 	
 	@Transactional
 	public RoomBooking createRoomBooking(Integer id, Time startTime, Time endTime, Date date) {
@@ -403,7 +483,14 @@ public class TutoringSystemService {
 		roomBookingRepository.save(rb);
 		return rb;
 	}
-	
+	/**
+	 * This is a method to update a room booking
+	 * @param id the id of room booking you want ti update
+	 * @param startTime start time
+	 * @param endTime endtime
+	 * @param date
+	 * @return a room booling if all the inputs are valid
+	 */
 	@Transactional
 	public RoomBooking updateRoomBooking (Integer id, Time startTime, Time endTime, Date date) {
 		String error = "";
@@ -444,19 +531,39 @@ public class TutoringSystemService {
 		return roomBooking;
 
 	}
-	
+	/**
+	 * This is a method to get a room booking by id
+	 * @param id the id of the roombooking you want to get
+	 * @return a room booking with the input id
+	 */
 	@Transactional
 	public RoomBooking getRoomBooking(Integer id) {
 		
 		RoomBooking rb = roomBookingRepository.findById(id).get();
 		return rb;
 	}
-	
+	/**
+	 * This is a method to get all room bookings
+	 * @return a list of all room bookings in the backend
+	 */
 	@Transactional
 	public List<RoomBooking> getAllRoomBookings(){
 		return toList(roomBookingRepository.findAll());
 	}
-	
+	/**
+	 * This is a method to to create a seesion
+	 * @param id the id of the session that will be stored in the backend
+	 * @param isConfirmed a boolean that shows if the seesion is confirmed by the teacher
+	 * @param startTime start time
+	 * @param endTime endtime
+	 * @param date
+	 * @param isGroupSession true if the sesison is a group session
+	 * @param tutee a list of students atending the session
+	 * @param tutor a tutor who is going to teach the session
+	 * @param room the room where the session takes place
+	 * @param course the course that is taught
+	 * @return a session if all the inputs are valid
+	 */
 	@Transactional
 	public Session createSession(Integer id, Boolean isConfirmed, Time startTime, Time endTime, Date date, Boolean isGroupSession, Set <Student> tutee, Tutor tutor, Room room, Course course) {
 	
@@ -520,7 +627,20 @@ public class TutoringSystemService {
 		sessionRepository.save(s);
 		return s;
 	}
-	
+	/**
+	 * This is a method to to update a seesion
+	 * @param id the id of the session
+	 * @param isConfirmed a boolean that shows if the seesion is confirmed by the teacher
+	 * @param startTime start time
+	 * @param endTime endtime
+	 * @param date
+	 * @param isGroupSession true if the sesison is a group session
+	 * @param tutee a list of students atending the session
+	 * @param tutor a tutor who is going to teach the session
+	 * @param room the room where the session takes place
+	 * @param course the course that is taught
+	 * @return a session if all the inputs are valid
+	 */
 	@Transactional
 	public Session updateSession(Integer id, Boolean isConfirmed, Time startTime, Time endTime, Date date, Boolean isGroupSession, Set <Student> tutee, Tutor tutor, Room room, Course course) {
 	
@@ -585,7 +705,12 @@ public class TutoringSystemService {
 		sessionRepository.save(s);
 		return s;
 	}
-	
+	/**
+	 * This is a method to to update the status of a seesion
+	 * @param id the id of the session 
+	 * @param isConfirmed the status you want to update
+	 * @return a session if all the inputs are valid
+	 */
 	@Transactional
 	public Session updateSessionIsConfirmed(Integer id, Boolean isConfirmed) {
 				
@@ -602,7 +727,11 @@ public class TutoringSystemService {
 		}
 		return s;
 	}
-	
+	/**
+	 * This is a method to get a session by a valid id
+	 * @param id the id of the session you want to get
+	 * @return a session  with the input id
+	 */
 	@Transactional
 	public Session getSession(Integer id) {
 		if(id == null || id < 0 ){
@@ -616,12 +745,20 @@ public class TutoringSystemService {
 		}
 
 	}
-	
+	/**
+	 * This is a method to get all session in the backend
+	 * @return a list of all sessions in the backend
+	 */
 	@Transactional
 	public List<Session> getAllSessions() {
 		return toList(sessionRepository.findAll());
 	}
 	
+	/**
+	 * This is a method to remove a target session from the backend
+	 * @param id the id of the session you want to delete
+	 * @return a boolean shows if the session is successfully deleted
+	 */
 	
 	@Transactional
 	public boolean deleteSession(Integer sessionId) {
@@ -638,7 +775,13 @@ public class TutoringSystemService {
 		}
 		return done;
 	}
-	
+	/**
+	 * This is a method to create a new course
+	 * @param username the username will also be the id stored in the backend
+	 * @param password the password is used to login
+	 * @param name the name of the student
+	 * @return a student if we all the inputs are correct
+	 */
 	@Transactional
 	public Student createStudent(String username, String password, String name) {
 		String error = "";
@@ -662,7 +805,14 @@ public class TutoringSystemService {
 		studentRepository.save(s);
 		return s;
 	}
-	
+	/**
+	 * This is a method to create a new course
+	 * @param username the username will also be the id stored in the backend
+	 * @param password the password is used to login
+	 * @param name the name of the student
+	 * @param sessions a list of sessions the student attend 
+	 * @return a student if we all the inputs are correct
+	 */
 	@Transactional
 	public Student updateStudent(String username, String password, String name, Set <Session> sessions) {
 		String error = "";
@@ -692,12 +842,19 @@ public class TutoringSystemService {
 		studentRepository.save(student);
 		return student;
 	}
-	
+	/**
+	 * This is a method to get all student
+	 * @return a list of all students in the backend
+	 */
 	@Transactional
 	public List<Student> getAllStudents() {
 		return toList(studentRepository.findAll());
 	}
-	
+	/**
+	 * This is a method to get a student by its username
+	 * @param username the username of the student you want to get
+	 * @return a student with the target username
+	 */
 	@Transactional
 	public Student getStudent(String username) {
 		if(username == null || username.trim().length() == 0){
@@ -708,14 +865,22 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException("User does not exist.");
 		return s;
 	}
-	
+	/**
+	 * This is a method to get a student by its username
+	 * @param username the username of the student you want to get
+	 * @return a student with the target username
+	 */
 	@Transactional
 	public Student getStudentByUsername(String username) {
 		Student s = new Student();
 		s = studentRepository.findStudentByUsername(username);
 		return s;
 	}
-	
+	/**
+	 * This is a method to delete a student by its username
+	 * @param username the username of the student you want to delete
+	 * @return a boolean showing if the operation is successful
+	 */
 	@Transactional
 	public boolean deleteStudent(String username) {
 		if(username == null || username.trim().length() == 0){
@@ -737,7 +902,15 @@ public class TutoringSystemService {
 		}
 		return resultList;
 	}
-	
+	/**
+	 * This is a method to create a new tutor
+	 * @param name the name of the tutor
+	 * @param username the username will also be the id stored in the backend
+	 * @param password the password is used to login
+	 * @param hourlyRate hourly rate
+	 * @return a tutor if we all the inputs are correct
+	 */
+	@Transactional
 	public Tutor createTutor(String name, String username, String password, double hourlyRate) {
 		String error = "";
 		if(username == null || username.trim().length() == 0){
@@ -763,7 +936,11 @@ public class TutoringSystemService {
 		tutorRepository.save(tutor);
 		return tutor;
 	}
-	
+	/**
+	 * This is a method to get a tutor by its username
+	 * @param username the username of the tutor you want to get
+	 * @return a tutor with the target username
+	 */
 	@Transactional
 	public Tutor getTutor(String username) {
 		if(username == null || username.trim().length() == 0){
@@ -772,12 +949,15 @@ public class TutoringSystemService {
 		Tutor a = tutorRepository.findTutorByUsername(username);
 		return a;
 	}
-
+	/**
+	 * This is a method to get all tutors in the backend
+	 * @return a list of all the tutors
+	 */
 	@Transactional
 	public List<Tutor> getAllTutors() {
 		return toList(tutorRepository.findAll());
 	}
-	
+
 	@Transactional
 	public Tutor updateTutor(String username, String name, String password, double hourlyRate, Set<Session> pendingSessions, Set<Session> sessions, Set<Course> courses) {
 		String error = "";
@@ -817,7 +997,11 @@ public class TutoringSystemService {
 		tutorRepository.save(tutor);
 		return tutor;
 	}
-	
+	/**
+	 * This is a method to delete a tutor by its username
+	 * @param username the username of the tutor you want to delete
+	 * @return a boolean showing if the opration is succesful
+	 */
 	@Transactional
 	public boolean deleteTutor(String username) {
 		if(username == null || username.trim().length() == 0){
@@ -831,7 +1015,12 @@ public class TutoringSystemService {
 		}
 		return done;
 	}
-	
+	/**
+	 * This is a method to create a new university
+	 * @param id 
+	 * @param name the name of the university
+	 * @return a university if all the inputs are correct
+	 */
 	@Transactional
 	public University createUniversity (int id, String name) {
 		if(name == null || name.trim().length() == 0){
@@ -843,7 +1032,11 @@ public class TutoringSystemService {
 		universityRepository.save(u);
 		return u;
 	}
-	
+	/**
+	 * This is a method to get a university by its name
+	 * @param name the name of the tutor you want to get
+	 * @return a university with the target name
+	 */
 	@Transactional
 	public University getUniversity(String name) {
 		if(name == null || name.trim().length() == 0){
@@ -854,13 +1047,21 @@ public class TutoringSystemService {
 			throw new IllegalArgumentException("University does not exist.");
 		return u;
 	}
-	
+	/**
+	 * This is a method to get all universities in the backend
+	 * @return a list of all the universities
+	 */
 	@Transactional
 	public List<University> getAllUniversities() {
 		return toList(universityRepository.findAll());
 	}
 	
-	
+	/**
+	 * This is a method to update a university
+	 * @param id 
+	 * @param name the name of the university
+	 * @return a university if all the inputs are correct
+	 */
 	@Transactional
 	public University updateUniversity(Integer id, String name) {
 		String error = "";

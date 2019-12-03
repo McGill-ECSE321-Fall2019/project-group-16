@@ -58,3 +58,17 @@ Group 16 is working on the student viewpoint of the application. The viewpoint m
 | Paul Hooley        |  Login And Register Frontend and Integration with Backend    | 15   |
 | Talha Riaz         |  Frontend(Manage Sessions), Modification of Backend for Integration, Integration of Backend with Frontend (getSessions.js), Documentation   |  15  |
 | Zheng Cui          |    Backlog, Tutor Profile  |  8  |
+
+## Sprint 4 (Due Tue, Dec 3)
+
+#### *Sprint 4 is complete. Project Report is now available!*
+
+#### -> Access [Sprint 4 Project Report](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki/Project-Report-(Sprint-4))
+### Roles and Time Spent:
+| Name | Roles/Tasks | Time Spent (Hours) | 
+| :---         |     :---:      |          ---: |
+| Erdong Luo         |  Code Documentation, cleaning up backend services and controller   | 12   |
+| Mustafain Ali Khan |  Book Session Android screen, Dashboard Screen  |   20 |
+| Paul Hooley        |  Login Screen Android   | 20   |
+| Talha Riaz         |  Manage Sessions Screen  |  20  |
+| Zheng Cui          |    Register Screen, User Documentation |  20  |
