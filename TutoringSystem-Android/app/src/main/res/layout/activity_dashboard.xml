@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ca.mcgill.ecse321.tutoringsystem.Dashboard"
+    android:background="@drawable/download">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="@android:dimen/notification_large_icon_height"
+            android:text="@string/welcome"
+            android:textColor="@color/cardview_light_background"
+            android:textSize="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></TextView>
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="198dp"
+            android:layout_height="113dp"
+            app:srcCompat="@drawable/administration" />
+
+        <Button
+            android:id="@+id/button-1"
+            android:layout_width="180dp"
+            android:layout_height="64dp"
+            android:layout_marginBottom="25dp"
+            android:onClick="gotoManageSession"
+            android:text="@string/manageSessionButton" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="209dp"
+            android:layout_height="113dp"
+            app:srcCompat="@drawable/review" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="185dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="@android:dimen/notification_large_icon_height"
+            android:onClick="gotoSession"
+            android:text="@string/bookSessionButton" />
+
+        <Button
+            android:id="@+id/button-2"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+
+            android:onClick="logout"
+            android:text="@string/logoutButton" />
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

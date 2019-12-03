@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BookSessionActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/editText3"
+                android:layout_width="122dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/selectUniText" />
+
+            <Spinner
+                android:id="@+id/unispinner"
+                android:layout_width="247dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="123dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/editText4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/selectCourseText" />
+
+            <Spinner
+                android:id="@+id/coursespinner"
+                android:layout_width="244dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="136dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/editText5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="@string/selectTutorText" />
+
+            <Spinner
+                android:id="@+id/tutorspinner"
+                android:layout_width="242dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/session_date_label"/>
+
+            <TextView
+                android:id="@+id/newevent_date"
+                android:layout_width="152dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:onClick="showDatePickerDialog"
+                android:text="01-02-2020" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/starttime_label"/>
+
+            <TextView
+                android:id="@+id/starttime"
+                android:layout_width="152dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:onClick="showTimePickerDialog"
+                android:text="@string/starttime_first" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/endtime_label"/>
+
+            <TextView
+                android:id="@+id/endtime"
+                android:layout_width="152dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:onClick="showTimePickerDialog"
+                android:text="@string/endtime_first" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="84dp"
+            android:onClick="createSession"
+            android:text="@string/bookSessionButton" />
+
+        <TextView
+            android:id="@+id/error"
+            android:layout_width="match_parent"
+            android:layout_height="84dp"
+            android:text="TextView" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
