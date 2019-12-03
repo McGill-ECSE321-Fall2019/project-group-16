@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">TutoringSystem</string>
     <string name="action_settings">Settings</string>
-    <string name="newstudent_hint">Who?</string>
+    <string name="newstudent_namehint">Name</string>
     <string name="newstudent_button">Register</string>
+    <string name="newstudent_emailhint">Email</string>
+    <string name="newstudent_usernamehint">Userame</string>
+    <string name="newstudent_passwordhint">Password must be at least 8 characters long</string>
+    <string name="newstudent_confirmpasswordhint">Confirm password</string>
+
 </resources>

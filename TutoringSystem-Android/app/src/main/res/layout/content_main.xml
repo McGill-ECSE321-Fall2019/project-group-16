@@ -18,24 +18,48 @@
 
         <TextView
             android:id="@+id/error"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:visibility="gone"
+            android:layout_height="wrap_content"
             android:text=""
-            android:textColor="@color/colorAccent"/>
+            android:textColor="@color/colorAccent"
+            android:visibility="gone" />
 
         <EditText
+            android:id="@+id/newstudent_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/newstudent_name"
-            android:hint="@string/newstudent_hint"/>
+            android:hint="@string/newstudent_namehint" />
+
+        <EditText
+            android:id="@+id/newstudent_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/newstudent_usernamehint" />
+
+        <EditText
+            android:id="@+id/newstudent_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/newstudent_emailhint" />
+
+        <EditText
+            android:id="@+id/newstudent_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/newstudent_passwordhint" />
+
+        <EditText
+            android:id="@+id/newstudent_confirmpassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/newstudent_confirmpasswordhint" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:text="@string/newstudent_button"
-            android:onClick="addPerson"/>
+            android:onClick="register"
+            android:text="@string/newstudent_button" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
