@@ -63,7 +63,7 @@ Group 16 is working on the student viewpoint of the application. The viewpoint m
 
 #### *Sprint 4 is complete. Project Report is now available!*
 
-#### -> Access [Sprint 4 Project Report](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki/Project-Report-(Sprint-3))
+#### -> Access [Sprint 4 Project Report](https://github.com/McGill-ECSE321-Fall2019/project-group-16/wiki/Project-Report-(Sprint-4))
 ### Roles and Time Spent:
 | Name | Roles/Tasks | Time Spent (Hours) | 
 | :---         |     :---:      |          ---: |
