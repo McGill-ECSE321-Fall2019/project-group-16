@@ -11,4 +11,8 @@
     <string name="starttime_first">Start Time: </string>
     <string name="endtime_label">End Time: </string>
     <string name="endtime_first">End Time:</string>
+    <string name="selectSeshText">Select a Session</string>
+    <string name="manageSessionButton">Manage Sessions</string>
+
+
 </resources>

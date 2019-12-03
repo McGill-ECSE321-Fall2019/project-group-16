@@ -58,4 +58,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, BookSessionActivity.class);
         startActivity(intent);
     }
+
+    public void gotoManageSession(View view){
+        Intent intent = new Intent(this, ManageSessionActivity.class);
+        startActivity(intent);
+    }
+
+
 }
