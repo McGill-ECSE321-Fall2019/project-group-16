@@ -70,5 +70,5 @@ Group 16 is working on the student viewpoint of the application. The viewpoint m
 | Erdong Luo         |  Code Documentation, cleaning up backend services and controller   | 12   |
 | Mustafain Ali Khan |  Book Session Android screen, Dashboard Screen  |   20 |
 | Paul Hooley        |  Login Screen Android   | 20   |
-| Talha Riaz         |  Manage Sessions Screen, Project Wiki  |  15  |
+| Talha Riaz         |  Manage Sessions Screen, Project Wiki, Issue Tracking & Backlog  |  15  |
 | Zheng Cui          |    Register Screen, User Documentation |  20  |
