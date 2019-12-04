@@ -24,6 +24,8 @@ import cz.msebera.android.httpclient.Header;
 public class MainActivity extends AppCompatActivity {
     public String error;
 
+
+    //displayes what is specified in the method when the page is created.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,14 +66,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+    /**
+     *
+     * @param view
+     *
+     * redirects view to registration activity
+     */
     public void gotoRegistration(View view) {
         Intent intent = new Intent(this, Registration.class);
         startActivity(intent);
     }
+
+    /**
+     *
+     * @param view
+     *
+     * redirects view to dashboard activity
+     */
     public void gotoDashboard(View view) {
         Intent intent = new Intent(this, Dashboard.class);
         startActivity(intent);
     }
+
+    /**
+     *
+     *
+     * refreshes error message in error text view.
+     */
     private void refreshErrorMessage(){
         TextView tvError = (TextView) findViewById(R.id.error);
         tvError.setText(error);
@@ -83,12 +105,25 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Method for login.
+     * This method invokes call to the backend to log in the user
+     * Username and password are the text entered in the text view
+     *
+     * @param v
+     *
+     *
+     */
     public void login(View v) {
         error = "";
+
+        //locating text view for username and password
         final TextView usernameTV = (TextView) findViewById(R.id.username);
         final TextView passwordTV = (TextView) findViewById(R.id.password);
         final View view = v;
 
+        //assigning string username and password to variables
         String username = usernameTV.getText().toString();
         String password = passwordTV.getText().toString();
 
@@ -103,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
             refreshErrorMessage();
             return;
         }
-
+        //invoking call to backend with username and password to login.
         HttpUtils.post("/student/" + username + "/" + password, new RequestParams(), new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

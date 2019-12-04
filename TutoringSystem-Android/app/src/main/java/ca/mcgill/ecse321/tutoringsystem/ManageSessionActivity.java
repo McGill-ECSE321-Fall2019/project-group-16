@@ -23,7 +23,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class ManageSessionActivity extends AppCompatActivity {
 
-
+    //private variables for session spinner and selected item from spinner
     private ArrayAdapter<String> sessionAdapter;
     private List<String> sessionNames = new ArrayList<>();
 
@@ -33,18 +33,21 @@ public class ManageSessionActivity extends AppCompatActivity {
 
     private String error = null;
 
-    //displays when created
+    //displays what is specified in the method when the page is created
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_session);
 
+        //creating an object for spinner
         Spinner sessionSpinner = (Spinner) findViewById(R.id.sessionspinner);
 
+        //creating adapters and setting.
         sessionAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, sessionNames);
         sessionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sessionSpinner.setAdapter(sessionAdapter);
 
+        //adding action listener for when an item is selected from the spinner
         sessionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -57,7 +60,7 @@ public class ManageSessionActivity extends AppCompatActivity {
                     Object index = parentView.getSelectedItemPosition();
                     selectedSessionID = index.toString();
                     int index_int = Integer.parseInt(selectedSessionID)-1;
-                    //refreshing table with session information using Index.
+                    //refreshing table with session information using Index of selected item from spinner
                     refreshSessionTable(index_int);
                 }
             }
@@ -71,6 +74,18 @@ public class ManageSessionActivity extends AppCompatActivity {
                 "/currentsesh", "id", "tutor");
     }
 
+
+    /**
+     *
+     * @param adapter
+     * @param names
+     * @param restFunctionName
+     * @param identifier0
+     * @param identifier1
+     *
+     * The identifier is used to identify the field from the JSON object.
+     * This method refreshes the list according to the provided parameters.
+     */
     private void refreshList(final ArrayAdapter<String> adapter, final List<String> names,
                              final String restFunctionName, final String identifier0, final String identifier1){
 
@@ -88,7 +103,7 @@ public class ManageSessionActivity extends AppCompatActivity {
                     try {
                         String option = "ID: " + response.getJSONObject(i).getString(identifier0) + "  Tutor Name: " +
                                 response.getJSONObject(i).getString(identifier1);
-
+                        //populating the list
                         names.add(option);
                     } catch (Exception e) {
                         error += e.getMessage();
@@ -111,6 +126,14 @@ public class ManageSessionActivity extends AppCompatActivity {
     }
 
     // called when a session is selected and the table needs to be populated with it's information
+
+    /**
+     *
+     * @param index
+     *
+     * refreshes the information in the table for the selected session in the spinner
+     * the information of the provided index is displayed
+     */
     public void refreshSessionTable(final int index){
         // get the text objects by id from the view so that they can be populated
         final TextView date = (TextView) findViewById(R.id.date);

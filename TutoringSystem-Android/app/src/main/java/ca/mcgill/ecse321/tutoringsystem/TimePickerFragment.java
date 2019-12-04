@@ -8,6 +8,10 @@ import android.widget.TimePicker;
 
 import androidx.fragment.app.DialogFragment;
 
+/**
+ * Helper Class for Timer Picker in BookSessionActivity
+ */
+
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 

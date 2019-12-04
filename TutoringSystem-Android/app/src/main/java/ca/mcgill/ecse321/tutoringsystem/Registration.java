@@ -24,6 +24,9 @@ public class Registration extends AppCompatActivity {
         refreshErrorMessage();
     }
 
+    /**
+     * updates error Text view with error messages
+     */
     private void refreshErrorMessage(){
         TextView tvError = (TextView) findViewById(R.id.error);
         tvError.setText(error);
@@ -35,8 +38,16 @@ public class Registration extends AppCompatActivity {
         }
     }
 
+    /**
+     *
+     * @param v
+     * register method calls the post mapping for register in RESTController using
+     * parameters for the REST call are the username, name, password text from the textview
+     */
     public void register(View v) {
         error = "";
+
+        // Textviews for user input
         final TextView nameTV = (TextView) findViewById(R.id.newstudent_name);
         final TextView usernameTV = (TextView) findViewById(R.id.newstudent_username);
 
@@ -44,11 +55,13 @@ public class Registration extends AppCompatActivity {
 
         final TextView confirmedPWTV = (TextView) findViewById(R.id.newstudent_confirmpassword);
 
+        //storing user inputs in Strings
         String name = nameTV.getText().toString();
         String username = usernameTV.getText().toString();
         String password = passwordTV.getText().toString();
         String confirmedPW = confirmedPWTV.getText().toString();
 
+        //input verification
         if (username.trim().length() == 0){
             error += "Username can't be empty.\n";
         }

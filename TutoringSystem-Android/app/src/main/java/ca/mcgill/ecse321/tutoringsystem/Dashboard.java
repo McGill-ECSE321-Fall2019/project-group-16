@@ -22,33 +22,47 @@ public class Dashboard extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
     }
 
+    /**
+     *
+     * @param view
+     *
+     * redirects view to Booking session activity
+     */
     public void gotoSession(View view){
         Intent intent = new Intent(this, BookSessionActivity.class);
         startActivity(intent);
     }
 
+    /**
+     *
+     * @param view
+     *
+     * redirects view to manage session activity
+     */
     public void gotoManageSession(View view){
         Intent intent = new Intent(this, ManageSessionActivity.class);
         startActivity(intent);
     }
+
+    /**
+     *
+     * @param view
+     *
+     * Redirects view to MainActivity
+     */
     public void gotoMainPage(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
+    /**
+     *
+     * @param view
+     * Redirects view to MainActivity
+     */
     public void logout(View view) {
         final View v = view;
         gotoMainPage(v);
-//        HttpUtils.put("/logout/", new RequestParams(), new JsonHttpResponseHandler(){
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                gotoMainPage(v);
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//
-//            }
-//        });
+
     }
 }

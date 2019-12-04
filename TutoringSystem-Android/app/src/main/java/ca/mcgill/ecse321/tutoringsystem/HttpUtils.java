@@ -13,22 +13,26 @@ public class HttpUtils {
     static {
         baseUrl = DEFAULT_BASE_URL;
     }
-
+    //getter for BaseURL
     public static String getBaseUrl() {
         return baseUrl;
     }
 
+    //setter for BaseURL
     public static void setBaseUrl(String baseUrl) {
         HttpUtils.baseUrl = baseUrl;
     }
 
+    //method to map GET requests
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
-
+    //method to map POST requests
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.post(getAbsoluteUrl(url), params, responseHandler);
     }
+
+    //method to map PUT requests
     public static void put(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.put(getAbsoluteUrl(url), params, responseHandler);
     }

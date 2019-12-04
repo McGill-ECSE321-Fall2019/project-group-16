@@ -26,16 +26,18 @@ public class BookSessionActivity extends AppCompatActivity {
 
     private String error = null;
 
+    //private boolean variables for the university, course , and tutor drop downs
     private boolean createUni = true;
     private boolean createCourse = true;
     private boolean createTutor = true;
     private boolean createSession = true;
 
-
+    //private variables for the selected uni,course and tutor from the spinners
     private String selectedUni = "";
     private String courseString = "";
     private String selectedTutor = "";
 
+    //ArrayLists and Adapters used to populate spinners for Uni, course and Tutors
     private List<String> uniNames = new ArrayList<>();
     private ArrayAdapter<String> uniAdapter;
     private List<String> courseCodes = new ArrayList<>();
@@ -43,31 +45,36 @@ public class BookSessionActivity extends AppCompatActivity {
     private List<String> tutorNames = new ArrayList<>();
     private ArrayAdapter<String> tutorAdapter;
 
-
+    //display under this method when the page is created.
+    //the page is loaded from activity_book_session
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_session);
 
-        //added below
+        //creating the objects for the three spinners
         Spinner uniSpinner = (Spinner) findViewById(R.id.unispinner);
         Spinner courseSpinner = (Spinner) findViewById(R.id.coursespinner);
         Spinner tutorSpinner = (Spinner) findViewById(R.id.tutorspinner);
 
+        //creating adapters for the spinners and setting.
         uniAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, uniNames);
         uniAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         uniSpinner.setAdapter(uniAdapter);
 
+        //creating adapters for the spinners and setting.
         courseAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, courseCodes);
         courseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         courseSpinner.setAdapter(courseAdapter);
 
+        //creating adapters for the spinners and setting.
         tutorAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tutorNames);
         tutorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tutorSpinner.setAdapter(tutorAdapter);
 
 
-
+        //adding action listener for university spinner.
+        //Action specifies what to do once a university is selected
         uniSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -89,7 +96,8 @@ public class BookSessionActivity extends AppCompatActivity {
 
         });
 
-
+        //adding action listener for course spinner
+        //action specifies what to do when a course is selected
         courseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -113,6 +121,8 @@ public class BookSessionActivity extends AppCompatActivity {
 
         });
 
+        //adding action listener for tutor spinner
+        //action specifies what to do when a tutor is selected
         tutorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -134,7 +144,7 @@ public class BookSessionActivity extends AppCompatActivity {
 
 
 
-
+        //refreshes the lists with the content
         refreshLists(this.getCurrentFocus());
     }
 
@@ -142,6 +152,17 @@ public class BookSessionActivity extends AppCompatActivity {
         refreshList(uniAdapter ,uniNames, "universities", "name");
     }
 
+    /**
+     *
+     * @param adapter
+     * @param names
+     * names is the ArrayList which will store the data to be displayed in the spinner
+     * @param restFunctionName
+     * restFunctionName is used to access the correct REST controller method
+     * @param identifier
+     * The identifier is used to identify the field from the JSON object.
+     * This method refreshes the list according to the provided parameters.
+     */
     private void refreshList(final ArrayAdapter<String> adapter, final List<String> names, final String restFunctionName , final String identifier) {
         HttpUtils.get(restFunctionName, new RequestParams(), new JsonHttpResponseHandler() {
 
@@ -172,6 +193,10 @@ public class BookSessionActivity extends AppCompatActivity {
         });
 
     }
+
+    /**
+     * This method refreshes the field for the error message.
+     */
     private void refreshErrorMessage() {
         // set the error message
         TextView tvError = (TextView) findViewById(R.id.error);
@@ -184,22 +209,30 @@ public class BookSessionActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     *
+     * @param v
+     *
+     * This method invokes call to the backend with the data provided from the 'view' and creates the session with the provided data.
+     */
     public void createSession(View v){
 
         // make sure that all items are selected
         final View view = v;
 
-        //start time
+        //start time time picker
 
         TextView tv = (TextView) findViewById(R.id.starttime);
         String startTime = tv.getText().toString();
         startTime = startTime + ":00";
 
-        //end time
+        //end time tiem picker
         tv = (TextView) findViewById(R.id.endtime);
         String endtime = tv.getText().toString();
         endtime = endtime + ":00";
 
+        // date picker
         tv = (TextView) findViewById(R.id.newevent_date);
         String text = tv.getText().toString();
         String comps[] = text.split("-");
@@ -220,7 +253,6 @@ public class BookSessionActivity extends AppCompatActivity {
             HttpUtils.post("/session/" + this.selectedTutor + "/" + startTime + "/" + endtime + "/"
                     + date + "/" + courseString + "/" + false , new RequestParams(), new JsonHttpResponseHandler() {
 
-
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     // reset the dropdown boolean
@@ -235,6 +267,7 @@ public class BookSessionActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     try {
+                        //set error message
                         error += errorResponse.get("message").toString();
                     } catch (JSONException e) {
                         error += e.getMessage();
@@ -245,12 +278,26 @@ public class BookSessionActivity extends AppCompatActivity {
         }
     }
 
+
+    /**
+     *
+     * @param view
+     *
+     * Loads the dashboard
+     */
     public void gotoDashboard(View view) {
         Intent intent = new Intent(this, Dashboard.class);
         startActivity(intent);
     }
     //Date & Time helpers
 
+    /**
+     *
+     * @param text
+     * @return
+     *
+     * Returns the selected time from the time picker on the book sessions screen.
+     */
     private Bundle getTimeFromLabel(String text) {
         Bundle rtn = new Bundle();
         String comps[] = text.toString().split(":");
@@ -268,6 +315,13 @@ public class BookSessionActivity extends AppCompatActivity {
         return rtn;
     }
 
+    /**
+     *
+     * @param text
+     * @return
+     *
+     * Returns the selected data from the date picker on the book sessions screen.
+     */
     private Bundle getDateFromLabel(String text) {
         Bundle rtn = new Bundle();
         String comps[] = text.toString().split("-");
@@ -288,6 +342,12 @@ public class BookSessionActivity extends AppCompatActivity {
         return rtn;
     }
 
+    /**
+     *
+     * @param v
+     *
+     * Displays the time-picker element on the view provided by the parameter.
+     */
     public void showTimePickerDialog(View v) {
         TextView tf = (TextView) v;
         Bundle args = getTimeFromLabel(tf.getText().toString());
@@ -298,6 +358,12 @@ public class BookSessionActivity extends AppCompatActivity {
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
+    /**
+     *
+     * @param v
+     *
+     * Displays the time-picker element on the view provided by the parameter.
+     */
     public void showDatePickerDialog(View v) {
         TextView tf = (TextView) v;
         Bundle args = getDateFromLabel(tf.getText().toString());
@@ -308,10 +374,31 @@ public class BookSessionActivity extends AppCompatActivity {
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
+    /**
+     *
+     * @param id
+     * @param h
+     * @param m
+     *
+     * id identifies time picker textview
+     * sets time to hours h and minutes m
+     *
+     */
     public void setTime(int id, int h, int m) {
         TextView tv = (TextView) findViewById(id);
         tv.setText(String.format("%02d:%02d", h, m));
     }
+
+    /**
+     *
+     * @param id
+     * @param d
+     * @param m
+     * @param y
+     *
+     * id identifies date picker textview
+     * sets date to day d month m and year y
+     */
 
     public void setDate(int id, int d, int m, int y) {
         TextView tv = (TextView) findViewById(id);
